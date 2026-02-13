@@ -5,7 +5,388 @@
 <title>Quy trình Thiết kế Kiến trúc | DREAMESE STUDIO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Quy trình thiết kế thi công trọn gói tại DREAMESE STUDIO – giải pháp xây nhà trọn gói, đồng bộ kiến trúc và nội thất từ ý tưởng đến bàn giao.">
-<link rel="stylesheet" href="CSS/Process_Site.css">
+<style>
+/* =============FONTS=========== */
+@font-face {
+    font-family: ;
+    src: url();
+}
+@font-face{
+    font-family:"Avo";
+    src:url("Fonts/UTM_Avo.ttf");
+}
+@font-face{
+    font-family:"God";
+    src:url("Fonts/UTM_God_WordR.ttf");
+}
+
+/* =====================================================
+   ROOT & RESET
+===================================================== */
+:root{
+    --bg:#0f0f0f;
+    --accent:#b48a5a;
+    --text:#ddd;
+    --muted:#777;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Avo",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.8;
+}
+
+/* =====================================================
+   HEADER / NAV
+===================================================== */
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 8%;
+    background:rgba(0,0,0,.95);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo-link{
+    text-decoration:none;
+    color:inherit;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo img{height:42px;}
+
+.logo-text{
+    font-family:"God";
+    font-size:18px;
+    letter-spacing:2px;
+    color:#fff;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:28px;
+}
+
+nav a{
+    text-decoration:none;
+    color:#fff;
+    font-size:13px;
+    text-transform:uppercase;
+}
+
+nav a:hover{color:var(--accent);}
+
+/* =====================================================
+   GENERAL SECTION
+===================================================== */
+section{
+    padding:100px 10%;
+    scroll-margin-top:90px;
+}
+
+h1,h2,h3{font-family:"God";}
+
+h1{
+    font-size:3.2rem;
+    margin-bottom:40px;
+    letter-spacing:1px;
+    color:#fff;
+}
+
+h2{
+    color:var(--accent);
+    margin-bottom:30px;
+}
+
+p{
+    color:#ccc;
+    margin-bottom:18px;
+}
+
+/* =====================================================
+   PROCESS INTRO
+===================================================== */
+.process-section{
+    padding:150px 10% 80px;
+    text-align:left;
+}
+
+.intro{
+    max-width:850px;
+}
+
+.intro p{
+    font-size:1.1rem;
+    line-height:2.2;
+    margin-bottom:35px;
+    color:#bbb;
+}
+
+/* =====================================================
+   PROCESS FLOW
+===================================================== */
+.process-container{
+    margin-top:60px;
+}
+
+.process-flow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.process-step{
+    display:flex;
+    align-items:center;
+}
+
+.bubble{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    border:2px dotted var(--accent);
+    background:rgba(0,0,0,.6);
+    backdrop-filter:blur(4px);
+    color:#fff;
+    font-size:14px;
+    line-height:1.4;
+    text-align:center;
+    padding:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.4s;
+    text-decoration:none;
+}
+
+.bubble:hover{
+    transform:translateY(-6px) scale(1.05);
+    background:rgba(180,138,90,.15);
+}
+
+.connector{
+    width:70px;
+    height:60px;
+    flex-shrink:0;
+}
+
+.connector path{
+    fill:none;
+    stroke:var(--accent);
+    stroke-width:2;
+    stroke-dasharray:2 8;
+}
+
+.process-step:last-child .connector{display:none;}
+
+/* =====================================================
+   STEP CONTENT
+===================================================== */
+.step{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    margin-bottom:100px;
+    align-items:center;
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s ease;
+}
+
+.step.show{
+    opacity:1;
+    transform:none;
+}
+
+.step.reverse{
+    direction:rtl;
+}
+
+.step.reverse *{
+    direction:ltr;
+}
+
+.step h3{
+    font-size:1.8rem;
+    margin-bottom:20px;
+    color:var(--accent);
+}
+
+/* =====================================================
+   IMAGE CLUSTER
+===================================================== */
+.process-images{
+    position:relative;
+    max-width:400px;
+    aspect-ratio:1/1;
+}
+
+.process-images div{
+    position:absolute;
+    aspect-ratio:1/1;
+    border-radius:20px;
+    overflow:hidden;
+    transform:rotate(45deg);
+    background:#111;
+    box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+
+.process-images img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:rotate(-45deg) scale(1.2);
+}
+
+.img-main{
+    width:65%;
+    top:15%;
+    left:15%;
+    z-index:3;
+}
+
+.sub-1{
+    width:40%;
+    top:-5%;
+    right:0;
+    opacity:.8;
+}
+
+.sub-2{
+    width:40%;
+    bottom:-5%;
+    left:0;
+    opacity:.7;
+}
+
+/* =====================================================
+   CONTACT & FOOTER
+===================================================== */
+#contact{
+    background:#000;
+    border-top:1px solid #111;
+}
+
+.contact-info p{
+    font-family:"God";
+    font-size:1.5rem;
+    color:var(--accent);
+}
+
+footer{
+    background:#000;
+    padding:40px;
+    text-align:center;
+    font-size:13px;
+    color:#555;
+}
+
+/* =====================================================
+   MOBILE OPTIMIZATION (iPhone)
+===================================================== */
+@media(max-width:900px){
+
+    section{padding:80px 5%;}
+
+    h1{font-size:2.2rem;}
+
+    /* FLOW */
+    .process-flow{
+        flex-direction:column;
+        gap:22px;
+    }
+
+    .process-step{
+        flex-direction:column;
+    }
+
+    .bubble{
+        width:120px;
+        height:120px;
+        font-size:13px;
+    }
+
+    .connector{
+        width:2px;
+        height:36px;
+        margin:6px auto;
+    }
+
+    .connector path{
+        stroke-dasharray:2 6;
+        d:path("M1 0 L1 100");
+    }
+
+    /* STEP CONTENT */
+    .step,
+    .step.reverse{
+        direction:ltr;
+    }
+
+    .step{
+        grid-template-columns:1fr;
+        gap:32px;
+        margin-bottom:80px;
+    }
+
+    .step h3{font-size:1.5rem;}
+    .step p{
+        font-size:15px;
+        line-height:1.9;
+    }
+
+    /* IMAGES */
+    .process-images{
+        max-width:280px;
+        margin:0 auto;
+    }
+
+    .sub-1,
+    .sub-2{
+        width:42%;
+        opacity:.6;
+    }
+}
+
+/* iPhone nhỏ */
+@media(max-width:400px){
+    .sub-1,
+    .sub-2{
+        width:38%;
+        opacity:.5;
+    }
+}
+
+/* Fallback Safari */
+@supports not (backdrop-filter: blur(4px)){
+    .bubble{
+        background:rgba(0,0,0,.85);
+    }
+}
+
+</style>
 </head>
 
 <body>
@@ -237,4 +618,5 @@ steps.forEach(step => observer.observe(step));
 </script>
 
 </body>
+
 </html>
