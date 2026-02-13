@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>T&T Villa – DREAMESE STUDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* =====================================================
+           FONT & RESET
+        ===================================================== */
+        @font-face { font-family: "God"; src: url("Fonts/UTM_God_WordR.ttf"); }
+        @font-face { font-family: "Avo"; src: url("Fonts/UTM_Avo.ttf"); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Avo", sans-serif;
+            background: rgb(255, 224, 122);
+            color: #eee;
+            line-height: 1.6;
+            opacity: 0;
+            transition: opacity .5s ease;
+            overflow-x: hidden;
+        }
+        body.loaded { opacity: 1; }
+
+        /* =====================================================
+           NAVIGATION (LOGO & LIÊN HỆ)
+        ===================================================== */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(0,0,0,.9);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 8%; z-index: 1000;
+        }
+        .logo-link { 
+            display: flex; align-items: center; gap: 12px; 
+            text-decoration: none !important; color: white !important;
+        }
+        .logo img { height: 40px; }
+        .logo-text { font-family: "God"; letter-spacing: 2px; }
+        
+        .nav-menu { list-style: none; display: flex; gap: 28px; }
+        .nav-menu a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-menu a:hover { color: #b48a5a; }
+
+        /* =====================================================
+           STORY HERO (THU GỌN KHOẢNG TRỐNG)
+        ===================================================== */
+        .story-hero { position: relative; min-height: 80vh; overflow: hidden; }
+        .story-bg{
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center 35%;
+            z-index: -1;}
+        .story-content { padding: 45vh 20% 40px; }
+
+        .story-content h1 {
+            font-family: "God"; 
+            font-size: 3rem; 
+            margin-bottom: 20px; } 
+
+        .project-slogan {
+            font-family: "Avo";
+            margin-top: -10px;
+            margin-bottom: 22px;
+            font-size: 1rem;
+            font-weight: 650;   /* in đậm */
+            font-style: italic;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ffedd8;
+            opacity: 1;
+        }
+       
+        .story-text {
+            max-width: 700px;
+            background: rgba(0,0,0,.55);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border-left: 3px solid #b48a5a;
+        }        
+        .story-text p {
+            line-height: 1.8;
+            margin-bottom: 18px;
+            text-indent: 1.6em;
+        }
+
+        .story-text p:last-child {
+            margin-bottom: 0;
+         }
+
+
+.project-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 25px 50px; /* thụt vào trong */
+    font-size: 14px;
+    font-style: italic;      /* in nghiêng nhẹ */
+    color: rgba(255,255,255,0.75);}
+
+.project-meta span{
+    position: relative;
+    padding-left: 14px;
+}
+
+.project-meta span::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #b48a5a;
+    border-radius: 50%;
+}
+
+.project-meta strong{
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-weight: normal;
+    color: #b48a5a;
+}
+        /* =====================================================
+           PROJECT SLIDER (10 HÌNH - 2 HÀNG X 5 CỘT)
+        ===================================================== */
+        .project-content {
+            padding: 60px 5% 80px;
+            background: rgba(15, 15, 15, 0.9);
+            position: relative; z-index: 10;
+            text-align: center;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            max-width: 1400px;
+            margin: 40px auto 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .gallery-container { width: 100%; overflow: hidden; }
+        .gallery-track { display: flex; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+
+        .gallery-page {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 10px;
+        }
+
+        .gallery-page img {
+            width: 100%; aspect-ratio: 4 / 3;
+            object-fit: cover; cursor: pointer;
+            transition: 0.3s;
+        }
+        .gallery-page img:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        .nav-btn {
+            background: none; border: none; color: #b48a5a;
+            font-size: 50px; cursor: pointer; padding: 20px;
+            transition: 0.3s; user-select: none;
+        }
+        .nav-btn:hover { color: white; }
+        .nav-btn.disabled { opacity: 0.1; cursor: default; }
+
+        /* =====================================================
+           TRAO ĐỔI VỀ CÔNG TRÌNH (CONTACT FORM)
+        ===================================================== */
+        .project-contact { 
+            padding: 80px 20%; 
+            background: #0f0f0f; 
+            text-align: center;
+            position: relative; z-index: 10;
+        }
+        .project-contact h2 { font-family: "God"; margin-bottom: 40px; color: #b48a5a; }
+        .project-contact input, .project-contact textarea {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            background: #1a1a1a; border: 1px solid #333; color: white; outline: none;
+            font-family: "Avo";
+        }
+        .project-contact button {
+            padding: 15px 60px; background: #b48a5a; border: none; 
+            color: white; cursor: pointer; font-weight: bold;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .project-contact button:hover { background: white; color: black; }
+
+        /* =====================================================
+           LIGHTBOX CÓ MŨI TÊN ĐIỀU HƯỚNG
+        ===================================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.98);
+            display: none; z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+        .lightbox.active { display: flex; }
+        
+        .lightbox-content { position: relative; display: flex; align-items: center; width: 90%; height: 90%; justify-content: center; }
+        .lightbox img { max-height: 90vh; max-width: 80vw; object-fit: contain; }
+
+        .lb-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: white;
+            font-size: 60px; cursor: pointer; padding: 20px;
+            transition: 0.3s; opacity: 0.5; z-index: 2100;
+        }
+        .lb-arrow:hover { opacity: 1; color: #b48a5a; }
+        .lb-prev { left: 0; }
+        .lb-next { right: 0; }
+
+        .lb-close {
+            position: absolute; top: 20px; right: 30px;
+            color: white; font-size: 40px; cursor: pointer; z-index: 2200;
+        }
+
+        /* =====================================================
+           FOOTER (CĂN TRÁI + THÔNG TIN LIÊN HỆ)
+        ===================================================== */
+        footer {
+            background: #0a0a0a; padding: 40px 8%;
+            text-align: left; position: relative; z-index: 10;
+        }
+        .footer-logo { font-family:
+             "God";
+              font-size: 24px;
+               opacity: 0.7;
+                margin-bottom: 5px;
+             }
+        .footer-contact { color: #b48a5a; font-size: 18px; text-decoration: none; display: block; }
+    
+        /* LIGHTBOX CONTENT */
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    height: 90%;
+}
+
+/* ẢNH KHÔNG VỠ */
+#lightboxImg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* CAPTION */
+.lb-caption {
+    position: absolute;
+    right: 30px;
+    bottom: 120px;
+    max-width: 280px;
+    background: rgba(0,0,0,.55);
+    padding: 16px 18px;
+    border-left: 3px solid #b48a5a;
+    backdrop-filter: blur(6px);
+}
+
+.lb-caption h4 {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    color: #b48a5a;
+}
+
+.lb-caption p {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: .85;
+}
+    </style> 
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <a href="Dreamese.html" class="logo-link">
+                <img src="Dreamese_Studio.png" alt="Logo">
+                <span class="logo-text">DREAMESE STUDIO</span>
+            </a>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="Dreamese.html">Trang chủ</a></li>
+            <li><a href="#gallery">Album</a></li>
+            <li><a href="#contact">Liên hệ</a></li> </ul>
+    </nav>
+
+    <section class="story-hero">
+        <div class="story-bg"
+         style="background-image:
+         linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+         url('TT_Villa/Stair_01.5.jpg');">
+        </div>
+        <div class="story-content">
+            <h1>T&T Villa</h1>
+            <p class="project-slogan">Sự tương phản trong ánh nhìn</p>
+            <div class="project-meta">			    
+			    <span><strong>Loại hình:</strong> Nhà ở gia đình nhiều thế hệ</span>
+			    <span><strong>Quy mô:</strong> 1 trệt · 2 lầu · sân vườn</span>
+			    <span><strong>Diện tích xây dựng:</strong> ~400m²</span>
+				</div>
+            <div class="story-text">
+                <p>T&T Villa Resident là một câu chuyện được chúng tôi ghép nối, dung hòa và phát triển từ những ước mơ vụn vặt ghép nối của nhiều thế hệ trong 1 gia đình. 
+                    Công trình được thi công và hoàn thiện tại 1 trung tâm Kinh tế, nơi mà mọi người thường xuyên lao đầu vào cuồng quay của những công việc riêng mà họ phải 
+                tự xoay sở và hoàn thành.</p>
+                <p>Mỗi thế hệ là các lát cắt khác nhau, cái nhìn khác nhau; tuy nhiên sự gắn bó của các thế hệ đó sẽ thật sự có giá trị hơn khi mang theo 2 tiếng "Gia đình".</p>
+                <p>Công trình thiết kế giao thông trục đứng với những khoảng không lớn giúp kết nói mọi người bằng thanh âm và những khung nhìn có chọn lọc. 
+                    Chúng tôi đã gắn kết các thành viên trong gia đình bằng những câu chuyện không tên, và những thói quen vô hình.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-content">
+        <p style="color:#b48a5a; font-style:italic; margin-bottom: 10px;">"Những lát cắt khác nhau được tinh chỉnh và xếp lớp lên nhau."</p>
+
+        <div class="slider-wrapper" id="gallery">
+            <button class="nav-btn" id="prevBtn">&#10094;</button> <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/ExC_01.1.jpg"
+                            data-title="Mặt đứng chính"
+                            data-desc="Hình khối sử dụng những đường nét mạnh mẽ và sang trọng.">
+                        <img src="TT_Villa/ExC_02.1.jpg"
+                            data-title="Mặt Bên"
+                            data-desc="Công trình nằm ở vị trí cuối đường của 1 khu dân cư, do đó việc chọn góc mở của công trình có vai trò quan trọng.">
+                        <img src="TT_Villa/ExC_03.jpg"
+                            data-title="Mặt tiếp giáp"
+                            data-desc="Vị trí sân hông là khoảng không gian phụ, việc sắp xếp khối đặc ở vị trí này giúp nhà có được 1 hẻm gió làm mát bên trong khối nhà, đồng thời cũng xây dựng hướng nhìn mạnh mẽ.">
+                        <img src="TT_Villa/ExC_04.1.jpg"
+                            data-title="Phối cảnh trên cao"
+                            data-desc="Từ trên cao, cho thấy công trình được bao quanh bởi các ban công, khoảng thở, chêm vào đó là những mảng xanh, giúp công trình có cái nhìn thoáng đãng và thoải mái hơn.">
+                        <img src="TT_Villa/ExC_05.jpg"
+                            data-desc="Cùng mang phong cách hiện đại, nhưng khác với những công trình lân cận, với cách tiếp cận về hình khối và màu sắc có sự khác biệt và nổi bật riêng.">
+                        <img src="TT_Villa/ExC_06.1.jpg"
+                            data-title="Tính tương phản"
+                            data-desc="Ở 1 khía cạnh nào đó, công trình có 1 sự ngầu nhất định về màu sác và hình khối, tuy nhiên với tinh thần gắn kết và cởi mở, khi mở rộng toàn bộ cánh cổng, ngôi nhà sẽ hiện ra với các vùng không gian kết nối liên thông nội - ngoại.">
+                        <img src="TT_Villa/ExC_07.jpg">
+                        <img src="TT_Villa/ExC_08.jpg">
+                        <img src="TT_Villa/ExC_09.jpg">
+                        <img src="TT_Villa/ExC_10.jpg">
+                        
+                    </div>
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/ExC_01.2.png">
+                        <img src="TT_Villa/ExC_02.2.png"
+                            data-title="Phòng khách"
+                            data-desc="Không gian được đặt tại vị trí trung tâm của ngôi nhà, có thông tầng lớn và tầm nhìn đa chiều.">
+                        <img src="TT_Villa/ExC_03.2.png"
+                            data-title="Hiện đại nhẹ nhàng"
+                            data-desc="Tương phản lớn nhất của công trình là dù ngay cả khi cùng là phong cách Hiện đại, nhưng màu sắc và cách thể hiện trong không gian được phối cách nhẹ nhàng và tinh giản hơn.">
+                        <img src="TT_Villa/ExC_04.2.png">
+                        <img src="TT_Villa/ExC_06.2.png">
+                        <img src="TT_Villa/Terrace_01.png">
+                        <img src="TT_Villa/Lands_01.1.png">
+                        <img src="TT_Villa/Lands_03.1.png">
+                        <img src="TT_Villa/Lands_04.1.png">
+                        <img src="TT_Villa/Lands_05.png">
+                        </div>
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/Livin_01.1.jpg">
+                        <img src="TT_Villa/Livin_02.1.jpg"
+                            data-title="Phòng khách"
+                            data-desc="Không gian được đặt tại vị trí trung tâm của ngôi nhà, có thông tầng lớn và tầm nhìn đa chiều.">
+                        <img src="TT_Villa/Livin_03.1.jpg"
+                            data-title="Hiện đại nhẹ nhàng"
+                            data-desc="Tương phản lớn nhất của công trình là dù ngay cả khi cùng là phong cách Hiện đại, nhưng màu sắc và cách thể hiện trong không gian được phối cách nhẹ nhàng và tinh giản hơn.">
+                        <img src="TT_Villa/Livin_04.2.1.png">
+                        <img src="TT_Villa/Livin_04_1.jpg">
+                        <img src="TT_Villa/Livin_05_1.jpg">
+                        <img src="TT_Villa/Livin_06_1.jpg">
+                        <img src="TT_Villa/Livin_07.jpg">
+                        <img src="TT_Villa/Livin_08.jpg">
+                        <img src="TT_Villa/Livin_09.1.jpg">
+                        </div>
+                    
+                     <div class="gallery-page">
+                        <img src="TT_Villa/Livin_10.1.jpg">
+                        <img src="TT_Villa/Livin_02.2.png">
+                        <img src="TT_Villa/Livin_11.1.jpg">
+                        <img src="TT_Villa/Livin_02.2.png">
+                        <img src="TT_Villa/Stair_01.1.jpg">
+                        <img src="TT_Villa/Stair_01.1.jpg">
+                        <img src="TT_Villa/Stair_01.2.jpg">
+                        <img src="TT_Villa/Stair_01.3.jpg">
+                        <img src="TT_Villa/Stair_01.4.jpg">
+                        <img src="TT_Villa/Stair_01.5.jpg">
+                       </div>
+                    
+                     <div class="gallery-page">
+                        <img src="TT_Villa/Stair_01.6.jpg">
+                        <img src="TT_Villa/Stair_02.1.png">
+                        <img src="TT_Villa/Stair_02.2.png">
+                        <img src="TT_Villa/Stair_02.3.png">
+                        <img src="TT_Villa/Stair_02.4.png">
+                        <img src="TT_Villa/Stair_02.5.1.png">
+                        <img src="TT_Villa/Stair_02.5.2.png">
+                        <img src="TT_Villa/Stair_02.6.png">
+                        <img src="TT_Villa/Stair_02.7.png">
+                        <img src="TT_Villa/Stair_02.8.png">
+                       </div>
+                    
+                     <div class="gallery-page">
+                        <img src="TT_Villa/Ms_05.1.jpg">
+                        <img src="TT_Villa/Ms_01.1.jpg">
+                        <img src="TT_Villa/Ms_08.png">
+                        <img src="TT_Villa/Ms_02.2.png">
+                        <img src="TT_Villa/Ms_03.jpg">
+                        <img src="TT_Villa/Ms_04.1.jpg">
+                        <img src="TT_Villa/Ms_05.1.jpg">
+                        <img src="TT_Villa/Ms_04.2.png">
+                        <img src="TT_Villa/Ms_06.jpg">
+                        <img src="TT_Villa/Ms_07.jpg">
+                       </div>
+                    
+                     <div class="gallery-page">
+                        <img src="TT_Villa/Ms_WC-01.1.jpg">
+                        <img src="TT_Villa/Ms_WC-02.1.jpg">
+                        <img src="TT_Villa/Ms_WC-03.2.png">
+                        <img src="TT_Villa/Ms_WC-04.2.png">
+                        <img src="TT_Villa/Ms_WC-05.2.png">
+                        <img src="TT_Villa/Ms_WKC-01.jpg">
+                        <img src="TT_Villa/Ms_WKC-03.jpg">
+                        <img src="TT_Villa/Ms_WKC-04.jpg">
+                        <img src="TT_Villa/Ms_WKC-05.jpg">
+                        <img src="TT_Villa/Ms_WKC-06.jpg">
+                       </div>
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/Chip_BedRoom_001.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_002.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_003.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_004.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_005.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_006.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_007.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_008.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_009.jpg">
+                        <img src="TT_Villa/Chip_BedRoom_010.jpg">
+                    </div>
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/Bo_Bedroom_001.1.png">
+                        <img src="TT_Villa/Bo_Bedroom_001.2.png">
+                        <img src="TT_Villa/Bo_Bedroom_002.1.png">
+                        <img src="TT_Villa/Bo_Bedroom_002.2.png">
+                        <img src="TT_Villa/Bo_Bedroom_003.png">
+                        <img src="TT_Villa/Bo_Bedroom_004.png">
+                        <img src="TT_Villa/Bo_Bedroom_005.png">
+                        <img src="TT_Villa/Bo_Bedroom_006.png">
+                        <img src="TT_Villa/Bo_Bedroom_007.png">
+                        <img src="TT_Villa/Bo_Bedroom_008.png">
+                    </div>
+                    
+                    <div class="gallery-page">
+                        <img src="TT_Villa/2F_WC_001.jpg">
+                        <img src="TT_Villa/2F_WC_002.jpg">
+                        <img src="TT_Villa/2F_WC_003.jpg">
+                        <img src="TT_Villa/2F_WC_005.jpg">
+                    </div>
+                    
+                </div>
+            </div>
+            <button class="nav-btn" id="nextBtn">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="project-contact" id="contact">
+        <h2>Trao đổi về công trình</h2>
+        <form style="max-width: 600px; margin: 0 auto;">
+            <input type="text" placeholder="Tên của bạn">
+            <input type="tel" placeholder="Số điện thoại">
+            <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
+            <button type="button">GỬI YÊU CẦU</button>
+        </form>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="closeLb">&times;</span>
+
+    <div class="lightbox-content">
+
+        <!-- ẢNH LỚN -->
+        <img id="lightboxImg">
+
+        <!-- CAPTION GÓC PHẢI -->
+        <div class="lb-caption">
+            <h4 id="lbTitle"></h4>
+            <p id="lbDesc"></p>
+        </div>
+
+        <!-- MŨI TÊN -->
+        <button class="lb-arrow lb-prev" id="lbPrev">&#10094;</button>
+        <button class="lb-arrow lb-next" id="lbNext">&#10095;</button>
+
+    </div>
+</div>
+
+
+    <footer>
+        <div class="footer-logo">© DREAMESE STUDIO – Architecture & Interior Design</div>
+        <a href="mailto:vtv.arc@gmail.com" class="footer-contact">vtv.arc@gmail.com - 09 4363 4758</a>
+    </footer>
+
+    <script>
+    window.onload = () => document.body.classList.add('loaded');
+
+    /* --- LOGIC SLIDER --- */
+    const track = document.getElementById('galleryTrack');
+    const pages = document.querySelectorAll('.gallery-page');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentPage = 0;
+
+    function updateSlider() {
+        track.style.transform = `translateX(-${currentPage * 100}%)`;
+        prevBtn.classList.toggle('disabled', currentPage === 0);
+        nextBtn.classList.toggle('disabled', currentPage === pages.length - 1);
+    }
+
+    nextBtn.onclick = () => {
+        if (currentPage < pages.length - 1) {
+            currentPage++;
+            updateSlider();
+        }
+    };
+
+    prevBtn.onclick = () => {
+        if (currentPage > 0) {
+            currentPage--;
+            updateSlider();
+        }
+    };
+
+    updateSlider();
+
+
+    /* ========= LIGHTBOX PRO ========= */
+
+    const lightbox  = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lightboxImg');
+    const lbTitle   = document.getElementById('lbTitle');
+    const lbDesc    = document.getElementById('lbDesc');
+    const lbPrev    = document.getElementById('lbPrev');
+    const lbNext    = document.getElementById('lbNext');
+
+    const allImgs = Array.from(document.querySelectorAll('.gallery-page img'));
+    let currentIdx = 0;
+
+    function openLightbox(index) {
+        currentIdx = index;
+        const img = allImgs[currentIdx];
+
+        lbImg.src = img.src;
+        lbTitle.textContent = img.dataset.title || '';
+        lbDesc.textContent  = img.dataset.desc  || '';
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    allImgs.forEach((img, idx) => {
+        img.addEventListener('click', () => openLightbox(idx));
+    });
+
+    lbNext.onclick = e => {
+        e.stopPropagation();
+        openLightbox((currentIdx + 1) % allImgs.length);
+    };
+
+    lbPrev.onclick = e => {
+        e.stopPropagation();
+        openLightbox((currentIdx - 1 + allImgs.length) % allImgs.length);
+    };
+
+    document.getElementById('closeLb').onclick = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    };
+
+    document.addEventListener('keydown', e => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'ArrowRight') lbNext.click();
+        if (e.key === 'ArrowLeft') lbPrev.click();
+        if (e.key === 'Escape') document.getElementById('closeLb').click();
+    });
+</script>
+
+    
+</body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dreamese - Kiến trúc & Nội thất</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+        /* ===== FONT ===== */
+        @font-face {
+            font-family: "None";
+            src: url("Fonts/UTM_Avo.ttf");
+        }
+        @font-face {
+            font-family: "Avo";
+            src: url("Fonts/UTM_Avo.ttf");
+        }
+        @font-face {
+            font-family: "God";
+            src: url("Fonts/UTM_God_WordR.ttf");
+        }
+
+        /* ===== RESET & NỀN TỔNG THỂ ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body::before{
+            content:"";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: -1;
+                }
+
+
+        body {
+            font-family: "Avo", sans-serif;
+            background-color: #000;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            color: #7f7f7f;
+            line-height: 1.6;
+
+            opacity: 0;
+            transition: opacity .5s ease, background-image 1.2s ease-in-out;
+            overflow-x: hidden;
+            position: relative;
+            }
+
+        body.loaded { opacity: 1; }
+
+        /* ===== MENU ===== */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(0,0,0,.95);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 8%; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo img { height: 42px; width: auto; }
+        .logo-text { font-family: "God"; font-size: 20px; letter-spacing: 2px; color: white; }
+        nav ul { list-style: none; display: flex; gap: 28px; }
+        nav a { color: #fff; text-decoration: none; font-size: 13px; transition: 0.3s; text-transform: uppercase; }
+        nav a:hover { color: #b48a5a; }
+
+        /* ===== SECTION CHUNG ===== */
+        section { padding: 120px 10%; background: transparent; }
+
+        h2 { 
+            font-family: "God"; font-size: 2.2rem; margin-bottom: 50px; 
+            position: relative; color: #b48a5a; 
+        }
+        h2::after {
+            content: ""; width: 60px; height: 3px; background: #b48a5a;
+            position: absolute; left: 0; bottom: -10px;
+        }
+
+        /* ===== HERO ===== */
+        #home { min-height: 100vh; display: flex; align-items: center; }
+        #home h1 { font-family: "God"; font-size: 3.5rem; max-width: 800px; color: #fff; line-height: 1.2; }
+        #home p { margin-top: 25px; color: #ccc; max-width: 650px; font-size: 1.1rem; line-height: 1.8; }
+        .hero-note { margin-top: 40px; font-size: 0.9rem; color: #b48a5a; letter-spacing: 2px; text-transform: uppercase; }
+        .hero-line {white-space: nowrap;    display: inline-block;}
+
+        /* ===== PROJECT SLIDER ===== */
+        .project-wrapper { position: relative; margin-left: -5%; width: 110%; overflow: hidden; }
+        .project-track { display: flex; gap: 24px; transition: transform .6s cubic-bezier(0.25, 1, 0.5, 1); padding: 20px 0; }
+        .project {
+            min-width: 350px; height: 450px; background-size: cover; background-position: center;
+            position: relative; color: white; text-decoration: none; border-radius: 4px; overflow: hidden;
+            display: block;
+        }
+        .project span {
+            font-family: "God"; position: absolute; bottom: 0; width: 100%; padding: 25px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            font-size: 1.2rem; transition: 0.3s;
+        }
+        /* Tùy chỉnh riêng cho dòng Biệt thự · Nhà ở */
+        .project-meta {
+            font-family: "Avo", sans-serif; /* Hoặc font "God" nếu bạn muốn kiểu nghệ thuật */
+            font-size: 11px;               /* Kích thước chữ nhỏ lại cho tinh tế */
+            font-style: italic;
+            text-transform: uppercase;     /* Viết hoa toàn bộ */
+            letter-spacing: 2px;           /* Khoảng cách giữa các chữ thưa ra cho sang */
+            color: #b48a5a;                /* Màu vàng đồng đặc trưng của Dreamese */
+            margin-top: 8px;               /* Khoảng cách với dòng phía trên */
+            opacity: 0.8;                  /* Độ mờ nhẹ để làm nổi bật tên dự án chính */
+                }
+        .project:hover span { color: #b48a5a; padding-bottom: 30px; }
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px; border: none; border-radius: 50%;
+            background: rgba(180, 138, 90, 0.8); color: white; font-size: 24px;
+            cursor: pointer; z-index: 10; transition: 0.3s;
+        }
+        .nav-btn:hover { background: #fff; color: #000; }
+        .nav-btn.prev { left: 5%; }
+        .nav-btn.next { right: 5%; }
+
+        /* ===== Q&A SECTION (FIXED LAYOUT) ===== */
+        #qna { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); }
+        .qna-wrapper { display: flex; gap: 40px; align-items: flex-start; width: 100%; position: relative; }
+
+        /* Cột bên trái - Danh sách câu hỏi */
+        .qna-slider { 
+            width: 100%; 
+            height: 580px; 
+            overflow-y: auto; 
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-right: 15px;
+        }
+        .qna-wrapper.active-view .qna-slider { width: 45%; } /* Đủ rộng để không bị bóp chữ */
+
+        /* Cột bên phải - Xem chi tiết */
+        .qna-preview-desktop { 
+            width: 0; opacity: 0; visibility: hidden; overflow: hidden; transition: all 0.6s ease; 
+        }
+        .qna-wrapper.active-view .qna-preview-desktop { 
+            width: 55%; opacity: 1; visibility: visible; 
+        }
+
+        .qna-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 22px 25px; border-radius: 12px; margin-bottom: 15px;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+        .qna-card:hover { background: rgba(180, 138, 90, 0.15); transform: translateX(5px); }
+        .qna-card.active { border-left: 5px solid #b48a5a; background: rgba(180, 138, 90, 0.1); }
+        .qna-card h3 { color: #fff; font-size: 1.05rem; line-height: 1.5; font-weight: normal; }
+        .qna-num { font-family: "God"; font-size: 22px; color: #b48a5a; margin-right: 18px; }
+
+        /* Khung nội dung dính */
+        .sticky-content {
+            position: sticky; top: 100px; background: #161616;
+            padding: 45px; border-radius: 12px; border: 1px solid #333;
+            max-height: 80vh; overflow-y: auto; width: 100%;
+        }
+        .sticky-content h4 { font-family: "God"; font-size: 1.6rem; color: #ffc685; margin-bottom: 20px; }
+        .sticky-content p { color: #ccc; line-height: 1.9; margin-bottom: 18px; font-size: 0.95rem; }
+        .close-preview { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #555; font-size: 32px; cursor: pointer; transition: 0.3s; }
+        .close-preview:hover { color: #fff; }
+
+        /* Link Trao đổi trong nội dung */
+        .qna-cta-link {
+            display: inline-block;
+            color: #b48a5a;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .qna-cta-link:hover { letter-spacing: 2px; color: #fff; }
+
+        /* ===== SERVICES ===== */
+        .services-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 20px; }
+        .service-box { 
+            background: rgba(0,0,0,0.45); padding: 50px 35px; border: 1px solid rgba(255,255,255,0.1); 
+            transition: 0.4s; text-decoration: none; color: inherit;
+        }
+        .service-box:hover { border-color: #b48a5a; transform: translateY(-10px); background: rgba(180, 138, 90, 0.1); }
+        .service-box h3 { font-family: "God"; color: #b48a5a; margin-bottom: 20px; font-size: 1.4rem; }
+        .service-box p { font-size: 0.9rem; color: #d6d6d6; line-height: 1.8; }
+        .service-link { color: #b48a5a; font-size: 0.75rem; margin-top: 25px; display: block; letter-spacing: 1px; }
+
+        /* ===== CONTACT ===== */
+        #contact { background: rgba(0,0,0,0.6); border-top: 1px solid #222; }
+        .contact-info { margin-top: 20px; }
+        .contact-info p { color: #b48a5a; font-size: 1.5rem; margin-bottom: 12px; font-family: "God"; }
+        .contact-sub { font-size: 1rem; color: #666; font-family: "Avo"; margin-top: 20px; }
+
+        /* ===== FOOTER ===== */
+        footer { 
+            background: #000; color: #444; padding: 50px 10%; 
+            text-align: center; font-size: 13px; border-top: 1px solid #111;
+        }
+
+        /* Tùy chỉnh thanh cuộn */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .qna-slider::-webkit-scrollbar-thumb { background: #b48a5a; }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .services-cards { grid-template-columns: 1fr; }
+            .qna-wrapper { flex-direction: column; }
+            .qna-wrapper.active-view .qna-slider { width: 100%; }
+            .qna-preview-desktop { display: none !important; }
+            #home h1 { font-size: 2.5rem; }
+            nav ul { display: none; }
+        }
+        /* ===== FOOTER (PARTNER VERSION) ===== */
+.site-footer{
+    background: #000;
+    border-top: 1px solid #111;
+    padding: 40px 10%;
+    font-size: 13px;
+    color: #444;
+}
+
+.footer-inner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-left{
+    font-family: "Avo";
+}
+
+.footer-partners{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.partner-label{
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.partner-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.partner-item img{
+    height: 28px;
+    width: auto;
+    filter: grayscale(100%);
+}
+
+.partner-item span{
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #777;
+    white-space: nowrap;
+}
+
+.partner-item:hover{
+    opacity: 1;
+}
+
+.partner-item:hover img{
+    filter: grayscale(0%);
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    .footer-inner{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* ===== HERO COLLABORATION LINE ===== */
+.collaboration-line{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+
+    font-size: 12.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+
+    opacity: 0.6;
+}
+
+.collab-text{
+    font-weight: 500;
+}
+
+.collab-logo{
+    height: 32px;
+    width: auto;
+    opacity: 0.85;
+    filter: none;
+}
+
+.collab-name{
+    font-weight: 500;
+}
+.collaboration-line::before{
+    content: "";
+    width: 30px;
+    height: 1px;
+    background: #b48a5a;
+    opacity: 0.5;
+}
+
+
+    </style>
+
+<body 
+    data-bg="
+        TT_Villa/Exc_01.1.jpg,
+        TouchHome/ExC_01.1.jpg,
+        TVT_House/C1.jpg,
+        PN1/PN1_ExC_09.1.jpg,
+        Thu_Dieu/ExC_01.1.jpg,
+        TranPhuong_Villa/TP-Villa_Terrace_01.jpg,
+        Lavender/C8.jpg,
+        TN_Cottage/TN_Bal_02.jpg,
+        ThanVanNhiep/C8.jpg,
+        Ada_Office/Ada_0F_03.2.jpg">
+
+<nav>
+    <div class="logo">
+        <img src="Dreamese_Studio.png" alt="DREAMESE STUDIO">
+        <span class="logo-text">DREAMESE STUDIO</span>
+    </div>
+    <ul>
+        <li><a href="#home">Về chúng tôi</a></li>
+        <li><a href="#projects">Dự án</a></li>
+        <li><a href="#qna">Góc giải đáp</a></li>
+        <li><a href="#services">Dịch vụ</a></li>
+        <li><a href="#contact">Liên hệ</a></li>
+    </ul>
+</nav>
+
+<section id="home">
+    <div>
+        <h1>
+            Thiết kế không gian<br>
+            <span class="hero-line">như viết 1 câu chuyện sống</span>
+        </h1>
+
+        <p>Chúng tôi tin rằng, mỗi công trình thiết kế luôn bắt đầu từ con người và những câu chuyện mang tính ước vọng. </p>
+        <p>Ở Dreamese, Kiến trúc sư đóng vai trò như những Dịch giả biến những câu chuyện,
+            những ước vọng tưởng chừng như rất mơ hồ thành không gian sống đích thực.</p>
+        <p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất 
+            để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.</p>
+        <div class="hero-note">DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ</div>
+
+        <div class="collaboration-line">
+            <span class="collab-text">In Collaboration with</span>
+            <img  src="MT_Logo.png"
+            alt="MT Construction Logo"
+            class="collab-logo" >
+            <span class="collab-name">MT CONSTRUCTION</span>
+        </div>
+
+    </div>
+        
+</section>
+
+
+<section id="projects">
+    <h2>Dự án tiêu biểu</h2>
+    <div class="project-wrapper">
+        <button class="nav-btn prev">‹</button>
+        <div class="project-track" id="projectTrack">
+            <a href="TT_Villa.html" class="project" style="background-image:url('TT_Villa/ExC_06.1.jpg')">
+                <span>
+                    T&T Villa<br>
+                <small>Sự tương phản trong ánh nhìn.</small>
+                <div class="project-meta">Biệt thự</div>
+            </span>
+            </a>
+
+            <a href="NamThien1.html" class="project" style="background-image:url('Thu_Dieu/ExC_01.2.jpg')">
+                <span>Thu Điếu<br>
+                    <small>Nốt nhạc tĩnh của thanh âm</small>
+                    <div class="project-meta">Biệt thự</div>
+                </span>
+            </a>
+
+            <a href="TVT.html" class="project" style="background-image:url('TVT_House/C1.jpg')">
+                <span>TVT Home<br>
+                    <small>Trỗi dậy và Bức phá</small>
+                    <div class="project-meta">Nhà phố</div>
+                </span>
+            </a>
+
+            <a href="Chateur.html" class="project" style="background-image:url('Chateur_QL_Villa/Chateur_ExC_02.jpg')">
+                <span>Breath Villa<br><small>Lắng nghe những nhịp chậm</small>
+                <div class="project-meta">Biệt thự</div>
+            </span>
+            </a>
+
+            <a href="TranPhuong.html" class="project" style="background-image:url('TranPhuong_Villa/TP-Villa_Up_02.1.jpg')">
+                <span>Cù Lao Villa<br><small>Theo luồng cảm xúc</small>
+                <div class="project-meta">Biệt thự</div>
+            </span>
+            </a>
+
+            <a href="PN1.html" class="project" style="background-image:url('PN1/PN1_ExC_09.1.jpg')">
+                <span>Nhuận Home<br>
+                    <small>Về nhà</small>
+                    <div class="project-meta">Biệt thự</div>
+                </span>
+            </a>
+
+            <a href="Touch.html" class="project" style="background-image:url('TouchHome/ExC_01.1.jpg')">
+                <span>Touch House<br>
+                    <small>Điểm chạm của không gian</small>
+                    <div class="project-meta">Biệt thự</div>
+                </span>
+            </a>
+
+            <a href="Lavender.html" class="project" style="background-image:url('Lavender/C8.jpg')">
+                <span>Lavender Restaurant<br>
+                    <small>Giá trị chuyển biến</small>
+                    <div class="project-meta">Nhà hàng</div>
+                </span>
+            </a>
+
+            <a href="Heal_Hill.html" class="project" style="background-image:url('TN_Cottage/TN_Bal_02.jpg')">
+                <span>Heal Hill<br><small>Góc thiền</small>
+                <div class="project-meta">Nhà ở nghỉ dưỡng - Bungalow</div>    
+                </span>
+            </a>
+
+            <a href="ThanVanNhiep.html" class="project" style="background-image:url('ThanVanNhiep/C8.jpg')">
+                <span>ThanVanNhiep Office<br><small>Riêng tư cởi mở</small>
+                <div class="project-meta">Văn phòng</div>
+            </span>
+            </a>
+
+            <a href="Ada.html" class="project" style="background-image:url('Ada_Office/Ada_0F_02.2.jpg')">
+                <span>Ada Office<br><small>Đối thoại</small>
+                <div class="project-meta">Văn phòng</div>
+            </span>
+            </a>
+            
+        </div>
+        <button class="nav-btn next">›</button>
+    </div>
+</section>
+
+<section id="qna">
+    <h2>Góc giải đáp</h2>
+    <div class="qna-wrapper">
+        <div class="qna-slider">
+<!-- Câu hỏi 1 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">01</span>
+                    <h3>Kiến trúc sư giúp được gì cho bạn ngoài bản vẽ?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cần Kiến trúc sư để làm gì?</h4>
+                    <p>Kiến trúc sư sẽ dùng các trải nghiệm để khơi gợi và tinh chỉnh các nhu cầu của bạn một cách hợp lí theo góc nhìn sinh hoạt của ngôi nhà sắp tới.</p>
+                    <p>Giúp bạn có những cái nhìn ĐÚNG - SAI về Quyết định của bản thân và GIỮ VỮNG TINH THẦN về thẩm mỹ trong suốt quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta" style="color: #D4AF37; text-decoration: none; font-style: italic;" >Trao đổi cùng KTS →</a>
+                    <img src="TouchHome/Void_01.jpg" style="width:100%; border-radius: 8px; margin-top:15px;">
+                </div>
+            </div>
+<!-- Câu hỏi 2 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">02</span>
+                    <h3>Bản vẽ Thiết kế có thực sự quan trọng?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Vai trò của bản vẽ thiết kế</h4>
+                    <p>Bản vẽ chính là vũ khí bảo vệ bạn, để biết được "TRỌN GÓI" là gồm những gì, đừng để toilet mà thiếu thoát nước, hay tủ lạnh mà thiếu ổ cắm.</p>
+                    <p>Đối với DREAMESE STUDIO, bản vẽ là hình thức để bạn xác nhận điều bạn đang làm là đúng và là ngôn ngữ chính xác nhất cho đội thợ thi công.</p>
+                    <a href="#contact" class="qna-cta" style="color: #D4AF37; text-decoration: none; font-style: italic;" >Trao đổi cùng KTS →</a>
+                    <img src="QnA/Q_02.jpg" style="width:100%; border-radius: 8px; margin-top:15px;">
+                </div>
+            </div>
+<!-- Câu hỏi 3 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">03</span>
+                    <h3>Kiến trúc sư có giúp tôi tiết kiệm chi phí không?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. 
+                        Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <p>Bên cạnh đó, chúng tôi cũng sẵn sàng khuyên Quý Khách hàng có thể tạm dừng kế hoạch thi công nếu tình hình vật tư biến động 
+                        hoặc nhu cầu của khách hàng đang vượt quá ngân sách đang có.</p>
+                    <a href="#contact" class="qna-cta" style="color: #D4AF37; text-decoration: none; font-style: italic;" >Trao đổi cùng KTS →</a>
+                    <img src="QnA/Q_03.jpg" style="width:100%; border-radius: 8px; margin-top:15px;">
+                </div>
+            </div>
+<!-- Câu hỏi 4 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">04</span>
+                    <h3>Có phát sinh chi phí trong quá trình thi công không?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Phát sinh thi công</h4>
+                    <p>CHÚNG TÔI CAM KẾT KHI THI CÔNG THEO ĐÚNG NHƯ BẢN VẼ THIẾT KẾ, CÔNG TRÌNH SẼ KHÔNG PHÁT SINH.</p>
+                    <p>Sau khi thiết kế xong, bản dự toán chi tiết sẽ liệt kê đầy đủ các hạng mục và khối lượng cần thiết để thi công công trình.
+                        Do đó, ngay cả khi khách hàng không đồng hành cùng Dreamese hay MT Cons thì cũng đều có thể dễ dàng thi công theo đúng bản vẽ và dự toán đã có.</p>
+                    <a href="#contact" class="qna-cta" style="color: #D4AF37; text-decoration: none; font-style: italic;" >Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+            
+<!-- Câu hỏi 5 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">05</span>
+                    <h3>Thiết kế có ảnh hưởng đến giá trị ngôi nhà như thế nào?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Giá trị của thiết kế</h4>
+                    <p>Khi tìm đến Kiến trúc sư, thông thường có 3 lí do để Khách hàng tìm đến: </p>
+                        <p>1 là Khách hàng muốn có ngôi nhà đẹp và ngân sách chính xác trước khi thi công;</p> 
+                        <p>2 là muốn có không gian sống lý tưởng;</p>
+                        <p>3 là muốn biết ngân sách thi công của mình có đảm bảo với nhu cầu hay không.</p>
+                    <p>Do đó, 1 bản thiết kế không phải chỉ đẹp trên hình thức 3D mà bản vẽ kỹ thuật thi công đi kèm cũng cần được tỉ mẫn, đúng kỹ thuật và thể hiện được sự chuyên nghiệp.</p>
+                    <p>Ở Dreamese, chúng tôi hiểu rõ những kỳ vọng mà mọi khách hàng mang theo khi tìm đến, vì vậy bên cạnh làm khách hàng thấy dễ hiểu với những hình ảnh 3D lung linh, 
+                        chúng tôi cũng quan tâm với việc giải thích các yếu tố kỹ thuật và quy trình thực hiện.</p>
+                    <p>Điều này sẽ giúp ngôi nhà của bạn giữ được giá trị lâu dài và tránh được những rủi ro không đáng có trong quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 6 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">06</span>
+                    <h3>Tôi nên chọn Kiến trúc sư hay Nhà thiết kế như thế nào?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Lựa chọn Kiến trúc sư phù hợp</h4>
+                    <p>Với kinh nghiệm hơn 10 năm hoạt động trong lĩnh vực này kể cả ở trong và ngoài nước, chúng tôi hiểu rõ sự tầm quan trọng của việc lựa chọn một Kiến trúc sư phù hợp.</p>
+                    <p>Bất kỳ ai cũng có thể nói về năng lực bản thân, về quy mô doanh nghiệp, về quy trình, ... Tuy nhiên, cốt lõi là sự phù hợp khi giao tiếp và giá trị thực 
+                        mà Kiến trúc sư mang lại có đáp ứng được kỳ vọng của khách hàng hay không.</p>
+                    <p>Dreamese chúng tôi tuy là một đơn vị nhỏ, nhưng chúng tôi luôn cố gắng hết mình để mang đến cho khách hàng những giá trị thiết thực nhất, 
+                        và cũng sẵn sàng từ chối hoặc giới thiệu studio khác nếu bản thân không thể đáp ứng phù hợp.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 7 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">07</span>
+                    <h3>Dreamese có hỗ trợ tư vấn thiết kế miễn phí không?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Chi phí thiết kế</h4>
+                    <p>Chi phí thiết kế tại Dreamese phụ thuộc vào quy mô và yêu cầu cụ thể của từng công trình. 
+                        Chúng tôi cung cấp các gói thiết kế linh hoạt để phù hợp với ngân sách của khách hàng.</p>
+                    <p>Ở Dreamese chúng tôi trao đi những giá trị với giá cả phù hợp và không miễn phí thiết kế. Tuy nhiên, khi đồng hành đồng bộ từ thiết kế tới thi công, 
+                        Khách hàng sẽ được hỗ trợ giảm trừ thiết kế trong tổng chi phí thi công.</p>
+                    <p>Chúng tôi vẫn khuyến khích khách hàng nên đầu tư vào giá trị thiết kế để có được một không gian sống hoàn hảo và bền vững, 
+                        đồng thời khẳng định được đẳng cấp giá trị Cá nhân hóa.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 8 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">08</span>
+                    <h3>Những vật liệu thi công mới nếu không có tác dụng quá lớn để thay thế vật liệu cũ thì giá trị của nó là gì?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Vật liệu mới</h4>
+                    <p>Mặc dù sự phát tiển của vật liệu thi công mới khá nổi bậc, tuy nhiên sự ứng dụng vào thực tiễn vẫn còn nhiều sự hạn chế. 
+                        Điều này bắt nguồn từ sự thiếu hiểu biết về độ bền vật liệu, tính liên kết, và đặc biệt ảnh hưởng tới chi phí bảo hành.</p>
+                    <p>Do đó, việc chọn lựa 1 đơn vị tư vấn uy tín là rất quan trọng để đảm bảo chất lượng và hiệu quả trong quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 9 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">09</span>
+                    <h3>Trước khi thiết kế cần cung cấp những thông tin gì?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 10 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">10</span>
+                    <h3>Thời gian thực hiện dự án là bao lâu?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Thời gian thực hiện dự án</h4>
+                    <p>Thông thường, thời gian thực hiện dự án tại Dreamese Studio là từ 3 đến 6 tháng, tùy vào quy mô và độ phức tạp của công trình.</p>
+                    <p>Bằng cách khai thác câu chuyện tổng thể của công trình và điều mà khách hàng mong muốn định hướng, chúng tôi sẽ có Quy trình triển khai công việc 
+                        phù hợp để đáp ứng nhu cầu của Dự án.</p>
+                    <p>Ở Dreamese, mỗi công trình luôn mang theo 1 câu chuyện tâm huyết, do đó, chính sách là nếu không thể đáp ứng được nhu cầu cũng như kỳ vọng của khách hàng, 
+                        chúng tôi sẽ không nhận dự án và hoàn tiền lại cho Khách hàng.</p>
+                    <a href="#contact" class="qna-cta" style="color: #D4AF37; text-decoration: none; font-style: italic;" >Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 11 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">11</span>
+                    <h3>Dreamese Studio phù hợp với những khách hàng và phong cách thiết kế nào?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 12 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">12</span>
+                    <h3>Studio có nhận thiết kế và thi công trọn gói không?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+<!-- Câu hỏi 13 -->
+            <div class="qna-card" onclick="toggleQna(this)">
+                <div style="display:flex; align-items:flex-start;">
+                    <span class="qna-num">13</span>
+                    <h3>DreameseStudio có nhận dự án ở tỉnh / ngoài khu vực không?</h3>
+                </div>
+                <div class="qna-content-data" style="display:none;">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="qna-preview-desktop">
+            <div class="sticky-content">
+                <button class="close-preview" onclick="closeDesktopPreview()">×</button>
+                <div id="desktop-content-placeholder">
+                    <div style="text-align:center;opacity:.2;padding-top:120px; font-family:'God';">
+                        <p>Chọn một câu hỏi để xem chi tiết</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="services-section">
+    <h2>Dịch vụ</h2>
+
+    <div class="services-cards">
+        <a href="Qtr_TKTC.html" class="service-box">
+            <h3>Thiết kế - <br>Thi công trọn gói</h3>
+            <p>
+                Đồng bộ từ thẩm mỹ thiết kế, kỹ thuật thi công và 
+                chịu trách nhiệm trên toàn bộ ngân sách xây dựng.
+            </p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_QLTC.html" class="service-box">
+            <h3>Thiết kế - <br>Quản lí thi công</h3>
+            <p>
+                Đảm bảo và Kiểm soát tính nhất quán từ 
+                Bản vẽ Thiết kế - Kỹ thuật đến công tác Triển khai thi công.
+            </p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_TKKT.html" class="service-box">
+            <h3>Thiết kế Kiến trúc</h3>
+            <p>
+                Tối ưu không gian sử dụng, thẩm mỹ hình khối xây dựng
+                và xây dựng bản sắc riêng cho câu chuyện của công trình.
+            </p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_TKNT.html" class="service-box">
+            <h3>Thiết kế Nội thất</h3>
+            <p>
+                Đồng bộ vật liệu và chi phí tối ưu với chất lượng
+                phù hợp nhất hướng đến xây dựng lối sống cá nhân hóa.
+            </p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Liên hệ</h2>
+    <div class="contact-info">
+        <p>Email: vtv.arc@gmail.com</p>
+        <p>Hotline: 0943 63 4758</p>
+        <div class="contact-sub">
+            DREAMESE STUDIO - Đồng hành kiến tạo không gian sống.<br>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+
+        <!-- Bên trái: Bản quyền -->
+        <div class="footer-left">
+            © 2026 DREAMESE STUDIO – Architecture & Interior Design
+        </div>
+
+        <!-- Bên phải: Đối tác -->
+        <div class="footer-partners">
+            <span class="partner-label">In collaboration with</span>
+
+            <div class="partner-item">
+                <img src="MT_Logo.png">
+                <span>MT CONSTRUCTION</span>
+            </div>
+
+            <!-- Nếu có đối tác khác, copy thêm block này -->
+            <!--
+            <div class="partner-item">
+                <img src="partner2.jpg" alt="Partner Name">
+                <span>Partner Name</span>
+            </div>
+            -->
+
+        </div>
+
+    </div>
+</footer>
+
+<script>
+/* =====================================================
+   DOM READY
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* =================================================
+       FADE IN BODY
+    ================================================= */
+    requestAnimationFrame(() => {
+        document.body.classList.add("loaded");
+    });
+
+    /* =================================================
+       BACKGROUND SLIDER (CSS VARIABLE)
+    ================================================= */
+    const body = document.body;
+    const bgRaw = body.getAttribute("data-bg");
+
+    if (bgRaw) {
+        const bgImages = bgRaw
+            .split(",")
+            .map(s => s.trim())
+            .filter(Boolean);
+
+        let bgIndex = 0;
+
+        if (bgImages.length) {
+            body.style.setProperty("--bg-image", `url('${bgImages[0]}')`);
+
+            setInterval(() => {
+                bgIndex = (bgIndex + 1) % bgImages.length;
+                body.style.setProperty(
+                    "--bg-image",
+                    `url('${bgImages[bgIndex]}')`
+                );
+            }, 6000);
+        }
+    }
+
+    /* =================================================
+       PROJECT SLIDER
+    ================================================= */
+    const track = document.getElementById("projectTrack");
+    const items = document.querySelectorAll(".project");
+    const wrapper = document.querySelector(".project-wrapper");
+    const btnNext = document.querySelector(".nav-btn.next");
+    const btnPrev = document.querySelector(".nav-btn.prev");
+
+    let sliderIndex = 0;
+
+    function updateProjectSlider() {
+        if (!track || !items.length || !wrapper) return;
+
+        const gap = 24;
+        const itemWidth = items[0].offsetWidth + gap;
+        const wrapperWidth = wrapper.offsetWidth;
+        const visibleCount = Math.floor(wrapperWidth / itemWidth);
+        const maxIndex = Math.max(0, items.length - visibleCount);
+
+        sliderIndex = Math.max(0, Math.min(sliderIndex, maxIndex));
+        track.style.transform = `translateX(${-sliderIndex * itemWidth}px)`;
+    }
+
+    btnNext?.addEventListener("click", () => {
+        sliderIndex++;
+        updateProjectSlider();
+    });
+
+    btnPrev?.addEventListener("click", () => {
+        sliderIndex--;
+        updateProjectSlider();
+    });
+
+    window.addEventListener("resize", updateProjectSlider);
+    updateProjectSlider();
+
+    /* =================================================
+       Q&A LOGIC (MOBILE + DESKTOP)
+    ================================================= */
+    const qnaWrapper = document.querySelector(".qna-wrapper");
+    const qnaCards = document.querySelectorAll(".qna-card");
+    const desktopPlaceholder = document.getElementById("desktop-content-placeholder");
+    const stickyContent = document.querySelector(".sticky-content");
+
+    window.toggleQna = function(card) {
+        const contentBox = card.querySelector(".qna-content-data");
+        if (!contentBox) return;
+
+        // reset trạng thái
+        qnaCards.forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+
+        // Desktop
+        if (window.innerWidth > 900) {
+            qnaWrapper.classList.add("active-view");
+            desktopPlaceholder.innerHTML = contentBox.innerHTML;
+            stickyContent.scrollTop = 0;
+        }
+    };
+
+    window.closeDesktopPreview = function () {
+        qnaWrapper.classList.remove("active-view");
+        qnaCards.forEach(card => card.classList.remove("active"));
+
+        desktopPlaceholder.innerHTML = `
+            <div style="text-align:center;opacity:.2;padding-top:120px;font-family:'God';">
+                <p>Chọn một câu hỏi để xem chi tiết</p>
+            </div>
+        `;
+    };
+
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ada – DREAMESE STUDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* =====================================================
+           FONT & RESET
+        ===================================================== */
+        @font-face {
+            font-family: ;
+            src: url();
+        }
+        @font-face { font-family:"Avo"; src:url("Fonts/UTM_Avo.ttf");}
+        @font-face {
+            font-family: "God";
+            src: url("Fonts/UTM_God_WordR.ttf");
+                    }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Avo", sans-serif;
+            background: rgb(255, 224, 122);
+            color: #eee;
+            line-height: 1.6;
+            opacity: 0;
+            transition: opacity .5s ease;
+            overflow-x: hidden;
+        }
+        body.loaded { opacity: 1; }
+
+        /* =====================================================
+           NAVIGATION (LOGO & LIÊN HỆ)
+        ===================================================== */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(0,0,0,.9);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 8%; z-index: 1000;
+        }
+        .logo-link { 
+            display: flex; align-items: center; gap: 12px; 
+            text-decoration: none !important; color: white !important;
+        }
+        .logo img { height: 40px; }
+        .logo-text { font-family: "God"; letter-spacing: 2px; }
+        
+        .nav-menu { list-style: none; display: flex; gap: 28px; }
+        .nav-menu a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-menu a:hover { color: #b48a5a; }
+
+        /* =====================================================
+           STORY HERO (THU GỌN KHOẢNG TRỐNG)
+        ===================================================== */
+        .story-hero { position: relative; min-height: 80vh; overflow: hidden; }
+        .story-bg{
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center 80%;
+            z-index: -1;}
+        .story-content { padding: 45vh 20% 40px; }
+
+        .story-content h1 {
+            font-family: "God"; 
+            font-size: 3rem; 
+            margin-bottom: 20px; } 
+
+        .project-slogan {
+            font-family: "Avo";
+            margin-top: -10px;
+            margin-bottom: 22px;
+            font-size: 1rem;
+            font-weight: 650;   /* in đậm */
+            font-style: italic;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ffedd8;
+            opacity: 1;
+        }
+       
+        .story-text {
+            max-width: 700px;
+            background: rgba(0,0,0,.55);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border-left: 3px solid #b48a5a;
+        }        
+        .story-text p {
+            line-height: 1.8;
+            margin-bottom: 18px;
+            text-indent: 1.6em;
+        }
+
+        .story-text p:last-child {
+            margin-bottom: 0;
+         }
+
+
+.project-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 25px 50px; /* thụt vào trong */
+    font-size: 14px;
+    font-style: italic;      /* in nghiêng nhẹ */
+    color: rgba(255,255,255,0.75);}
+
+.project-meta span{
+    position: relative;
+    padding-left: 14px;
+}
+
+.project-meta span::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #b48a5a;
+    border-radius: 50%;
+}
+
+.project-meta strong{
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-weight: normal;
+    color: #b48a5a;
+}
+        /* =====================================================
+           PROJECT SLIDER (10 HÌNH - 2 HÀNG X 5 CỘT)
+        ===================================================== */
+        .project-content {
+            padding: 60px 5% 80px;
+            background: rgba(15, 15, 15, 0.9);
+            position: relative; z-index: 10;
+            text-align: center;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            max-width: 1400px;
+            margin: 40px auto 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .gallery-container { width: 100%; overflow: hidden; }
+        .gallery-track { display: flex; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+
+        .gallery-page {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 10px;
+        }
+
+        .gallery-page img {
+            width: 100%; aspect-ratio: 4 / 3;
+            object-fit: cover; cursor: pointer;
+            transition: 0.3s;
+        }
+        .gallery-page img:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        .nav-btn {
+            background: none; border: none; color: #b48a5a;
+            font-size: 50px; cursor: pointer; padding: 20px;
+            transition: 0.3s; user-select: none;
+        }
+        .nav-btn:hover { color: white; }
+        .nav-btn.disabled { opacity: 0.1; cursor: default; }
+
+        /* =====================================================
+           TRAO ĐỔI VỀ CÔNG TRÌNH (CONTACT FORM)
+        ===================================================== */
+        .project-contact { 
+            padding: 80px 20%; 
+            background: #0f0f0f; 
+            text-align: center;
+            position: relative; z-index: 10;
+        }
+        .project-contact h2 { font-family: "God"; margin-bottom: 40px; color: #b48a5a; }
+        .project-contact input, .project-contact textarea {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            background: #1a1a1a; border: 1px solid #333; color: white; outline: none;
+            font-family: "Avo";
+        }
+        .project-contact button {
+            padding: 15px 60px; background: #b48a5a; border: none; 
+            color: white; cursor: pointer; font-weight: bold;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .project-contact button:hover { background: white; color: black; }
+
+        /* =====================================================
+           LIGHTBOX CÓ MŨI TÊN ĐIỀU HƯỚNG
+        ===================================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.98);
+            display: none; z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+        .lightbox.active { display: flex; }
+        
+        .lightbox-content { position: relative; display: flex; align-items: center; width: 90%; height: 90%; justify-content: center; }
+        .lightbox img { max-height: 90vh; max-width: 80vw; object-fit: contain; }
+
+        .lb-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: white;
+            font-size: 60px; cursor: pointer; padding: 20px;
+            transition: 0.3s; opacity: 0.5; z-index: 2100;
+        }
+        .lb-arrow:hover { opacity: 1; color: #b48a5a; }
+        .lb-prev { left: 0; }
+        .lb-next { right: 0; }
+
+        .lb-close {
+            position: absolute; top: 20px; right: 30px;
+            color: white; font-size: 40px; cursor: pointer; z-index: 2200;
+        }
+
+        /* =====================================================
+           FOOTER (CĂN TRÁI + THÔNG TIN LIÊN HỆ)
+        ===================================================== */
+        footer{
+    background: #0a0a0a;
+    padding: 40px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+}
+
+/* LEFT */
+.footer-left{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* RIGHT – COLLAB */
+.footer-collab{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    white-space: nowrap;
+    margin-bottom: 15px;
+}
+
+.footer-collab img{
+    height: 22px;
+    width: auto;
+    opacity: 0.65;
+    filter: grayscale(100%);
+}
+
+.footer-collab strong{
+    font-weight: 500;
+}
+
+        /* FOOTER CONTACT */
+.footer-contact{
+    color: rgba(255, 210, 144, 0.85);
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer-contact:hover{
+    color: #b48a5a;      /* cùng tone thương hiệu */
+    text-decoration: none;
+}
+
+.footer-contact:visited{
+    color: rgba(255,255,255,0.85);
+}
+
+.footer-contact:active{
+    color: #b48a5a;
+}
+    
+        /* LIGHTBOX CONTENT */
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    height: 90%;
+}
+
+/* ẢNH KHÔNG VỠ */
+#lightboxImg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* CAPTION */
+.lb-caption {
+    position: absolute;
+    right: 30px;
+    bottom: 120px;
+    max-width: 280px;
+    background: rgba(0,0,0,.55);
+    padding: 16px 18px;
+    border-left: 3px solid #b48a5a;
+    backdrop-filter: blur(6px);
+}
+
+.lb-caption h4 {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    color: #b48a5a;
+}
+
+.lb-caption p {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: .85;
+}
+/* ======================================================
+   COLLABORATION LINE (DÒNG HỢP TÁC)
+====================================================== */
+
+   
+.collaboration-line{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.collab-logo{
+    height: 22px;
+    opacity: 0.75;
+    filter: grayscale(100%);
+}
+
+.collab-name{
+    font-weight: 500;
+}
+
+.hero-collab{
+    margin-top: -6px;
+    margin-bottom: 18px;
+}
+
+.logo-stack{
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-collab{
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.55;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <a href="Dreamese.html" class="logo-link">
+                <img src="Dreamese_Studio.png" alt="Logo">
+                <span class="logo-text">DREAMESE STUDIO</span>
+            </a>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="Dreamese.html">Trang chủ</a></li>
+            <li><a href="#gallery">Dự án</a></li>
+            <li><a href="#contact">Liên hệ</a></li> </ul>
+    </nav>
+
+    <section class="story-hero">
+        <div class="story-bg"
+         style="background-image:
+         linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+         url('Ada_Office/Ada_0F_03.2.jpg');">
+        </div>
+        <div class="story-content">
+            <h1>Ada</h1>
+            <p class="project-slogan">Đối thoại</p>
+            <div class="project-meta">			    
+			    <span><strong>Loại hình:</strong>Văn phòng</span>
+			    <span><strong>Quy mô:</strong> Trệt - Lửng - 4 lầu</span>
+			    <span><strong>Diện tích xây dựng:</strong> ~600m²</span>
+				</div>
+            <div class="story-text">
+                <p>Mỗi một công trình là một lát cắt của đời sống, nơi con người, ánh sáng và vật liệu đối thoại cùng nhau.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-content">
+        <p style="color:#b48a5a; font-style:italic; margin-bottom: 10px;">"Đối thoại cùng phát triển"</p>
+
+        <div class="slider-wrapper" id="gallery">
+            <button class="nav-btn" id="prevBtn">&#10094;</button> <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    
+                    <div class="gallery-page">
+                        <img src="Ada_Office/Ada_0F_01.jpg">
+                        <img src="Ada_Office/Ada_0F_02.1.jpg">
+                        <img src="Ada_Office/Ada_0F_03.2.jpg">
+                        <img src="Ada_Office/Ada_0F_04.jpg">
+                        <img src="Ada_Office/Ada_0F_05.jpg">
+                        <img src="Ada_Office/Ada_0F_06.jpg">
+                        <img src="Ada_Office/Ada_0F_07.jpg">
+                        <img src="Ada_Office/Ada_0F_08.jpg">
+                        <img src="Ada_Office/Ada_MF_01.2.jpg">
+                        <img src="Ada_Office/Ada_MF_02.jpg">
+                        
+                    </div>
+                    
+                    <div class="gallery-page">
+                        <img src="Ada_Office/Ada_MF_03.jpg">
+                        <img src="Ada_Office/Ada_MF_04.jpg">
+                        <img src="Ada_Office/Ada_MF_05.jpg">
+                        <img src="Ada_Office/Ada_1F_01.jpg">
+                        <img src="Ada_Office/Ada_1F_02.jpg">
+                        <img src="Ada_Office/Ada_1F_03.jpg">
+                        <img src="Ada_Office/Ada_1F_04.2.jpg">
+                        <img src="Ada_Office/Ada_1F_05.1.jpg">
+                        <img src="Ada_Office/Ada_2F_01.jpg">
+                        <img src="Ada_Office/Ada_2F_02.jpg">
+                        </div>
+                    
+                     <div class="gallery-page">
+                        <img src="Ada_Office/Ada_2F_03.jpg">
+                        <img src="Ada_Office/Ada_2F_04.jpg">
+                        <img src="Ada_Office/Ada_2F_05.jpg">
+                        <img src="Ada_Office/Ada_2F_06.jpg">
+                        <img src="Ada_Office/Ada_2F_07.jpg">
+                        <img src="Ada_Office/Ada_3F_01.jpg">
+                        <img src="Ada_Office/Ada_3F_02.jpg">
+                        <img src="Ada_Office/Ada_3F_03.jpg">
+                        <img src="Ada_Office/Ada_3F_04.jpg">
+                        <img src="Ada_Office/Ada_3F_05.jpg">
+                       </div>
+                    
+                    <div class="gallery-page">
+                        <img src="Ada_Office/Ada_3F_06.jpg">
+                        <img src="Ada_Office/Ada_4F_01.1.jpg">
+                        <img src="Ada_Office/Ada_4F_02.jpg">
+                        <img src="Ada_Office/Ada_4F_03.jpg">
+                        <img src="Ada_Office/Ada_4F_04.jpg">
+                        <img src="Ada_Office/Ada_4F_05.jpg">
+                        <img src="Ada_Office/Ada_4F_06.2.jpg">
+                        <img src="Ada_Office/Ada_5F_01.jpg">
+                        <img src="Ada_Office/Ada_5F_02.2.jpg">
+                        <img src="Ada_Office/Ada_5F_03.2.jpg">
+                    </div>
+                                        
+                </div>
+            </div>
+            <button class="nav-btn" id="nextBtn">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="project-contact" id="contact">
+        <h2>Trao đổi về công trình</h2>
+        <form style="max-width: 600px; margin: 0 auto;">
+            <input type="text" placeholder="Tên của bạn">
+            <input type="tel" placeholder="Số điện thoại">
+            <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
+            <button type="button">GỬI YÊU CẦU</button>
+        </form>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lb-close" id="closeLb">&times;</span>
+        <div class="lightbox-content">
+            <button class="lb-arrow lb-prev" id="lbPrev">&#10094;</button>
+            <img id="lightboxImg" src="">
+            <button class="lb-arrow lb-next" id="lbNext">&#10095;</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-logo">© DREAMESE STUDIO – Architecture & Interior Design</div>
+        <a href="mailto:vtv.arc@gmail.com" class="footer-contact">vtv.arc@gmail.com - 09 4363 4758</a>
+    </footer>
+
+    <script>
+        window.onload = () => document.body.classList.add('loaded');
+
+        /* --- LOGIC SLIDER --- */
+        const track = document.getElementById('galleryTrack');
+        const pages = document.querySelectorAll('.gallery-page');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentPage = 0;
+
+        function updateSlider() {
+            track.style.transform = `translateX(-${currentPage * 100}%)`;
+            prevBtn.classList.toggle('disabled', currentPage === 0);
+            nextBtn.classList.toggle('disabled', currentPage === pages.length - 1);
+        }
+
+        nextBtn.onclick = () => { if(currentPage < pages.length-1) { currentPage++; updateSlider(); } };
+        prevBtn.onclick = () => { if(currentPage > 0) { currentPage--; updateSlider(); } };
+        updateSlider();
+
+        /* --- LOGIC LIGHTBOX --- */
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightboxImg');
+        const lbPrev = document.getElementById('lbPrev');
+        const lbNext = document.getElementById('lbNext');
+        const allImgs = document.querySelectorAll('.gallery-page img');
+        let currentIdx = 0;
+
+        allImgs.forEach((img, idx) => {
+            img.onclick = () => {
+                currentIdx = idx;
+                lbImg.src = allImgs[currentIdx].src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+        });
+
+        lbNext.onclick = (e) => { e.stopPropagation(); currentIdx = (currentIdx + 1) % allImgs.length; lbImg.src = allImgs[currentIdx].src; };
+        lbPrev.onclick = (e) => { e.stopPropagation(); currentIdx = (currentIdx - 1 + allImgs.length) % allImgs.length; lbImg.src = allImgs[currentIdx].src; };
+        
+        document.getElementById('closeLb').onclick = () => { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; };
+        
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === "ArrowRight") lbNext.click();
+            if (e.key === "ArrowLeft") lbPrev.click();
+            if (e.key === "Escape") document.getElementById('closeLb').click();
+        });
+    </script>
+</body>
+</html>
