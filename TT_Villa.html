@@ -273,6 +273,18 @@
     line-height: 1.6;
     opacity: .85;
 }
+		.google-form-wrapper {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.google-form-wrapper iframe {
+    width: 100%;
+    height: 950px;   /* nếu bị ngắn thì tăng lên */
+    border: none;
+}
+
     </style> 
 </head>
 
@@ -474,7 +486,13 @@
 
     <section class="project-contact" id="contact">
         <h2>Trao đổi về công trình</h2>
-        <form style="max-width: 600px; margin: 0 auto;">
+        <div class="google-form-wrapper">
+    <iframe 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSdiVMsd70jelRIfW7HsKYuaLEiFtAukmKv3rqNXIHPR52ibHQ/viewform?embedded=true"
+        loading="lazy">
+    </iframe>
+</div>
+
             <input type="text" placeholder="Tên của bạn">
             <input type="tel" placeholder="Số điện thoại">
             <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
@@ -596,3 +614,4 @@
     
 </body>
 </html>
+
