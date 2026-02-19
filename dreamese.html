@@ -191,11 +191,37 @@
         .contact-info { margin-top: 20px; }
         .contact-info p { color: #b48a5a; font-size: 1.5rem; margin-bottom: 12px; font-family: "God"; }
         .contact-sub { font-size: 1rem; color: #666; font-family: "Avo"; margin-top: 20px; }
+        .contact-tagline {
+            font-family: "God";
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #b48a5a;
+            letter-spacing: 1px;
+        }
+
+        .contact-row {
+            font-size: 18px;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            }
+
+        .contact-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: rgb(187, 187, 187);
+            }
+
+        .contact-content {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.833);
+            }
+
 
         /* ===== FOOTER ===== */
         footer { 
             background: #000; color: #444; padding: 50px 10%; 
-            text-align: center; font-size: 13px; border-top: 1px solid #111;
+            text-align: center; font-size: 18px; border-top: 1px solid #111;
         }
 
         /* Tùy chỉnh thanh cuộn */
@@ -217,7 +243,7 @@
     background: #000;
     border-top: 1px solid #111;
     padding: 40px 10%;
-    font-size: 13px;
+    font-size: 18px;
     color: #444;
 }
 
@@ -413,10 +439,11 @@
     <div class="project-wrapper">
         <button class="nav-btn prev">‹</button>
         <div class="project-track" id="projectTrack">
-            <a href="TT_Villa.html" class="project" style="background-image:url('TT_Villa/ExC_06.1.jpg')">
+
+           <a href="TT_Villa.html" class="project" style="background-image:url('TT_Villa/ExC_06.1.jpg')">
                 <span>
                     T&T Villa<br>
-                <small>Sự tương phản trong ánh nhìn.</small>
+                <small>Sự tương phản trong ánh nhìn</small>
                 <div class="project-meta">Biệt thự</div>
             </span>
             </a>
@@ -694,7 +721,7 @@
                     <p>Dreamese Studio là 1 đơn vị chuyên cung cấp hoạt động thiết kế Kiến trúc - Nội thất chuyên nghiệp, vì vậy, ở đâu có câu chuyện, 
                         có nhu cầu, chúng tôi đều có thể đáp ứng, <strong>ĐẢM BẢO QUY TRÌNH</strong> được thực hiện đầy đủ</p>
                     <p>Tuy nhiên, đối với công tác thi công MT Construction sẽ tùy thuộc vào Vị trí địa lí, Quy mô công trình, mà chúng tôi sẽ có giải pháp cung cấp dịch vụ phù hợp.</p>
-                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>                   
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
                 </div>
             </div>
         </div>
@@ -754,26 +781,42 @@
     </div>
 </section>
 
-<section id="contact">
-    <h2>Liên hệ</h2>
-    <div class="contact-info">
-        <p>Email: vtv.arc@gmail.com</p>
-        <p>Hotline: 0943 63 4758 (Mr. Vương) -  0903 888 200 (Mr. Toàn)</p>
-        <p>Địa chỉ:</p>
-        <p>Cơ sở 1: Trần Văn Thời - Cà Mau</p>
-        <p>Cơ sở 2: 11/8/32 ĐHT 17, KP2, P.Đông Hưng Thuận, Tp.HCM</p>
-        <div class="contact-sub">
-            DREAMESE STUDIO - Đồng hành kiến tạo không gian sống.<br>
-        </div>
+        <section id="contact">
+            <h2>Liên hệ</h2>
+            <div class="contact-tagline">
+        DREAMESE STUDIO – Đồng hành kiến tạo không gian sống.
     </div>
-</section>
+            <div class="contact-row">
+                <div class="contact-label">Hotline:</div>
+                <div class="contact-content">
+                    09 4363 4758 - (Mr. Vương)<br>
+                    0903 888 200 - (Mr. Toàn)
+                </div>
+            </div>
+
+            <div class="contact-row">
+                <div class="contact-label">Địa chỉ:</div>
+                <div class="contact-content">
+                    Cơ sở 1: Trần Văn Thời - Cà Mau<br>
+                    Cơ sở 2: 11/8/32 ĐHT 17, KP2, P.Đông Hưng Thuận, Tp.HCM
+                </div>
+            </div>
+
+            <div class="contact-row">
+                <div class="contact-label">Email:</div>
+                <div class="contact-content">
+                    vtv.arc@gmail.com
+                </div>
+            </div>
+
+        </section>
 
 <footer class="site-footer">
     <div class="footer-inner">
 
         <!-- Bên trái: Bản quyền -->
         <div class="footer-left">
-            © 2026 DREAMESE STUDIO – Architecture & Interior Design
+            © 2025 DREAMESE STUDIO – Architecture & Interior Design
         </div>
 
         <!-- Bên phải: Đối tác -->
@@ -841,39 +884,87 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =================================================
        PROJECT SLIDER
     ================================================= */
-    const track = document.getElementById("projectTrack");
-    const items = document.querySelectorAll(".project");
-    const wrapper = document.querySelector(".project-wrapper");
-    const btnNext = document.querySelector(".nav-btn.next");
-    const btnPrev = document.querySelector(".nav-btn.prev");
+    /* =================================================
+   PROJECT SLIDER (AUTO + LOOP)
+================================================= */
+const track = document.getElementById("projectTrack");
+const items = document.querySelectorAll(".project");
+const wrapper = document.querySelector(".project-wrapper");
+const btnNext = document.querySelector(".nav-btn.next");
+const btnPrev = document.querySelector(".nav-btn.prev");
 
-    let sliderIndex = 0;
+let sliderIndex = 0;
+let autoSlideInterval;
 
-    function updateProjectSlider() {
-        if (!track || !items.length || !wrapper) return;
+/* Tính toán kích thước */
+function getSliderConfig() {
+    const gap = 24;
+    const itemWidth = items[0].offsetWidth + gap;
+    const wrapperWidth = wrapper.offsetWidth;
+    const visibleCount = Math.floor(wrapperWidth / itemWidth);
+    const maxIndex = Math.max(0, items.length - visibleCount);
 
-        const gap = 24;
-        const itemWidth = items[0].offsetWidth + gap;
-        const wrapperWidth = wrapper.offsetWidth;
-        const visibleCount = Math.floor(wrapperWidth / itemWidth);
-        const maxIndex = Math.max(0, items.length - visibleCount);
+    return { itemWidth, maxIndex };
+}
 
-        sliderIndex = Math.max(0, Math.min(sliderIndex, maxIndex));
-        track.style.transform = `translateX(${-sliderIndex * itemWidth}px)`;
+function updateProjectSlider() {
+    const { itemWidth } = getSliderConfig();
+    track.style.transform = `translateX(${-sliderIndex * itemWidth}px)`;
+}
+
+/* NEXT */
+function nextSlide() {
+    const { maxIndex } = getSliderConfig();
+
+    if (sliderIndex >= maxIndex) {
+        sliderIndex = 0; // vòng về đầu
+    } else {
+        sliderIndex++;
     }
 
-    btnNext?.addEventListener("click", () => {
-        sliderIndex++;
-        updateProjectSlider();
-    });
-
-    btnPrev?.addEventListener("click", () => {
-        sliderIndex--;
-        updateProjectSlider();
-    });
-
-    window.addEventListener("resize", updateProjectSlider);
     updateProjectSlider();
+}
+
+/* PREV */
+function prevSlide() {
+    const { maxIndex } = getSliderConfig();
+
+    if (sliderIndex <= 0) {
+        sliderIndex = maxIndex; // vòng về cuối
+    } else {
+        sliderIndex--;
+    }
+
+    updateProjectSlider();
+}
+
+btnNext?.addEventListener("click", () => {
+    nextSlide();
+    resetAutoSlide();
+});
+
+btnPrev?.addEventListener("click", () => {
+    prevSlide();
+    resetAutoSlide();
+});
+
+/* AUTO SLIDE */
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        nextSlide();
+    }, 5000); // 5 giây đổi 1 lần
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+}
+
+window.addEventListener("resize", updateProjectSlider);
+
+updateProjectSlider();
+startAutoSlide();
+
 
     /* =================================================
        Q&A LOGIC (MOBILE + DESKTOP)
