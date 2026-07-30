@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>TranVanThoi – DREAMESE STUDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/Project-Site.css">
+    <script defer="True" src="JS/Project-Site.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <a href="dreamese.html" class="logo-link">
+                <img src="Dreamese_Studio.png" alt="Logo" decoding="async">
+                <span class="logo-text">DREAMESE STUDIO</span>
+            </a>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="dreamese.html">Trang chủ</a></li>
+            <li><a href="#gallery">Album</a></li>
+            <li><a href="#contact">Liên hệ</a></li> </ul>
+    </nav>
+
+    <section class="story-hero">
+        <div class="story-bg"
+         style="background-image:
+         linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+         url('PROJECTS/TVT_House/Bottom_Up.jpg');">
+        </div>
+        <div class="story-content">
+            <h1>TVT House</h1>
+            <p class="project-slogan">Trỗi dậy và Bức phá</p>
+            <div class="project-meta">			    
+			    <span><strong>Loại hình:</strong> Nhà phố</span>
+			    <span><strong>Quy mô:</strong> 1 trệt · 2 lầu · sân vườn</span>
+			    <span><strong>Diện tích xây dựng:</strong> ~270m²</span>
+				</div>
+            <div class="story-text">
+                <p>T&T Villa Resident là một câu chuyện được chúng tôi ghép nối, dung hòa và phát triển từ những ước mơ vụn vặt ghép nối của nhiều thế hệ trong 1 gia đình. 
+                    Công trình được thi công và hoàn thiện tại 1 trung tâm Kinh tế, nơi mà mọi người thường xuyên lao đầu vào cuồng quay của những công việc riêng mà họ phải 
+                tự xoay sở và hoàn thành.</p>
+                <p>Mỗi thế hệ là các lát cắt khác nhau, cái nhìn khác nhau; tuy nhiên sự gắn bó của các thế hệ đó sẽ thật sự có giá trị hơn khi mang theo 2 tiếng "Gia đình".</p>
+                <p>Công trình thiết kế giao thông trục đứng với những khoảng không lớn giúp kết nói mọi người bằng thanh âm và những khung nhìn có chọn lọc. 
+                    Chúng tôi đã gắn kết các thành viên trong gia đình bằng những câu chuyện không tên, và những thói quen vô hình.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-content">
+        <p style="color:#b48a5a; font-style:italic; margin-bottom: 10px;">"N-Người trẻ."</p>
+
+        <div class="slider-wrapper" id="gallery">
+            <button class="nav-btn" id="prevBtn">&#10094;</button> <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    
+                    <div class="gallery-page">
+                        <img src="PROJECTS/TVT_House/F1.jpg"
+                            data-title="Mặt đứng chính"
+                            data-desc="Hình khối mềm mại, gam màu đất và tinh thần Địa Trung Hải đương đại." loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/C1.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/LV_1.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/LV_2.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/KC_1.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/B1.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/B2.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TVT_House/BottomUp.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TT_Villa/Pool_02.jpg" loading="lazy" decoding="async">
+                        <img src="PROJECTS/TT_Villa/Pool_03.jpg" loading="lazy" decoding="async">
+                        
+                    </div>                    
+                                      
+                </div>
+            </div>
+            <button class="nav-btn" id="nextBtn">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="project-contact" id="contact">
+        <h2>Trao đổi về công trình</h2>
+        <form style="max-width: 600px; margin: 0 auto;">
+            <input type="text" placeholder="Tên của bạn">
+            <input type="tel" placeholder="Số điện thoại">
+            <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
+            <button type="button">GỬI YÊU CẦU</button>
+        </form>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="closeLb">&times;</span>
+
+    <div class="lightbox-content">
+
+        <!-- ẢNH LỚN -->
+        <img id="lightboxImg" decoding="async">
+
+        <!-- CAPTION GÓC PHẢI -->
+        <div class="lb-caption">
+            <h4 id="lbTitle"></h4>
+            <p id="lbDesc"></p>
+        </div>
+
+        <!-- MŨI TÊN -->
+        <button class="lb-arrow lb-prev" id="lbPrev">&#10094;</button>
+        <button class="lb-arrow lb-next" id="lbNext">&#10095;</button>
+
+    </div>
+</div>
+
+
+    <footer>
+        <div class="footer-logo">© DREAMESE STUDIO – Architecture & Interior Design</div>
+        <a href="mailto:vtv.arc@gmail.com" class="footer-contact">vtv.arc@gmail.com - 09 4363 4758</a>
+    </footer>
+
+</body>
+</html>
