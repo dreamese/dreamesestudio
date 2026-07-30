@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dreamese - Kiến trúc &amp; Nội thất</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" as="image" href="PROJECTS/RUSTANIA/A_ExC_001.1.png" fetchpriority="high">
+    <link rel="stylesheet" href="HOME.css">
+    <style id="dreamese-project-layout">
+        :root {
+            --dreamese-project-height: 400px;
+            --dreamese-project-gap: 12px;
+            --dreamese-project-radius: 8px;
+        }
+        .project-track { gap: var(--dreamese-project-gap); }
+        .project { height: var(--dreamese-project-height); border-radius: var(--dreamese-project-radius); }
+    </style>
+    <style id="dreamese-hero-layout">
+        :root {
+            --dreamese-hero-height-desktop: 110vh;
+            --dreamese-hero-height-mobile: 75vh;
+        }
+
+        #home {
+            min-height: var(--dreamese-hero-height-desktop);
+        }
+
+        @media (max-width: 900px) {
+            #home {
+                min-height: var(--dreamese-hero-height-mobile);
+            }
+        }
+    </style>
+    <style id="dreamese-hero-vertical">
+        :root {
+            --dreamese-hero-padding-top-desktop: 250px;
+            --dreamese-hero-padding-bottom-desktop: 30px;
+            --dreamese-hero-padding-top-mobile: 100px;
+            --dreamese-hero-padding-bottom-mobile: 65px;
+        }
+
+        #home {
+            box-sizing: border-box;
+            align-items: center;
+            padding-top: var(--dreamese-hero-padding-top-desktop);
+            padding-bottom: var(--dreamese-hero-padding-bottom-desktop);
+        }
+
+        @media (max-width: 900px) {
+            #home {
+                align-items: center;
+                padding-top: var(--dreamese-hero-padding-top-mobile);
+                padding-bottom: var(--dreamese-hero-padding-bottom-mobile);
+            }
+        }
+    </style>
+    <style id="dreamese-hero-typography">
+        :root {
+            --dreamese-hero-title-desktop: 64px;
+            --dreamese-hero-body-desktop: 15px;
+            --dreamese-hero-title-mobile: 34px;
+            --dreamese-hero-body-mobile: 12px;
+            --dreamese-hero-note-desktop: 12px;
+            --dreamese-hero-note-mobile: 12px;
+        }
+        .hero-desktop h1 { font-size:var(--dreamese-hero-title-desktop); }
+        .hero-desktop > p { font-size:var(--dreamese-hero-body-desktop); }
+        .hero-note { font-size:var(--dreamese-hero-note-desktop); }
+        @media (max-width:900px) {
+            .hero-mobile h1 { font-size:var(--dreamese-hero-title-mobile); }
+            .hero-mobile > p { font-size:var(--dreamese-hero-body-mobile); }
+            .hero-note { font-size:var(--dreamese-hero-note-mobile); }
+        }
+    </style>
+    <script src="HOME.js" defer></script>
+</head>
+<body
+    data-partners=""
+    data-project-height="400"
+    data-project-gap="12"
+    data-project-rounded="true"
+    data-project-radius="8"
+    data-hero-desktop-height="110"
+    data-hero-mobile-height="75"
+    data-hero-desktop-align="center"
+    data-hero-mobile-align="center"
+    data-hero-desktop-padding-top="250"
+    data-hero-desktop-padding-bottom="30"
+    data-hero-mobile-padding-top="100"
+    data-hero-mobile-padding-bottom="65"
+    data-hero-title-desktop="64"
+    data-hero-body-desktop="15"
+    data-hero-title-mobile="34"
+    data-hero-body-mobile="12"
+    data-hero-note-desktop="12"
+    data-hero-note-mobile="12"
+    data-bg="
+        PROJECTS/RUSTANIA/A_ExC_001.1.png,
+        PROJECTS/Lean_Villa/ExC_05.3.jpg,
+        PROJECTS/TT_Villa/ExC_01.1.jpg,
+        PROJECTS/TouchHome/ExC_01.1.png,
+        PROJECTS/TVT_House/C1.jpg,
+        PROJECTS/PN1/PN1_ExC_09.1.png,
+        PROJECTS/Thu_Dieu/ExC_01.2.jpg,
+        PROJECTS/TranPhuong_Villa/TP-Villa_Terrace_01.png,
+        PROJECTS/Lavender/C8.jpg,
+        PROJECTS/TN_Cottage/TN_Bal_02.jpg,
+        PROJECTS/ThanVanNhiep/C8.jpg,
+        PROJECTS/Ada_Office/Ada_0F_03.2.png">
+<nav>
+    <div class="logo"><img src="Dreamese_Studio.png" alt="DREAMESE STUDIO" decoding="async" fetchpriority="high"><span class="logo-text">DREAMESE STUDIO</span></div>
+    <ul><li><a href="#home">Về chúng tôi</a></li><li><a href="#projects">Dự án</a></li><li><a href="#qna">Góc giải đáp</a></li><li><a href="#services">Dịch vụ</a></li><li><a href="#contact">Liên hệ</a></li></ul>
+</nav>
+<section id="home"><div>
+    <div class="hero-desktop"><h1>Những câu chuyện được kể lại <br><span class="hero-line">bằng không gian sống</span></h1>
+        <p>Chúng tôi tin rằng, mỗi công trình thiết kế luôn bắt đầu từ con người và những câu chuyện mang tính ước vọng.</p>
+        <p>Ở Dreamese, Kiến trúc sư đóng vai trò như những Dịch giả biến những câu chuyện,
+                những ước vọng tưởng chừng như rất mơ hồ thành không gian sống đích thực.</p>
+        <p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất
+                để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.</p>
+    </div>
+    <div class="hero-mobile"><h1>Thiết kế không gian<br><span class="hero-line">như viết 1 câu chuyện sống</span></h1><p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất
+để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.
+Hân hạnh được đồng hành kể lại những câu chuyện trường tồn này</p></div>
+    <div class="hero-note">DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ</div>
+</div></section>
+<section id="projects"><h2>Dự án tiêu biểu</h2><div class="project-wrapper"><button class="nav-btn prev" type="button" aria-label="Xem dự án trước">‹</button><div class="project-track" id="projectTrack">
+            <a href="Rustania.html" class="project" data-bg="PROJECTS/RUSTANIA/A_ExC_008.1.png">
+                <span class="project-content">
+                    Rustania Homes<br>
+                    <small>Trải nghiệm sức sống mới</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="Lean_Villa.html" class="project" data-bg="PROJECTS/Lean_Villa/ExC_05.2.jpg">
+                <span class="project-content">
+                    Lean Villa<br>
+                    <small>Điểm tựa tinh thần</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="TT_Villa.html" class="project" data-bg="PROJECTS/TT_Villa/ExC_06.1.jpg">
+                <span class="project-content">
+                    T&amp;T Villa<br>
+                    <small>Sự tương phản trong ánh nhìn</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="NamThien1.html" class="project" data-bg="PROJECTS/Thu_Dieu/ExC_01.2.jpg">
+                <span class="project-content">
+                    Thu Điếu<br>
+                    <small>Nốt nhạc tĩnh của thanh âm</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="SimplePC.html" class="project" data-bg="PROJECTS/SimplePC/Ext_001.3.png">
+                <span class="project-content">
+                    Mr Đặng Villa<br>
+                    <small>Không phù phiếm</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="TVT.html" class="project" data-bg="PROJECTS/TVT_House/F1.jpg">
+                <span class="project-content">
+                    TVT Home<br>
+                    <small>Trỗi dậy và Bức phá</small>
+                    <small class="project-meta">Nhà phố</small>
+                </span>
+            </a>
+
+            <a href="Chateur.html" class="project" data-bg="PROJECTS/Chateur_QL_Villa/Chateur_ExC_02.jpg">
+                <span class="project-content">
+                    Breath Villa<br>
+                    <small>Lắng nghe những nhịp chậm</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="TranPhuong.html" class="project" data-bg="PROJECTS/TranPhuong_Villa/TP-Villa_Up_02.1.png">
+                <span class="project-content">
+                    Cù Lao Villa<br>
+                    <small>Theo luồng cảm xúc</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="PN1.html" class="project" data-bg="PROJECTS/PN1/PN1_ExC_09.1.png">
+                <span class="project-content">
+                    Nhuận Home<br>
+                    <small>Về nhà</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="Touch.html" class="project" data-bg="PROJECTS/TouchHome/ExC_01.1.png">
+                <span class="project-content">
+                    Touch House<br>
+                    <small>Điểm chạm của không gian</small>
+                    <small class="project-meta">Biệt thự</small>
+                </span>
+            </a>
+
+            <a href="Lavender.html" class="project" data-bg="PROJECTS/Lavender/C8.jpg">
+                <span class="project-content">
+                    Lavender Restaurant<br>
+                    <small>Giá trị chuyển biến</small>
+                    <small class="project-meta">Nhà hàng</small>
+                </span>
+            </a>
+
+            <a href="Heal_Hill.html" class="project" data-bg="PROJECTS/TN_Cottage/TN_Bal_02.jpg">
+                <span class="project-content">
+                    Heal Hill<br>
+                    <small>Góc thiền</small>
+                    <small class="project-meta">Nhà ở nghỉ dưỡng - Bungalow</small>
+                </span>
+            </a>
+
+            <a href="ThanVanNhiep.html" class="project" data-bg="PROJECTS/ThanVanNhiep/C8.jpg">
+                <span class="project-content">
+                    ThanVanNhiep Office<br>
+                    <small>Riêng tư cởi mở</small>
+                    <small class="project-meta">Văn phòng</small>
+                </span>
+            </a>
+
+            <a href="Ada.html" class="project" data-bg="PROJECTS/Ada_Office/Ada_0F_02.2.png">
+                <span class="project-content">
+                    Ada Office<br>
+                    <small>Đối thoại</small>
+                    <small class="project-meta">Văn phòng</small>
+                </span>
+            </a>
+        </div><button class="nav-btn next" type="button" aria-label="Xem dự án tiếp theo">›</button></div></section>
+<section id="qna"><h2>Góc giải đáp</h2><div class="qna-wrapper"><div class="qna-slider">
+            <!-- Câu hỏi 1 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">01</span>
+                    <h3>Kiến trúc sư giúp được gì cho bạn ngoài bản vẽ?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Cần Kiến trúc sư để làm gì?</h4>
+                    <p>Kiến trúc sư sẽ dùng các trải nghiệm để khơi gợi và tinh chỉnh các nhu cầu của bạn một cách hợp lí theo góc nhìn sinh hoạt của ngôi nhà sắp tới.</p>
+                    <p>Giúp bạn có những cái nhìn ĐÚNG - SAI về Quyết định của bản thân và GIỮ VỮNG TINH THẦN về thẩm mỹ trong suốt quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                    <img data-src="PROJECTS/TouchHome/Void_01.jpg" class="qna-content-image" alt="Hình minh họa nội dung giải đáp" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <!-- Câu hỏi 2 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">02</span>
+                    <h3>Bản vẽ Thiết kế có thực sự quan trọng?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Vai trò của bản vẽ thiết kế</h4>
+                    <p>Bản vẽ chính là vũ khí bảo vệ bạn, để biết được &quot;TRỌN GÓI&quot; là gồm những gì, đừng để toilet mà thiếu thoát nước, hay tủ lạnh mà thiếu ổ cắm.</p>
+                    <p>Đối với DREAMESE STUDIO, bản vẽ là hình thức để bạn xác nhận điều bạn đang làm là đúng và là ngôn ngữ chính xác nhất cho đội thợ thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                    <img data-src="QnA/Q_02.png" class="qna-content-image" alt="Hình minh họa nội dung giải đáp" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <!-- Câu hỏi 3 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">03</span>
+                    <h3>Kiến trúc sư có giúp tôi tiết kiệm chi phí không?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn.
+                        Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <p>Bên cạnh đó, chúng tôi cũng sẵn sàng khuyên Quý Khách hàng có thể tạm dừng kế hoạch thi công nếu tình hình vật tư biến động
+                        hoặc nhu cầu của khách hàng đang vượt quá ngân sách đang có.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                    <img data-src="QnA/Q_03.png" class="qna-content-image" alt="Hình minh họa nội dung giải đáp" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <!-- Câu hỏi 4 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">04</span>
+                    <h3>Có phát sinh chi phí trong quá trình thi công không?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Phát sinh thi công</h4>
+                    <p>CHÚNG TÔI CAM KẾT KHI THI CÔNG THEO ĐÚNG NHƯ BẢN VẼ THIẾT KẾ, CÔNG TRÌNH SẼ KHÔNG PHÁT SINH.</p>
+                    <p>Sau khi thiết kế xong, bản dự toán chi tiết sẽ liệt kê đầy đủ các hạng mục và khối lượng cần thiết để thi công công trình.
+                        Do đó, ngay cả khi khách hàng không đồng hành cùng Dreamese hay MT Cons thì cũng đều có thể dễ dàng thi công theo đúng bản vẽ và dự toán đã có.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 5 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">05</span>
+                    <h3>Thiết kế có ảnh hưởng đến giá trị ngôi nhà như thế nào?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Giá trị của thiết kế</h4>
+                    <p>Khi tìm đến Kiến trúc sư, thông thường có 3 lí do để Khách hàng tìm đến:</p>
+                    <p>1 là Khách hàng muốn có ngôi nhà đẹp và ngân sách chính xác trước khi thi công;</p>
+                    <p>2 là muốn có không gian sống lý tưởng;</p>
+                    <p>3 là muốn biết ngân sách thi công của mình có đảm bảo với nhu cầu hay không.</p>
+                    <p>Do đó, 1 bản thiết kế không phải chỉ đẹp trên hình thức 3D mà bản vẽ kỹ thuật thi công đi kèm cũng cần được tỉ mẫn, đúng kỹ thuật và thể hiện được sự chuyên nghiệp.</p>
+                    <p>Ở Dreamese, chúng tôi hiểu rõ những kỳ vọng mà mọi khách hàng mang theo khi tìm đến, vì vậy bên cạnh làm khách hàng thấy dễ hiểu với những hình ảnh 3D lung linh,
+                        chúng tôi cũng quan tâm với việc giải thích các yếu tố kỹ thuật và quy trình thực hiện.</p>
+                    <p>Điều này sẽ giúp ngôi nhà của bạn giữ được giá trị lâu dài và tránh được những rủi ro không đáng có trong quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 6 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">06</span>
+                    <h3>Tôi nên chọn Kiến trúc sư hay Nhà thiết kế như thế nào?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Lựa chọn Kiến trúc sư phù hợp</h4>
+                    <p>Với kinh nghiệm hơn 10 năm hoạt động trong lĩnh vực này kể cả ở trong và ngoài nước, chúng tôi hiểu rõ sự tầm quan trọng của việc lựa chọn một Kiến trúc sư phù hợp.</p>
+                    <p>Bất kỳ ai cũng có thể nói về năng lực bản thân, về quy mô doanh nghiệp, về quy trình, ... Tuy nhiên, cốt lõi là sự phù hợp khi giao tiếp và giá trị thực
+                        mà Kiến trúc sư mang lại có đáp ứng được kỳ vọng của khách hàng hay không.</p>
+                    <p>Dreamese chúng tôi tuy là một đơn vị nhỏ, nhưng chúng tôi luôn cố gắng hết mình để mang đến cho khách hàng những giá trị thiết thực nhất,
+                        và cũng sẵn sàng từ chối hoặc giới thiệu studio khác nếu bản thân không thể đáp ứng phù hợp.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 7 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">07</span>
+                    <h3>Dreamese có hỗ trợ tư vấn thiết kế miễn phí không?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Chi phí thiết kế</h4>
+                    <p>Chi phí thiết kế tại Dreamese phụ thuộc vào quy mô và yêu cầu cụ thể của từng công trình.
+                        Chúng tôi cung cấp các gói thiết kế linh hoạt để phù hợp với ngân sách của khách hàng.</p>
+                    <p>Ở Dreamese chúng tôi trao đi những giá trị với giá cả phù hợp và không miễn phí thiết kế. Tuy nhiên, khi đồng hành đồng bộ từ thiết kế tới thi công,
+                        Khách hàng sẽ được hỗ trợ giảm trừ thiết kế trong tổng chi phí thi công.</p>
+                    <p>Chúng tôi vẫn khuyến khích khách hàng nên đầu tư vào giá trị thiết kế để có được một không gian sống hoàn hảo và bền vững,
+                        đồng thời khẳng định được đẳng cấp giá trị Cá nhân hóa.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 8 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">08</span>
+                    <h3>Những vật liệu thi công mới nếu không có tác dụng quá lớn để thay thế vật liệu cũ thì giá trị của nó là gì?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Vật liệu mới</h4>
+                    <p>Mặc dù sự phát tiển của vật liệu thi công mới khá nổi bậc, tuy nhiên sự ứng dụng vào thực tiễn vẫn còn nhiều sự hạn chế.
+                        Điều này bắt nguồn từ sự thiếu hiểu biết về độ bền vật liệu, tính liên kết, và đặc biệt ảnh hưởng tới chi phí bảo hành.</p>
+                    <p>Do đó, việc chọn lựa 1 đơn vị tư vấn uy tín là rất quan trọng để đảm bảo chất lượng và hiệu quả trong quá trình thi công.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 9 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">09</span>
+                    <h3>Trước khi thiết kế cần cung cấp những thông tin gì?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Cân đối ngân sách thi công</h4>
+                    <p>Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.</p>
+                    <p>Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 10 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">10</span>
+                    <h3>Thời gian thực hiện dự án là bao lâu?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Thời gian thực hiện dự án</h4>
+                    <p>Thông thường, thời gian thực hiện dự án tại Dreamese Studio là từ 3 đến 6 tháng, tùy vào quy mô và độ phức tạp của công trình.</p>
+                    <p>Bằng cách khai thác câu chuyện tổng thể của công trình và điều mà khách hàng mong muốn định hướng, chúng tôi sẽ có Quy trình triển khai công việc
+                        phù hợp để đáp ứng nhu cầu của Dự án.</p>
+                    <p>Ở Dreamese, mỗi công trình luôn mang theo 1 câu chuyện tâm huyết, do đó, chính sách là nếu không thể đáp ứng được nhu cầu cũng như kỳ vọng của khách hàng,
+                        chúng tôi sẽ không nhận dự án và hoàn tiền lại cho Khách hàng.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 11 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">11</span>
+                    <h3>Dreamese Studio phù hợp với những khách hàng và phong cách thiết kế nào?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Phong cách thiết kế của Dreamese Studio</h4>
+                    <p>Ở Dreamese Studio, chúng tôi thuần về các phong cách thiết kế Hiện đại, Tối giản và sang trọng; song vẫn có những ngoại lệ khi câu chuyện nhu cầu và
+                        mong muốn của Khách hàng phù hợp với trí tưởng tưởng tượng của Kiến trúc sư, chúng tôi vẫn sẽ có đội ngũ thực hiện những thiết kế đặc biệt cho Signature.</p>
+                    <p>Có vẻ, những phong cách thiết kế của Dreamese là không bị giới hạn, và như thế, chúng tôi thích lắng nghe câu chuyện của khách hàng,
+                        và viết nó lại bằng thiết kế, bằng công trình hiện hữu.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 12 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">12</span>
+                    <h3>Studio có nhận thiết kế và thi công trọn gói không?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>DỊCH VỤ TỪ DREAMESE</h4>
+                    <p>Tùy vào câu chuyện cũng như nhu cầu của khách hàng, chúng tôi hân hạnh có những dịch vụ phù hợp với từng nhu cầu.</p>
+                    <p><a href="#services" class="qna-cta-link">Dịch vụ và Quy trình làm việc của Dreamese Studio →</a></p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 13 -->
+            <div class="qna-card">
+                <div class="qna-card-heading">
+                    <span class="qna-num">13</span>
+                    <h3>DreameseStudio có nhận dự án ở tỉnh / ngoài khu vực không?</h3>
+                </div>
+                <div class="qna-content-data">
+                    <h4>Phạm vi hoạt động của Dreamese Studio</h4>
+                    <p>Dreamese Studio là 1 đơn vị chuyên cung cấp hoạt động thiết kế Kiến trúc - Nội thất chuyên nghiệp, vì vậy, ở đâu có câu chuyện,
+                        có nhu cầu, chúng tôi đều có thể đáp ứng, <strong>ĐẢM BẢO QUY TRÌNH</strong> được thực hiện đầy đủ</p>
+                    <p>Tuy nhiên, đối với công tác thi công MT Construction sẽ tùy thuộc vào Vị trí địa lí, Quy mô công trình, mà chúng tôi sẽ có giải pháp cung cấp dịch vụ phù hợp.</p>
+                    <a href="#contact" class="qna-cta-link">Trao đổi cùng KTS →</a>
+                    <img data-src="PROJECTS/Lean_Villa/ExC_05.1.png" class="qna-content-image" alt="Hình minh họa nội dung giải đáp" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div><div class="qna-preview-desktop"><div class="sticky-content"><button class="close-preview" type="button" aria-label="Đóng nội dung giải đáp">×</button><div id="desktop-content-placeholder"><div class="qna-empty-state"><p>Chọn một câu hỏi để xem chi tiết</p></div></div></div></div></div></section>
+<section id="services" class="services-section"><h2>Dịch vụ</h2><div class="services-cards">
+        <a href="Qtr_TKTC.html" class="service-box">
+            <h3>Thiết kế -<br>Thi công trọn gói</h3>
+            <p>Đồng bộ từ thẩm mỹ thiết kế, kỹ thuật thi công và
+                chịu trách nhiệm trên toàn bộ ngân sách xây dựng.</p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_QLDA.html" class="service-box">
+            <h3>Thiết kế -<br>Quản lí Dự án</h3>
+            <p>Đảm bảo và Kiểm soát tính nhất quán từ
+                Bản vẽ Thiết kế - Kỹ thuật đến công tác Triển khai thi công.</p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_TKKT.html" class="service-box">
+            <h3>Thiết kế Kiến trúc</h3>
+            <p>Tối ưu không gian sử dụng, thẩm mỹ hình khối xây dựng
+                và xây dựng bản sắc riêng cho câu chuyện của công trình.</p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+
+        <a href="Qtr_TKNT.html" class="service-box">
+            <h3>Thiết kế Nội thất</h3>
+            <p>Đồng bộ vật liệu và chi phí tối ưu với chất lượng
+                phù hợp nhất hướng đến xây dựng lối sống cá nhân hóa.</p>
+            <span class="service-link">Quy trình triển khai →</span>
+        </a>
+    </div></section>
+<section id="contact"><h2>Liên hệ</h2><div class="contact-tagline">DREAMESE STUDIO – Đồng hành kiến tạo không gian sống.</div>
+    <div class="contact-row">
+        <div class="contact-label">Hotline:</div>
+        <div class="contact-content">09 4363 4758 - (KTS. Vương)<br>0903 888 200 - (KS. Toàn)</div>
+    </div>
+
+    <div class="contact-row">
+        <div class="contact-label">Địa chỉ:</div>
+        <div class="contact-content">Cơ sở 1: Trần Văn Thời - Cà Mau<br>Cơ sở 2: 11/8/32 ĐHT 17, KP2, P.Đông Hưng Thuận, Tp.HCM</div>
+    </div>
+
+    <div class="contact-row">
+        <div class="contact-label">Email:</div>
+        <div class="contact-content">vtv.arc@gmail.com</div>
+    </div>
+</section>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-left">© 2025 DREAMESE STUDIO – Architecture &amp; Interior Design</div><div class="footer-partners" data-partners-slot="footer" aria-label="Đối tác"></div></div></footer>
+</body>
+</html>
