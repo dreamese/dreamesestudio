@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lavender Restaurant – DREAMESE STUDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/Project-Site.css">
+    <script src="JS/Project-Site.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <a href="dreamese.html" class="logo-link">
+                <img src="Dreamese_Studio.png" alt="Logo DREAMESE STUDIO" decoding="async">
+                <span class="logo-text">DREAMESE STUDIO</span>
+            </a>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="dreamese.html">Trang chủ</a></li>
+            <li><a href="#gallery">Album</a></li>
+            <li><a href="#contact">Liên hệ</a></li>
+        </ul>
+    </nav>
+
+    <section class="story-hero">
+        <div
+            class="story-bg"
+            data-hero-position-y="55"
+            style="background-image:
+                linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+                url('PROJECTS/Lavender/C2.jpg');
+                background-position: center 55% !important;">
+        </div>
+
+        <div class="story-content">
+            <h1>Lavender Restaurant</h1>
+            <p class="project-slogan">Concept</p>
+
+            <div class="project-meta">
+                <span><strong>Loại hình:</strong> Nhà hàng - Quán cà phê</span>
+                <span><strong>Quy mô:</strong> 1 trệt · sân vườn</span>
+                <span><strong>Diện tích xây dựng:</strong> ~1000m²</span>
+            </div>
+
+            <div class="story-text">
+                <p>Tre vốn dĩ đã quá thân thuộc với mọi khía cạnh đời sống của người Việt Nam, song, việc gắn bó quá lâu khiến cho hình thái và sự hiểu biết đối với vật liệu này đã trở nên Bình dân và Đơn điệu.</p>
+                <p>Từ năm 2009, nhóm Kiến trúc sư Võ Trọng Nghĩa đã làm thăng hoa giá trị của loại vật liệu với giải thưởng Kiến trúc Thế giới đầu tiên cho Việt Nam, từ đó, giá trị của loại vật liệu này càng trở nên có sức hút không chỉ đối với Việt Nam mà còn thế giới.</p>
+                <p>Với sự đồng hành và được học hỏi tại đây, dự án Lavender là 1 công trình nằm bên bờ hồ Tuyền Lâm, ở lưng chừng núi, cho thấy 1 cái nhìn bao quát và toàn cảnh cho không gian, đồng thời nội thất tuy gần gũi nhưng lại cực kỳ ấn tượng.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-content">
+        <p style="color:#b48a5a; font-style:italic; margin-bottom:10px;">
+            “Câu chuyện bắt đầu từ những ước mong được chữa lành và góc nhìn tương phản của con người giữa trong và ngoài câu chuyện đó.”
+        </p>
+
+        <div class="slider-wrapper" id="gallery">
+            <button class="nav-btn" id="prevBtn" type="button">&#10094;</button>
+
+            <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    <div class="gallery-page">
+                        <img
+                            src="PROJECTS/Lavender/C1.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C2.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C4.2.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C6.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C7.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C8.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C5.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C4.jpg"
+                            loading="lazy"
+                            decoding="async">
+                    </div>
+                </div>
+            </div>
+
+            <button class="nav-btn" id="nextBtn" type="button">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="project-contact" id="contact">
+        <h2>Trao đổi về công trình</h2>
+
+        <form style="max-width:600px; margin:0 auto;">
+            <input type="text" placeholder="Tên của bạn">
+            <input type="tel" placeholder="Số điện thoại">
+            <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
+            <button type="button">GỬI YÊU CẦU</button>
+        </form>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lb-close" id="closeLb">&times;</span>
+
+        <div class="lightbox-content">
+            <img id="lightboxImg" alt="" decoding="async">
+
+            <div class="lb-caption">
+                <h4 id="lbTitle"></h4>
+                <p id="lbDesc"></p>
+            </div>
+
+            <button class="lb-arrow lb-prev" id="lbPrev" type="button">&#10094;</button>
+            <button class="lb-arrow lb-next" id="lbNext" type="button">&#10095;</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-left">
+            <div class="footer-logo">
+                © DREAMESE STUDIO – Architecture & Interior Design
+            </div>
+
+            <a href="mailto:vtv.arc@gmail.com" class="footer-contact">
+                vtv.arc@gmail.com - 09 4363 4758
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
