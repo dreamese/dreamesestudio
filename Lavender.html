@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lavender Restaurant – DREAMESE STUDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/Project-Site.css">
+    <script src="JS/Project-Site.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <a href="dreamese.html" class="logo-link">
+                <img src="Dreamese_Studio.png" alt="Logo DREAMESE STUDIO" decoding="async">
+                <span class="logo-text">DREAMESE STUDIO</span>
+            </a>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="dreamese.html">Trang chủ</a></li>
+            <li><a href="#gallery">Album</a></li>
+            <li><a href="#contact">Liên hệ</a></li>
+        </ul>
+    </nav>
+
+    <section class="story-hero">
+        <div
+            class="story-bg"
+            data-hero-position-y="55"
+            style="background-image:
+                linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+                url('PROJECTS/Lavender/C2.jpg');
+                background-position: center 55% !important;">
+        </div>
+
+        <div class="story-content">
+            <h1>Lavender Restaurant</h1>
+            <p class="project-slogan">Concept</p>
+
+            <div class="project-meta">
+                <span><strong>Loại hình:</strong> Nhà hàng - Quán cà phê</span>
+                <span><strong>Quy mô:</strong> 1 trệt · sân vườn</span>
+                <span><strong>Diện tích xây dựng:</strong> ~1000m²</span>
+            </div>
+
+            <div class="story-text">
+                <p>Breathe Villa được hình thành từ mong muốn tạo nên một nơi chốn đủ tĩnh để con người có thể lắng nghe chính mình, và đủ mở để những mối quan hệ gia đình được nuôi dưỡng một cách tự nhiên. Công trình hiện diện nhẹ nhàng giữa khu dân cư, không phô trương hình thức mà tập trung vào cảm giác sống – nơi mỗi bước chân đều mang theo sự chậm rãi và cân bằng.</p>
+                <p>Ngôn ngữ thiết kế của Breathe Villa hướng đến sự hài hòa giữa đường nét mềm mại và hình khối rõ ràng. Những gam màu ấm, vật liệu mang tính tự nhiên cùng tỷ lệ kiến trúc được tiết chế giúp tổng thể công trình trở nên gần gũi, bền vững theo thời gian. Không gian được tổ chức để ánh sáng, gió và nhịp sinh hoạt giao thoa một cách tự nhiên, tạo nên sự kết nối liền mạch giữa con người và môi trường xung quanh.</p>
+                <p>Thay vì phân tách, công trình ưu tiên sự liên thông – nơi các hoạt động thường ngày có thể diễn ra linh hoạt, vừa đủ riêng tư, vừa đủ gắn kết. Mỗi khoảng không đều đóng vai trò như một điểm chạm cảm xúc, khuyến khích sự tương tác và sẻ chia trong đời sống gia đình.</p>
+                <p>Breathe Villa không chỉ là một công trình kiến trúc, mà là tuyên ngôn về một phong cách sống bền vững, nơi giá trị vật chất nhường chỗ cho cảm xúc, và không gian trở thành chất xúc tác cho những khoảnh khắc gắn kết lâu dài.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-content">
+        <p style="color:#b48a5a; font-style:italic; margin-bottom:10px;">
+            “Câu chuyện bắt đầu từ những ước mong được chữa lành và góc nhìn tương phản của con người giữa trong và ngoài câu chuyện đó.”
+        </p>
+
+        <div class="slider-wrapper" id="gallery">
+            <button class="nav-btn" id="prevBtn" type="button">&#10094;</button>
+
+            <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    <div class="gallery-page">
+                        <img
+                            src="PROJECTS/Lavender/C1.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C2.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C4.2.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C6.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C7.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C8.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C5.jpg"
+                            loading="lazy"
+                            decoding="async">
+                        <img
+                            src="PROJECTS/Lavender/C4.jpg"
+                            loading="lazy"
+                            decoding="async">
+                    </div>
+                </div>
+            </div>
+
+            <button class="nav-btn" id="nextBtn" type="button">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="project-contact" id="contact">
+        <h2>Trao đổi về công trình</h2>
+
+        <form style="max-width:600px; margin:0 auto;">
+            <input type="text" placeholder="Tên của bạn">
+            <input type="tel" placeholder="Số điện thoại">
+            <textarea rows="5" placeholder="Mong muốn của bạn về không gian sống..."></textarea>
+            <button type="button">GỬI YÊU CẦU</button>
+        </form>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lb-close" id="closeLb">&times;</span>
+
+        <div class="lightbox-content">
+            <img id="lightboxImg" alt="" decoding="async">
+
+            <div class="lb-caption">
+                <h4 id="lbTitle"></h4>
+                <p id="lbDesc"></p>
+            </div>
+
+            <button class="lb-arrow lb-prev" id="lbPrev" type="button">&#10094;</button>
+            <button class="lb-arrow lb-next" id="lbNext" type="button">&#10095;</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-left">
+            <div class="footer-logo">
+                © DREAMESE STUDIO – Architecture & Interior Design
+            </div>
+
+            <a href="mailto:vtv.arc@gmail.com" class="footer-contact">
+                vtv.arc@gmail.com - 09 4363 4758
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
