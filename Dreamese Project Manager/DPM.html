@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dreamese Project Manager v0.6</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <link rel="stylesheet" href="app.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="brand">
+            <div class="brand-mark">D</div>
+            <div>
+                <h1>Dreamese Project Manager <small>v0.6</small></h1>
+                <p>Tạo và chỉnh sửa trang dự án ngay trên trình duyệt</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <select id="savedProjectSelect" aria-label="Dự án đã lưu">
+                <option value="">Dự án đã lưu trong trình duyệt</option>
+            </select>
+
+            <button class="button button-ghost" id="newProjectBtn" type="button">
+                Dự án mới
+            </button>
+
+            <button class="button" id="saveProjectBtn" type="button">
+                Lưu dự án và ảnh
+            </button>
+        </div>
+    </header>
+
+    <main class="app-shell">
+        <aside class="sidebar">
+            <button class="sidebar-tab active" data-tab="project" type="button">
+                <span>01</span>Thông tin dự án
+            </button>
+
+            <button class="sidebar-tab" data-tab="images" type="button">
+                <span>02</span>Hình ảnh & Hero
+            </button>
+
+            <button class="sidebar-tab" data-tab="homepage" type="button">
+                <span>03</span>Thẻ trang chủ
+            </button>
+
+            <button class="sidebar-tab" data-tab="export" type="button">
+                <span>04</span>Xuất website
+            </button>
+
+            <div class="sidebar-note">
+                <strong>Lưu trữ cục bộ</strong>
+                <p>Thông tin dự án: localStorage</p>
+                <p>File ảnh preview: IndexedDB</p>
+                <p>Ảnh không được tải lên Internet.</p>
+            </div>
+        </aside>
+
+        <section class="workspace">
+            <div class="editor-column">
+
+                <section class="tab-panel active" data-panel="project">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">THÔNG TIN CHUNG</span>
+                            <h2>Nội dung trang dự án</h2>
+                        </div>
+
+                        <div class="panel-actions">
+                            <input id="importHtmlInput" type="file" accept=".html,text/html" hidden>
+                            <button class="button button-ghost" id="importHtmlBtn" type="button">
+                                Mở trang HTML cũ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid two-columns">
+                        <label class="field">
+                            <span>Tên file HTML</span>
+                            <input id="projectFileName" type="text" value="Du_An_Moi.html">
+                            <small>Ví dụ: Lean_Villa.html</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Tên thư mục hình thực tế</span>
+                            <input id="projectFolder" type="text" value="Du_An_Moi">
+                            <small>Ví dụ: Rustania Homes có thể dùng thư mục RUSTANIA.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Tên dự án</span>
+                            <input id="projectName" type="text" value="Dự án mới">
+                        </label>
+
+                        <label class="field">
+                            <span>Slogan</span>
+                            <input id="projectSlogan" type="text">
+                        </label>
+
+                        <label class="field">
+                            <span>Loại hình</span>
+                            <input id="projectType" type="text" placeholder="Biệt thự">
+                        </label>
+
+                        <label class="field">
+                            <span>Quy mô</span>
+                            <input id="projectScale" type="text" placeholder="1 trệt · 2 lầu · sân vườn">
+                        </label>
+
+                        <label class="field">
+                            <span>Diện tích xây dựng</span>
+                            <input id="projectArea" type="text" placeholder="~350m²">
+                        </label>
+
+                        <label class="field">
+                            <span>Đối tác</span>
+                            <select id="projectPartner">
+                                <option value="">Không hiển thị đối tác</option>
+                                <option value="mt">MT Construction</option>
+                                <option value="titan">TITAN Construction</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Câu dẫn phía trên album</span>
+                        <input id="projectQuote" type="text">
+                    </label>
+
+                    <label class="field">
+                        <span>Câu chuyện dự án</span>
+                        <textarea id="projectStory" rows="10"></textarea>
+                        <small>Mỗi đoạn văn cách nhau bằng một dòng trống.</small>
+                    </label>
+
+                    <details class="advanced-settings">
+                        <summary>Đường dẫn dùng chung</summary>
+
+                        <div class="form-grid two-columns">
+                            <label class="field">
+                                <span>Thư mục hình tổng</span>
+                                <input id="assetRoot" type="text" value="PROJECTS">
+                            </label>
+
+                            <label class="field">
+                                <span>Đường dẫn trang chủ</span>
+                                <input id="homePagePath" type="text" value="dreamese.html">
+                            </label>
+
+                            <label class="field">
+                                <span>Đường dẫn CSS</span>
+                                <input id="cssPath" type="text" value="CSS/Project-Site.css">
+                            </label>
+
+                            <label class="field">
+                                <span>Đường dẫn JavaScript</span>
+                                <input id="jsPath" type="text" value="JS/Project-Site.js">
+                            </label>
+                        </div>
+                    </details>
+                </section>
+
+                <section class="tab-panel" data-panel="images">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">ALBUM DỰ ÁN</span>
+                            <h2>Thêm, thay thế và sắp xếp ảnh</h2>
+                        </div>
+
+                        <div class="image-counter">
+                            <strong id="imageCount">0</strong>
+                            <span>ảnh</span>
+                        </div>
+                    </div>
+
+                    <div class="storage-message" id="storageMessage">
+                        <strong>Ảnh sẽ được lưu trong trình duyệt.</strong>
+                        <span>
+                            Sau khi nạp ảnh, bấm “Lưu dự án và ảnh” để mở lại vẫn xem được preview.
+                        </span>
+                    </div>
+
+                    <div class="gallery-folder-box">
+                        <label class="field">
+                            <span>Thư mục ảnh dùng cho Gallery</span>
+                            <div class="folder-input-row">
+                                <span class="folder-prefix" id="galleryFolderPrefix">PROJECTS/</span>
+                                <input id="galleryProjectFolder" type="text" value="Du_An_Moi">
+                            </div>
+                            <small id="galleryFolderPreview">
+                                PROJECTS/Du_An_Moi/Ten_Hinh.jpg
+                            </small>
+                        </label>
+
+                        <button class="button button-ghost" id="useImportedFolderBtn" type="button" disabled>
+                            Dùng tên thư mục vừa nạp
+                        </button>
+                    </div>
+
+                    <div class="image-toolbar">
+                        <input id="addImagesInput" type="file" accept="image/*" multiple hidden>
+                        <input id="importFolderInput" type="file" accept="image/*" multiple webkitdirectory directory hidden>
+
+                        <button class="button" id="addImagesBtn" type="button">Thêm hình ảnh</button>
+                        <button class="button button-ghost" id="importFolderBtn" type="button">Nạp thư mục hình</button>
+                        <button class="button button-ghost" id="sortImagesBtn" type="button">Xếp theo tên file</button>
+                        <button class="button button-danger" id="clearImagesBtn" type="button">Xóa toàn bộ</button>
+                    </div>
+
+                    <div class="drop-zone" id="dropZone">
+                        <strong>Kéo và thả ảnh vào đây</strong>
+                        <span>JPG, PNG, WEBP, GIF và AVIF</span>
+                    </div>
+
+                    <section class="hero-editor">
+                        <div class="hero-editor-heading">
+                            <div>
+                                <span class="eyebrow">ẢNH NỀN ĐẦU TRANG</span>
+                                <h3>Hero Image</h3>
+                                <p class="hero-help">
+                                    0% ưu tiên phần trên · 50% căn giữa · 100% ưu tiên phần dưới.
+                                    Giá trị được ghi trực tiếp vào HTML và ghi đè thiết lập cố định trong CSS.
+                                </p>
+                            </div>
+                            <output id="heroPositionOutput">80%</output>
+                        </div>
+
+                        <div class="hero-editor-grid">
+                            <div class="hero-focus-preview" id="heroFocusPreview">
+                                <div class="hero-focus-guide"></div>
+                                <span>Vùng ảnh hiển thị ở đầu trang</span>
+                            </div>
+
+                            <div class="hero-controls">
+                                <label class="field">
+                                    <span>Chọn ảnh nền Hero</span>
+                                    <select id="heroImageSelect">
+                                        <option value="">Chưa có hình ảnh</option>
+                                    </select>
+                                </label>
+
+                                <label class="field">
+                                    <span>Vị trí dọc của ảnh</span>
+                                    <input id="heroPositionRange" type="range" min="0" max="100" step="1" value="80">
+                                </label>
+
+                                <div class="position-row">
+                                    <button class="mini-button" id="heroMoveUpBtn" type="button">↑ Lên 5%</button>
+
+                                    <label class="position-number">
+                                        <input id="heroPositionNumber" type="number" min="0" max="100" step="1" value="80">
+                                        <span>%</span>
+                                    </label>
+
+                                    <button class="mini-button" id="heroMoveDownBtn" type="button">↓ Xuống 5%</button>
+                                </div>
+
+                                <div class="preset-row">
+                                    <button class="mini-button hero-position-preset" data-position="0" type="button">Trên</button>
+                                    <button class="mini-button hero-position-preset" data-position="25" type="button">25%</button>
+                                    <button class="mini-button hero-position-preset" data-position="50" type="button">Giữa</button>
+                                    <button class="mini-button hero-position-preset" data-position="75" type="button">75%</button>
+                                    <button class="mini-button hero-position-preset" data-position="100" type="button">Dưới</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="image-list" id="imageList"></div>
+
+                    <template id="imageCardTemplate">
+                        <article class="image-card" draggable="true">
+                            <div class="image-preview-wrap">
+                                <img class="image-preview" loading="lazy" alt="">
+                                <span class="image-index"></span>
+                                <span class="hero-badge">HERO</span>
+                                <span class="stored-badge"></span>
+                            </div>
+
+                            <div class="image-card-content">
+                                <strong class="image-name"></strong>
+                                <code class="image-path"></code>
+
+                                <label class="compact-field">
+                                    <span>Tiêu đề khi mở ảnh</span>
+                                    <input class="image-title-input" type="text">
+                                </label>
+
+                                <label class="compact-field">
+                                    <span>Mô tả ảnh</span>
+                                    <textarea class="image-desc-input" rows="3"></textarea>
+                                </label>
+
+                                <div class="image-card-actions">
+                                    <button class="mini-button set-hero-btn" type="button">Chọn làm Hero</button>
+                                    <button class="mini-button move-up-btn" type="button">↑</button>
+                                    <button class="mini-button move-down-btn" type="button">↓</button>
+                                    <button class="mini-button danger remove-image-btn" type="button">Xóa</button>
+                                </div>
+                            </div>
+                        </article>
+                    </template>
+                </section>
+
+                <section class="tab-panel" data-panel="homepage">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">TRANG CHỦ</span>
+                            <h2>Tạo thẻ dự án tiêu biểu</h2>
+                        </div>
+                    </div>
+
+                    <div class="form-grid two-columns">
+                        <label class="field">
+                            <span>Tên hiển thị</span>
+                            <input id="homeCardTitle" type="text">
+                        </label>
+
+                        <label class="field">
+                            <span>Loại hình</span>
+                            <input id="homeCardCategory" type="text">
+                        </label>
+
+                        <label class="field">
+                            <span>Câu giới thiệu ngắn</span>
+                            <input id="homeCardSlogan" type="text">
+                        </label>
+
+                        <label class="field">
+                            <span>Ảnh đại diện</span>
+                            <select id="homeCardImage">
+                                <option value="">Chưa có hình ảnh</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="home-tools">
+                        <input id="importHomeInput" type="file" accept=".html,text/html" hidden>
+                        <button class="button button-ghost" id="importHomeBtn" type="button">
+                            Mở dreamese.html hiện tại
+                        </button>
+                        <button class="button" id="downloadUpdatedHomeBtn" type="button" disabled>
+                            Tải dreamese.html đã cập nhật
+                        </button>
+                    </div>
+
+                    <label class="field">
+                        <span>Đoạn HTML của thẻ dự án</span>
+                        <textarea id="homeCardSnippet" rows="13" readonly></textarea>
+                    </label>
+                </section>
+
+                <section class="tab-panel" data-panel="export">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">HOÀN THÀNH</span>
+                            <h2>Xuất dữ liệu website</h2>
+                        </div>
+                    </div>
+
+                    <div class="export-grid">
+                        <article class="export-card">
+                            <h3>Trang HTML dự án</h3>
+                            <p>Tải riêng file HTML.</p>
+                            <button class="button" id="downloadHtmlBtn" type="button">Tải HTML</button>
+                        </article>
+
+                        <article class="export-card">
+                            <h3>Gói dự án ZIP</h3>
+                            <p>Bao gồm HTML, JSON và những ảnh đã lưu trong app.</p>
+                            <button class="button" id="downloadZipBtn" type="button">Tải gói ZIP</button>
+                        </article>
+
+                        <article class="export-card">
+                            <h3>Ghi vào thư mục website</h3>
+                            <p>Ghi HTML và ảnh trực tiếp trên Chrome/Edge.</p>
+                            <button class="button" id="writeFolderBtn" type="button">Chọn thư mục website</button>
+                        </article>
+
+                        <article class="export-card">
+                            <h3>Dữ liệu chỉnh sửa</h3>
+                            <p>JSON chỉ chứa dữ liệu; ảnh preview nằm trong trình duyệt.</p>
+                            <div class="stack-actions">
+                                <input id="importJsonInput" type="file" accept=".json,application/json" hidden>
+                                <button class="button button-ghost" id="downloadJsonBtn" type="button">Tải JSON</button>
+                                <button class="button button-ghost" id="importJsonBtn" type="button">Mở JSON</button>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="validation-box" id="validationBox"></div>
+                </section>
+            </div>
+
+            <aside class="preview-column">
+                <div class="preview-heading">
+                    <div>
+                        <span class="eyebrow">XEM TRƯỚC</span>
+                        <h2>Trang dự án</h2>
+                    </div>
+
+                    <button class="mini-button" id="refreshPreviewBtn" type="button">Làm mới</button>
+                </div>
+
+                <div class="preview-frame-shell">
+                    <iframe id="previewFrame" title="Xem trước trang dự án"></iframe>
+                </div>
+
+                <div class="status-bar" id="statusBar">Đang khởi tạo kho ảnh…</div>
+            </aside>
+        </section>
+    </main>
+</body>
+</html>
