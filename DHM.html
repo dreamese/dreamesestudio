@@ -1,0 +1,3346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dreamese Home Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <style>
+@font-face{font-family:"Avo";src:local("UTM Avo"),local("UTM_Avo"),url("Fonts/UTM_Avo.ttf") format("truetype"),url("../Fonts/UTM_Avo.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"God";src:local("UTM God WordR"),local("UTM_God_WordR"),url("Fonts/UTM_God_WordR.ttf") format("truetype"),url("../Fonts/UTM_God_WordR.ttf") format("truetype");font-display:swap}
+:root{--bg:#0a0a0a;--panel:#121212;--field:#0d0d0d;--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.18);--text:#eee;--muted:#888;--gold:#b48a5a;--gold2:#e5c59e;--danger:#d27373;--success:#95c6a0;--body:"Avo",Arial,sans-serif;--display:"God",Georgia,serif;--shadow:0 24px 70px rgba(0,0,0,.42)}
+*{box-sizing:border-box}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 10% 0%,rgba(180,138,90,.13),transparent 30rem),var(--bg);color:var(--text);font-family:var(--body)}button,input,textarea,select{font-family:var(--body)}button{color:inherit}h1,h2,h3{font-family:var(--display);font-weight:400}code{font-family:Consolas,monospace}
+.app-header{position:sticky;top:0;z-index:100;min-height:78px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(8,8,8,.94);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:14px}.brand-mark{width:46px;height:46px;border:1px solid rgba(180,138,90,.72);display:grid;place-items:center;color:var(--gold2);font-family:var(--display);font-size:26px}.brand h1,.brand p{margin:0}.brand h1{font-size:19px;letter-spacing:.07em}.brand h1 small{margin-left:7px;color:var(--gold);font-family:var(--body);font-size:9px;letter-spacing:.12em}.brand p{margin-top:3px;color:var(--muted);font-size:11px}.header-actions,.panel-actions,.preview-actions,.stack-actions{display:flex;flex-wrap:wrap;gap:9px}
+.button,.mini-button,.icon-button{border:1px solid var(--gold);background:var(--gold);color:#fff;cursor:pointer;transition:.2s}.button{min-height:40px;padding:0 15px;border-radius:3px;font-size:11px}.button:hover,.mini-button:hover,.icon-button:hover{background:#fff;border-color:#fff;color:#111}.button-ghost{background:transparent;border-color:var(--line2);color:#ddd}.mini-button{min-height:29px;padding:0 9px;border-radius:3px;background:transparent;border-color:var(--line2);color:#aaa;font-size:9px}.mini-button.active{border-color:var(--gold);color:var(--gold2)}.icon-button{width:29px;height:29px;padding:0;border-radius:3px;background:transparent;border-color:var(--line2);color:#aaa}
+.app-shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100vh - 78px)}.sidebar{position:sticky;top:78px;align-self:start;height:calc(100vh - 78px);padding:22px 14px;border-right:1px solid var(--line);background:rgba(9,9,9,.78)}.sidebar-tab{width:100%;padding:14px 12px;border:0;border-left:2px solid transparent;background:transparent;color:#aaa;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px}.sidebar-tab span{color:#555;font-size:10px}.sidebar-tab:hover,.sidebar-tab.active{border-left-color:var(--gold);background:rgba(180,138,90,.08);color:#fff}.sidebar-note{margin:28px 8px 0;padding:14px;border:1px solid var(--line);background:#0e0e0e;color:var(--muted);font-size:10px;line-height:1.7}.sidebar-note strong,.sidebar-note code{display:block}.sidebar-note strong{margin-bottom:8px;color:#ddd}
+.workspace{min-width:0;display:grid;grid-template-columns:minmax(580px,1fr) minmax(400px,.82fr)}.editor-column{min-width:0;padding:32px;border-right:1px solid var(--line)}.preview-column{position:sticky;top:78px;align-self:start;height:calc(100vh - 78px);padding:26px;background:#0d0d0d;display:flex;flex-direction:column}.tab-panel{display:none}.tab-panel.active{display:block}.panel-heading,.preview-heading{margin-bottom:25px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.compact-heading{margin-top:34px}.section-divider-heading{margin-top:52px;padding-top:36px;border-top:1px solid var(--line)}.panel-heading h2,.preview-heading h2{margin:5px 0 0;font-size:27px}.preview-heading h2{font-size:20px}.eyebrow{color:var(--gold);font-size:9px;letter-spacing:.22em}
+.form-grid{display:grid;gap:18px}.form-grid.two-columns,.inline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field{margin-bottom:18px;display:flex;flex-direction:column;gap:8px}.field>span,.compact-field>span{color:#ddd;font-size:11px}.field small{color:#666;font-size:9px;line-height:1.6}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:4px;outline:0;background:var(--field);color:#eee;transition:.2s}input,select{min-height:42px;padding:0 12px}textarea{padding:12px;line-height:1.65;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(180,138,90,.09)}.settings-card,.help-box,.validation-box{margin-bottom:18px;padding:18px;border:1px solid var(--line);background:#101010}.settings-card h3{margin:0 0 18px;color:var(--gold2);font-size:17px}.settings-card p,.help-box{color:#838383;font-size:11px;line-height:1.7}.help-box code{color:var(--gold2)}.checkbox-row{display:flex;flex-wrap:wrap;gap:14px}.check-field{min-width:190px;padding:12px;border:1px solid var(--line);display:flex;align-items:center;gap:9px;cursor:pointer}.check-field input{width:16px;min-height:auto}
+.manager-list{display:grid;gap:15px}.manager-card{overflow:hidden;border:1px solid var(--line);background:var(--panel)}.manager-card.dragging{opacity:.4}.manager-card.drag-target{border-color:var(--gold)}.card-header{min-height:48px;padding:10px 13px;border-bottom:1px solid var(--line);background:#101010;display:flex;align-items:center;justify-content:space-between;gap:12px}.card-identity{min-width:0;display:flex;align-items:center;gap:10px}.card-number{min-width:29px;height:29px;border:1px solid rgba(180,138,90,.5);display:grid;place-items:center;color:var(--gold2);font-size:9px}.card-title{overflow:hidden;color:#ddd;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.card-actions{display:flex;flex-wrap:wrap;gap:6px}.card-body{display:grid;grid-template-columns:160px minmax(0,1fr)}.card-body.no-preview{grid-template-columns:1fr}.asset-preview{width:100%;height:100%;min-height:160px;display:block;object-fit:cover;background:#090909;border-right:1px solid var(--line)}.card-fields{padding:15px;min-width:0}.compact-field{margin-bottom:11px;display:flex;flex-direction:column;gap:6px}.compact-field input{min-height:35px}.compact-field textarea{min-height:72px}.inline-grid{display:grid;gap:11px}
+.export-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.export-card{min-height:205px;padding:22px;border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;align-items:flex-start}.export-card h3{margin:0;font-size:18px}.export-card p{flex:1;color:#838383;font-size:11px;line-height:1.7}.validation-box{margin-top:20px;color:#888;font-size:11px;line-height:1.7}.validation-box.success{border-color:rgba(149,198,160,.4);color:var(--success)}.validation-box.warning{border-color:rgba(199,149,77,.45);color:#d4b37d}.preview-heading{flex:0 0 auto;margin-bottom:15px}.preview-frame-shell{flex:1;min-height:0;overflow:hidden;border:1px solid var(--line);border-radius:5px;background:#050505;box-shadow:var(--shadow);transition:width .25s}.preview-frame-shell.mobile{width:min(390px,100%);margin:0 auto}#previewFrame{width:100%;height:100%;border:0;background:#111}.status-bar{flex:0 0 auto;margin-top:11px;min-height:34px;padding:9px 11px;border:1px solid var(--line);color:#777;font-size:10px}.status-bar.success{border-color:rgba(149,198,160,.4);color:var(--success)}.status-bar.error{border-color:rgba(210,115,115,.5);color:#e08f8f}
+@media(max-width:1220px){.workspace{grid-template-columns:1fr}.editor-column{border-right:0}.preview-column{position:relative;top:auto;height:720px;border-top:1px solid var(--line)}}
+@media(max-width:800px){.app-header{position:relative;flex-direction:column;align-items:stretch}.app-shell{display:block}.sidebar{position:sticky;top:0;z-index:90;width:100%;height:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;background:rgba(8,8,8,.95)}.sidebar-tab{min-width:155px}.sidebar-note{display:none}.editor-column,.preview-column{padding:20px}.form-grid.two-columns,.inline-grid,.export-grid{grid-template-columns:1fr}.card-body{grid-template-columns:1fr}.asset-preview{min-height:230px;border-right:0;border-bottom:1px solid var(--line)}.panel-heading{flex-direction:column}.preview-column{height:620px}}
+
+/* PROJECT LAYOUT CONTROLS — v0.5 */
+.project-layout-settings{margin-bottom:24px}.layout-settings-heading{margin-bottom:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.layout-settings-heading h3{margin:5px 0 0}.layout-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.range-field{display:flex;flex-direction:column;gap:9px}.range-field>span{color:#ddd;font-size:11px;letter-spacing:.025em}.range-field small{color:#666;font-size:9px;line-height:1.55}.range-row{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:12px;align-items:center}.range-row input[type="range"]{min-height:30px;padding:0;border:0;box-shadow:none;accent-color:var(--gold)}.range-row output{min-height:34px;padding:0 8px;border:1px solid var(--line);border-radius:3px;background:var(--field);color:var(--gold2);font-family:Consolas,Monaco,monospace;font-size:10px;display:grid;place-items:center}.rounded-settings-row{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(190px,.65fr) minmax(280px,1.35fr);gap:18px;align-items:center}.rounded-toggle{min-width:0;margin:0}.radius-field.is-disabled{opacity:.35;pointer-events:none}.layout-path-preview{margin-top:18px;padding:11px 13px;border:1px solid rgba(180,138,90,.28);background:rgba(180,138,90,.055);color:#bda17e;font-family:Consolas,Monaco,monospace;font-size:10px}@media(max-width:800px){.layout-control-grid,.rounded-settings-row{grid-template-columns:1fr}.layout-settings-heading{flex-direction:column}}
+
+
+/* =====================================================
+   HERO HEIGHT CONTROLS — v0.6
+===================================================== */
+.hero-layout-settings {
+    margin-bottom: 26px;
+}
+
+.hero-type-settings{margin-bottom:26px}
+
+
+/* =====================================================
+   HERO VERTICAL ALIGNMENT — v0.8.4
+===================================================== */
+.hero-vertical-divider {
+    margin: 22px 0 18px;
+    border-top: 1px solid var(--line);
+}
+
+.hero-align-grid {
+    margin-bottom: 18px;
+}
+
+
+/* =====================================================
+   v0.9.0 — KẾT NỐI VÀ LƯU TRỰC TIẾP HOME
+===================================================== */
+.connection-pill{min-height:30px;padding:7px 10px;border:1px solid var(--line2);border-radius:999px;display:inline-flex;align-items:center;color:#888;font-size:9px;letter-spacing:.04em;white-space:nowrap}.connection-pill::before{content:"";width:7px;height:7px;margin-right:7px;border-radius:50%;background:#666}.connection-pill[data-state="connected"]{border-color:rgba(149,198,160,.42);color:var(--success)}.connection-pill[data-state="connected"]::before{background:var(--success);box-shadow:0 0 0 3px rgba(149,198,160,.11)}.connection-pill[data-state="dirty"]{border-color:rgba(199,149,77,.55);color:#d4b37d}.connection-pill[data-state="dirty"]::before{background:#d4b37d}.connection-pill[data-state="permission"]{border-color:rgba(199,149,77,.45);color:#d4b37d}.connection-pill[data-state="permission"]::before{background:#d4b37d}.connection-pill[data-state="unsupported"]{border-color:rgba(210,115,115,.45);color:#e08f8f}.connection-pill[data-state="unsupported"]::before{background:#e08f8f}.direct-save-card{border-color:rgba(149,198,160,.34);background:linear-gradient(145deg,rgba(149,198,160,.08),var(--panel) 55%)}@media(max-width:1100px){.connection-pill{order:10}.header-actions{align-items:center}}
+
+
+/* =====================================================
+   v0.9.4 — DANH SÁCH GÓC GIẢI ĐÁP GỌN TRÊN DESKTOP + MOBILE
+   Hiển thị 5 tiêu đề đầy đủ và một phần tiêu đề thứ 6.
+===================================================== */
+#qnaList{
+    --qna-row-height:56px;
+    --qna-row-gap:8px;
+    height:348px;
+    max-height:348px;
+    padding-right:7px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    align-content:start;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+}
+#qnaList::-webkit-scrollbar{width:5px}
+#qnaList::-webkit-scrollbar-thumb{background:rgba(180,138,90,.72);border-radius:999px}
+#qnaList .manager-card[data-type="qna"]{min-height:var(--qna-row-height);overflow:visible}
+#qnaList .manager-card[data-type="qna"] .card-header{
+    min-height:var(--qna-row-height);
+    height:var(--qna-row-height);
+    padding:9px 12px;
+    border-bottom:0;
+    cursor:pointer;
+    user-select:none;
+}
+#qnaList .manager-card[data-type="qna"] .card-header:hover{background:rgba(180,138,90,.09)}
+#qnaList .manager-card[data-type="qna"] .card-identity{flex:1;overflow:hidden}
+#qnaList .manager-card[data-type="qna"] .card-title{
+    display:block;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:11px;
+}
+#qnaList .manager-card[data-type="qna"] .card-header::after{
+    content:"＋";
+    flex:0 0 auto;
+    margin-left:4px;
+    color:#777;
+    font-size:14px;
+    line-height:1;
+}
+#qnaList .manager-card[data-type="qna"].is-open .card-header{
+    border-bottom:1px solid var(--line);
+    background:rgba(180,138,90,.09);
+}
+#qnaList .manager-card[data-type="qna"].is-open .card-header::after{content:"−";color:var(--gold2)}
+#qnaList .manager-card[data-type="qna"] .card-body{display:none}
+#qnaList .manager-card[data-type="qna"].is-open .card-body{display:grid}
+#qnaList .manager-card[data-type="qna"] .card-actions{display:none}
+#qnaList .manager-card[data-type="qna"].is-open .card-actions{display:flex}
+@media(max-width:800px){
+    #qnaList{height:348px}
+    #qnaList .manager-card[data-type="qna"].is-open .card-body{display:grid;grid-template-columns:1fr}
+}
+
+    </style>
+    <script>
+(() => {
+    "use strict";
+    const DEFAULT_STATE = {
+  "id": "dreamese-home-current",
+  "settings": {
+    "fileName": "dreamese.html",
+    "pageTitle": "Dreamese - Kiến trúc & Nội thất",
+    "cssPath": "HOME.css",
+    "jsPath": "HOME.js",
+    "logoPath": "Dreamese_Studio.png"
+  },
+  "partners": [],
+  "sectionTitles": {
+    "projects": "Dự án tiêu biểu",
+    "qna": "Góc giải đáp",
+    "services": "Dịch vụ",
+    "contact": "Liên hệ"
+  },
+  "hero": {
+    "desktopTop": "Những câu chuyện được kể lại",
+    "desktopBottom": "bằng không gian sống",
+    "desktopParagraphs": [
+      "Chúng tôi tin rằng, mỗi công trình thiết kế luôn bắt đầu từ con người và những câu chuyện mang tính ước vọng.",
+      "Ở Dreamese, Kiến trúc sư đóng vai trò như những Dịch giả biến những câu chuyện,\n                những ước vọng tưởng chừng như rất mơ hồ thành không gian sống đích thực.",
+      "Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất\n                để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu."
+    ],
+    "mobileTop": "Thiết kế không gian",
+    "mobileBottom": "như viết 1 câu chuyện sống",
+    "mobileParagraph": "Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất\nđể mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.\nHân hạnh được đồng hành kể lại những câu chuyện trường tồn này",
+    "note": "DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ",
+    "backgrounds": [
+      {
+        "id": "b70a4e3c-2378-47d3-b9b0-0bb501c9cd17",
+        "path": "PROJECTS/RUSTANIA/A_ExC_001.1.png"
+      },
+      {
+        "id": "97b658fa-f078-42b8-9216-19a02676b98f",
+        "path": "PROJECTS/Lean_Villa/ExC_05.3.jpg"
+      },
+      {
+        "id": "19cd9b91-7871-4d68-a585-6327842e86ed",
+        "path": "PROJECTS/TT_Villa/ExC_01.1.jpg"
+      },
+      {
+        "id": "cf6371af-d780-45ce-97e8-5a008d64dc2a",
+        "path": "PROJECTS/TouchHome/ExC_01.1.png"
+      },
+      {
+        "id": "1391af15-e277-459a-8909-a8e445959763",
+        "path": "PROJECTS/TVT_House/C1.jpg"
+      },
+      {
+        "id": "f89e330b-0894-46c7-a00b-e397fb1cd490",
+        "path": "PROJECTS/PN1/PN1_ExC_09.1.png"
+      },
+      {
+        "id": "69eaf757-e83d-4017-98fe-244492812a64",
+        "path": "PROJECTS/Thu_Dieu/ExC_01.2.jpg"
+      },
+      {
+        "id": "40acf9ba-1b3b-4fce-acc7-1527a60cd43a",
+        "path": "PROJECTS/TranPhuong_Villa/TP-Villa_Terrace_01.png"
+      },
+      {
+        "id": "24e192cc-3c1e-45f0-a346-a527c86a5081",
+        "path": "PROJECTS/Lavender/C8.jpg"
+      },
+      {
+        "id": "9654c2bf-59f9-4118-8ebf-e2a222c21bd1",
+        "path": "PROJECTS/TN_Cottage/TN_Bal_02.jpg"
+      },
+      {
+        "id": "9f0057f7-551e-4bbc-8816-13d9ca41dc25",
+        "path": "PROJECTS/ThanVanNhiep/C8.jpg"
+      },
+      {
+        "id": "bf9125eb-ef2c-4c76-8b8d-4ece2f228d9d",
+        "path": "PROJECTS/Ada_Office/Ada_0F_03.2.png"
+      }
+    ],
+    "preloadPath": "PROJECTS/RUSTANIA/A_ExC_001.1.png"
+  },
+  "projects": [
+    {
+      "id": "36f8512f-9c13-4414-b91f-ae1298ac5931",
+      "href": "Rustania.html",
+      "title": "Rustania Homes",
+      "slogan": "Trải nghiệm sức sống mới",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/RUSTANIA/A_ExC_008.1.png"
+    },
+    {
+      "id": "664a2eac-d59f-40be-962b-e6462831a0a5",
+      "href": "Lean_Villa.html",
+      "title": "Lean Villa",
+      "slogan": "Điểm tựa tinh thần",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/Lean_Villa/ExC_05.2.jpg"
+    },
+    {
+      "id": "5ec61438-057d-412f-80cf-a05aba81c7ed",
+      "href": "TT_Villa.html",
+      "title": "T&T Villa",
+      "slogan": "Sự tương phản trong ánh nhìn",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/TT_Villa/ExC_06.1.jpg"
+    },
+    {
+      "id": "e4852268-5214-4244-8bc9-178f1704e999",
+      "href": "NamThien1.html",
+      "title": "Thu Điếu",
+      "slogan": "Nốt nhạc tĩnh của thanh âm",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/Thu_Dieu/ExC_01.2.jpg"
+    },
+    {
+      "id": "508a1585-4822-42e2-a38d-846667fcccdc",
+      "href": "SimplePC.html",
+      "title": "Mr Đặng Villa",
+      "slogan": "Không phù phiếm",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/SimplePC/Ext_001.3.png"
+    },
+    {
+      "id": "a71f378e-13c0-400f-a248-59375f5dfda0",
+      "href": "TVT.html",
+      "title": "TVT Home",
+      "slogan": "Trỗi dậy và Bức phá",
+      "category": "Nhà phố",
+      "imagePath": "PROJECTS/TVT_House/F1.jpg"
+    },
+    {
+      "id": "dbff40f7-b4da-4a90-982c-9aaf8b975271",
+      "href": "Chateur.html",
+      "title": "Breath Villa",
+      "slogan": "Lắng nghe những nhịp chậm",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/Chateur_QL_Villa/Chateur_ExC_02.jpg"
+    },
+    {
+      "id": "8b0822ef-1208-4a66-8bea-7a2007ebb85f",
+      "href": "TranPhuong.html",
+      "title": "Cù Lao Villa",
+      "slogan": "Theo luồng cảm xúc",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/TranPhuong_Villa/TP-Villa_Up_02.1.png"
+    },
+    {
+      "id": "83d8ed5c-3903-4f1f-9ce9-c15b7999a452",
+      "href": "PN1.html",
+      "title": "Nhuận Home",
+      "slogan": "Về nhà",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/PN1/PN1_ExC_09.1.png"
+    },
+    {
+      "id": "395c6a36-2d17-4427-a2f9-a4fee80fefe9",
+      "href": "Touch.html",
+      "title": "Touch House",
+      "slogan": "Điểm chạm của không gian",
+      "category": "Biệt thự",
+      "imagePath": "PROJECTS/TouchHome/ExC_01.1.png"
+    },
+    {
+      "id": "27b8af35-da96-4b46-8799-efe7a25f48f7",
+      "href": "Lavender.html",
+      "title": "Lavender Restaurant",
+      "slogan": "Giá trị chuyển biến",
+      "category": "Nhà hàng",
+      "imagePath": "PROJECTS/Lavender/C8.jpg"
+    },
+    {
+      "id": "6466989e-3de3-41b1-ac28-e0daece75d7e",
+      "href": "Heal_Hill.html",
+      "title": "Heal Hill",
+      "slogan": "Góc thiền",
+      "category": "Nhà ở nghỉ dưỡng - Bungalow",
+      "imagePath": "PROJECTS/TN_Cottage/TN_Bal_02.jpg"
+    },
+    {
+      "id": "ef23a148-2fa2-48e0-8fac-7e0760c92f72",
+      "href": "ThanVanNhiep.html",
+      "title": "ThanVanNhiep Office",
+      "slogan": "Riêng tư cởi mở",
+      "category": "Văn phòng",
+      "imagePath": "PROJECTS/ThanVanNhiep/C8.jpg"
+    },
+    {
+      "id": "5d2c916f-4a8a-48e4-9c51-90b6402331ae",
+      "href": "Ada.html",
+      "title": "Ada Office",
+      "slogan": "Đối thoại",
+      "category": "Văn phòng",
+      "imagePath": "PROJECTS/Ada_Office/Ada_0F_02.2.png"
+    }
+  ],
+  "qnas": [
+    {
+      "id": "5c84fce9-fc2f-48e6-8e7c-4aa126de4bad",
+      "question": "Kiến trúc sư giúp được gì cho bạn ngoài bản vẽ?",
+      "answerTitle": "Cần Kiến trúc sư để làm gì?",
+      "paragraphs": [
+        "Kiến trúc sư sẽ dùng các trải nghiệm để khơi gợi và tinh chỉnh các nhu cầu của bạn một cách hợp lí theo góc nhìn sinh hoạt của ngôi nhà sắp tới.",
+        "Giúp bạn có những cái nhìn ĐÚNG - SAI về Quyết định của bản thân và GIỮ VỮNG TINH THẦN về thẩm mỹ trong suốt quá trình thi công."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": "PROJECTS/TouchHome/Void_01.jpg"
+    },
+    {
+      "id": "d41f2332-c4b6-4bbf-8638-ce7aa1af9654",
+      "question": "Bản vẽ Thiết kế có thực sự quan trọng?",
+      "answerTitle": "Vai trò của bản vẽ thiết kế",
+      "paragraphs": [
+        "Bản vẽ chính là vũ khí bảo vệ bạn, để biết được \"TRỌN GÓI\" là gồm những gì, đừng để toilet mà thiếu thoát nước, hay tủ lạnh mà thiếu ổ cắm.",
+        "Đối với DREAMESE STUDIO, bản vẽ là hình thức để bạn xác nhận điều bạn đang làm là đúng và là ngôn ngữ chính xác nhất cho đội thợ thi công."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": "QnA/Q_02.png"
+    },
+    {
+      "id": "62658716-e9e9-4442-bd04-0e670e60bf76",
+      "question": "Kiến trúc sư có giúp tôi tiết kiệm chi phí không?",
+      "answerTitle": "Cân đối ngân sách thi công",
+      "paragraphs": [
+        "Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn.\n                        Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.",
+        "Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất.",
+        "Bên cạnh đó, chúng tôi cũng sẵn sàng khuyên Quý Khách hàng có thể tạm dừng kế hoạch thi công nếu tình hình vật tư biến động\n                        hoặc nhu cầu của khách hàng đang vượt quá ngân sách đang có."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": "QnA/Q_03.png"
+    },
+    {
+      "id": "21234fa0-770d-4e9f-a44b-d9fbb2e89913",
+      "question": "Có phát sinh chi phí trong quá trình thi công không?",
+      "answerTitle": "Phát sinh thi công",
+      "paragraphs": [
+        "CHÚNG TÔI CAM KẾT KHI THI CÔNG THEO ĐÚNG NHƯ BẢN VẼ THIẾT KẾ, CÔNG TRÌNH SẼ KHÔNG PHÁT SINH.",
+        "Sau khi thiết kế xong, bản dự toán chi tiết sẽ liệt kê đầy đủ các hạng mục và khối lượng cần thiết để thi công công trình.\n                        Do đó, ngay cả khi khách hàng không đồng hành cùng Dreamese hay MT Cons thì cũng đều có thể dễ dàng thi công theo đúng bản vẽ và dự toán đã có."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "0e252902-b432-4642-b84e-91fa13fce1e7",
+      "question": "Thiết kế có ảnh hưởng đến giá trị ngôi nhà như thế nào?",
+      "answerTitle": "Giá trị của thiết kế",
+      "paragraphs": [
+        "Khi tìm đến Kiến trúc sư, thông thường có 3 lí do để Khách hàng tìm đến:",
+        "1 là Khách hàng muốn có ngôi nhà đẹp và ngân sách chính xác trước khi thi công;",
+        "2 là muốn có không gian sống lý tưởng;",
+        "3 là muốn biết ngân sách thi công của mình có đảm bảo với nhu cầu hay không.",
+        "Do đó, 1 bản thiết kế không phải chỉ đẹp trên hình thức 3D mà bản vẽ kỹ thuật thi công đi kèm cũng cần được tỉ mẫn, đúng kỹ thuật và thể hiện được sự chuyên nghiệp.",
+        "Ở Dreamese, chúng tôi hiểu rõ những kỳ vọng mà mọi khách hàng mang theo khi tìm đến, vì vậy bên cạnh làm khách hàng thấy dễ hiểu với những hình ảnh 3D lung linh,\n                        chúng tôi cũng quan tâm với việc giải thích các yếu tố kỹ thuật và quy trình thực hiện.",
+        "Điều này sẽ giúp ngôi nhà của bạn giữ được giá trị lâu dài và tránh được những rủi ro không đáng có trong quá trình thi công."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "e91d5d8d-f67d-4a7d-8ee5-233d6754ad73",
+      "question": "Tôi nên chọn Kiến trúc sư hay Nhà thiết kế như thế nào?",
+      "answerTitle": "Lựa chọn Kiến trúc sư phù hợp",
+      "paragraphs": [
+        "Với kinh nghiệm hơn 10 năm hoạt động trong lĩnh vực này kể cả ở trong và ngoài nước, chúng tôi hiểu rõ sự tầm quan trọng của việc lựa chọn một Kiến trúc sư phù hợp.",
+        "Bất kỳ ai cũng có thể nói về năng lực bản thân, về quy mô doanh nghiệp, về quy trình, ... Tuy nhiên, cốt lõi là sự phù hợp khi giao tiếp và giá trị thực\n                        mà Kiến trúc sư mang lại có đáp ứng được kỳ vọng của khách hàng hay không.",
+        "Dreamese chúng tôi tuy là một đơn vị nhỏ, nhưng chúng tôi luôn cố gắng hết mình để mang đến cho khách hàng những giá trị thiết thực nhất,\n                        và cũng sẵn sàng từ chối hoặc giới thiệu studio khác nếu bản thân không thể đáp ứng phù hợp."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "fbd7a2d9-aaa5-4d01-839e-da4a37bad690",
+      "question": "Dreamese có hỗ trợ tư vấn thiết kế miễn phí không?",
+      "answerTitle": "Chi phí thiết kế",
+      "paragraphs": [
+        "Chi phí thiết kế tại Dreamese phụ thuộc vào quy mô và yêu cầu cụ thể của từng công trình.\n                        Chúng tôi cung cấp các gói thiết kế linh hoạt để phù hợp với ngân sách của khách hàng.",
+        "Ở Dreamese chúng tôi trao đi những giá trị với giá cả phù hợp và không miễn phí thiết kế. Tuy nhiên, khi đồng hành đồng bộ từ thiết kế tới thi công,\n                        Khách hàng sẽ được hỗ trợ giảm trừ thiết kế trong tổng chi phí thi công.",
+        "Chúng tôi vẫn khuyến khích khách hàng nên đầu tư vào giá trị thiết kế để có được một không gian sống hoàn hảo và bền vững,\n                        đồng thời khẳng định được đẳng cấp giá trị Cá nhân hóa."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "b309bbde-fa4b-43de-8e37-0055dd428af5",
+      "question": "Những vật liệu thi công mới nếu không có tác dụng quá lớn để thay thế vật liệu cũ thì giá trị của nó là gì?",
+      "answerTitle": "Vật liệu mới",
+      "paragraphs": [
+        "Mặc dù sự phát tiển của vật liệu thi công mới khá nổi bậc, tuy nhiên sự ứng dụng vào thực tiễn vẫn còn nhiều sự hạn chế.\n                        Điều này bắt nguồn từ sự thiếu hiểu biết về độ bền vật liệu, tính liên kết, và đặc biệt ảnh hưởng tới chi phí bảo hành.",
+        "Do đó, việc chọn lựa 1 đơn vị tư vấn uy tín là rất quan trọng để đảm bảo chất lượng và hiệu quả trong quá trình thi công."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "7d7d2494-6226-494f-a9a6-49ecbfdc1561",
+      "question": "Trước khi thiết kế cần cung cấp những thông tin gì?",
+      "answerTitle": "Cân đối ngân sách thi công",
+      "paragraphs": [
+        "Trên cùng một Quy mô của công trình, Kiến trúc sư không giúp bạn xây nhà rẻ hơn. Tuy nhiên, chúng tôi hoàn toàn có thể cân đối và giúp tinh giản những thứ không cần thiết.",
+        "Bằng cách khai thác thói quen sinh hoạt, chúng tôi giúp ngôi nhà thông thoáng và tối ưu chi phí đầu tư hiệu quả nhất."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "67b2f4be-fb46-471e-9739-8fdaa5743185",
+      "question": "Thời gian thực hiện dự án là bao lâu?",
+      "answerTitle": "Thời gian thực hiện dự án",
+      "paragraphs": [
+        "Thông thường, thời gian thực hiện dự án tại Dreamese Studio là từ 3 đến 6 tháng, tùy vào quy mô và độ phức tạp của công trình.",
+        "Bằng cách khai thác câu chuyện tổng thể của công trình và điều mà khách hàng mong muốn định hướng, chúng tôi sẽ có Quy trình triển khai công việc\n                        phù hợp để đáp ứng nhu cầu của Dự án.",
+        "Ở Dreamese, mỗi công trình luôn mang theo 1 câu chuyện tâm huyết, do đó, chính sách là nếu không thể đáp ứng được nhu cầu cũng như kỳ vọng của khách hàng,\n                        chúng tôi sẽ không nhận dự án và hoàn tiền lại cho Khách hàng."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "6d250196-18b7-467a-82df-3ba00201ff85",
+      "question": "Dreamese Studio phù hợp với những khách hàng và phong cách thiết kế nào?",
+      "answerTitle": "Phong cách thiết kế của Dreamese Studio",
+      "paragraphs": [
+        "Ở Dreamese Studio, chúng tôi thuần về các phong cách thiết kế Hiện đại, Tối giản và sang trọng; song vẫn có những ngoại lệ khi câu chuyện nhu cầu và\n                        mong muốn của Khách hàng phù hợp với trí tưởng tưởng tượng của Kiến trúc sư, chúng tôi vẫn sẽ có đội ngũ thực hiện những thiết kế đặc biệt cho Signature.",
+        "Có vẻ, những phong cách thiết kế của Dreamese là không bị giới hạn, và như thế, chúng tôi thích lắng nghe câu chuyện của khách hàng,\n                        và viết nó lại bằng thiết kế, bằng công trình hiện hữu."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "977e3d3c-f4dc-421d-84fa-388148afe2b5",
+      "question": "Studio có nhận thiết kế và thi công trọn gói không?",
+      "answerTitle": "DỊCH VỤ TỪ DREAMESE",
+      "paragraphs": [
+        "Tùy vào câu chuyện cũng như nhu cầu của khách hàng, chúng tôi hân hạnh có những dịch vụ phù hợp với từng nhu cầu."
+      ],
+      "secondaryLabel": "Dịch vụ và Quy trình làm việc của Dreamese Studio →",
+      "secondaryHref": "#services",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": ""
+    },
+    {
+      "id": "4b35972f-87de-43de-a502-a2c5a008c673",
+      "question": "DreameseStudio có nhận dự án ở tỉnh / ngoài khu vực không?",
+      "answerTitle": "Phạm vi hoạt động của Dreamese Studio",
+      "paragraphs": [
+        "Dreamese Studio là 1 đơn vị chuyên cung cấp hoạt động thiết kế Kiến trúc - Nội thất chuyên nghiệp, vì vậy, ở đâu có câu chuyện,\n                        có nhu cầu, chúng tôi đều có thể đáp ứng, **ĐẢM BẢO QUY TRÌNH** được thực hiện đầy đủ",
+        "Tuy nhiên, đối với công tác thi công MT Construction sẽ tùy thuộc vào Vị trí địa lí, Quy mô công trình, mà chúng tôi sẽ có giải pháp cung cấp dịch vụ phù hợp."
+      ],
+      "secondaryLabel": "",
+      "secondaryHref": "",
+      "ctaLabel": "Trao đổi cùng KTS →",
+      "ctaHref": "#contact",
+      "imagePath": "PROJECTS/Lean_Villa/ExC_05.1.png"
+    }
+  ],
+  "services": [
+    {
+      "id": "860aba05-1180-469e-a3ba-764b110dc223",
+      "href": "Qtr_TKTC.html",
+      "title": "Thiết kế -Thi công trọn gói",
+      "description": "Đồng bộ từ thẩm mỹ thiết kế, kỹ thuật thi công và\n                chịu trách nhiệm trên toàn bộ ngân sách xây dựng.",
+      "linkLabel": "Quy trình triển khai →"
+    },
+    {
+      "id": "fce6a542-8627-4a60-9bef-f332a361d32e",
+      "href": "Qtr_QLDA.html",
+      "title": "Thiết kế -Quản lí Dự án",
+      "description": "Đảm bảo và Kiểm soát tính nhất quán từ\n                Bản vẽ Thiết kế - Kỹ thuật đến công tác Triển khai thi công.",
+      "linkLabel": "Quy trình triển khai →"
+    },
+    {
+      "id": "13692f25-3e4e-4c04-9d90-e6afa614bced",
+      "href": "Qtr_TKKT.html",
+      "title": "Thiết kế Kiến trúc",
+      "description": "Tối ưu không gian sử dụng, thẩm mỹ hình khối xây dựng\n                và xây dựng bản sắc riêng cho câu chuyện của công trình.",
+      "linkLabel": "Quy trình triển khai →"
+    },
+    {
+      "id": "c551b2a3-8d66-4c5a-99c3-fa0be13bc6ec",
+      "href": "Qtr_TKNT.html",
+      "title": "Thiết kế Nội thất",
+      "description": "Đồng bộ vật liệu và chi phí tối ưu với chất lượng\n                phù hợp nhất hướng đến xây dựng lối sống cá nhân hóa.",
+      "linkLabel": "Quy trình triển khai →"
+    }
+  ],
+  "contact": {
+    "tagline": "DREAMESE STUDIO – Đồng hành kiến tạo không gian sống.",
+    "rows": [
+      {
+        "id": "ef0ae429-9fbd-427d-8972-e5caef8b0b8b",
+        "label": "Hotline:",
+        "content": "09 4363 4758 - (KTS. Vương)"
+      },
+      {
+        "id": "818ceab2-cfc8-4036-9d6a-8b784603b55f",
+        "label": "Địa chỉ:",
+        "content": "Cơ sở 1: Trần Văn Thời - Cà Mau\nCơ sở 2: 11/8/32 ĐHT 17, KP2, P.Đông Hưng Thuận, Tp.HCM"
+      },
+      {
+        "id": "0ecc577e-ebea-4105-a104-9db32762f014",
+        "label": "Email:",
+        "content": "vtv.arc@gmail.com"
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2025 DREAMESE STUDIO – Architecture & Interior Design",
+    "email": "vtv.arc@gmail.com",
+    "phone": "09 4363 4758"
+  },
+  "projectLayout": {
+    "height": 400,
+    "gap": 12,
+    "rounded": true,
+    "radius": 8
+  },
+  "heroLayout": {
+    "desktopHeight": 110,
+    "mobileHeight": 75
+  },
+  "heroTypography": {
+    "titleDesktop": 64,
+    "bodyDesktop": 15,
+    "titleMobile": 34,
+    "bodyMobile": 12,
+    "noteDesktop": 12,
+    "noteMobile": 12
+  },
+  "heroVertical": {
+    "desktopAlign": "center",
+    "mobileAlign": "center",
+    "desktopPaddingTop": 250,
+    "desktopPaddingBottom": 30,
+    "mobilePaddingTop": 100,
+    "mobilePaddingBottom": 65
+  }
+};
+    const STORAGE_KEY = "dreamese-home-manager-current-v1";
+    const FS_DB_NAME = "dreamese-home-manager-fs-v1";
+    const FS_STORE_NAME = "handles";
+    const FS_ROOT_KEY = "website-root-v091";
+    const SITE_HOME_FILE = "dreamese.html";
+    const SITE_REQUIRED_FILES = ["DHM.html", SITE_HOME_FILE, "HOME.css", "HOME.js"];
+
+    /* Dữ liệu dùng chung giữa DHM.html và dreamese.html.
+       Đây là cơ chế giống Chapter Manager: lưu cấu hình trong trình duyệt,
+       trang website sẽ tự đọc lại mà không cần tải HTML rồi chép đè. */
+    const LIVE_DB_NAME = "dreamese-home-live-v1";
+    const LIVE_DB_VERSION = 1;
+    const LIVE_STORE_NAME = "content";
+    const LIVE_PAYLOAD_KEY = "home-payload-v1";
+    const LIVE_LOCAL_KEY = "dreamese-home-live-payload-v1";
+    const LIVE_CHANNEL_NAME = "dreamese-home-live-updates";
+
+    const IMAGE_RE = /\.(jpe?g|png|webp|gif|avif)$/i;
+    let state = normalizeState(DEFAULT_STATE);
+    let previewTimer = null;
+    let dragged = null;
+    let websiteDirectoryHandle = null;
+    let websiteHomeFileHandle = null;
+    let websitePermissionState = "prompt";
+    let stateDirty = false;
+    let openQnaId = null;
+    const previewUrls = new Map();
+    const el = {};
+
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+
+    async function init() {
+        ["importHomeInput","websiteFolderInput","importHomeBtn","websiteFolderBtn","reloadWebsiteBtn","websiteConnectionState","newHomeBtn","saveHomeBtn","homeFileName","pageTitle","cssPath","jsPath","logoPath","partnerMt","partnerTitan","projectsSectionTitle","qnaSectionTitle","servicesSectionTitle","contactSectionTitle","footerCopyright","footerEmail","footerPhone","desktopTitle","desktopParagraphs","mobileTitle","mobileParagraph","heroNote","heroDesktopHeight","heroDesktopHeightValue","heroMobileHeight","heroMobileHeightValue","heroHeightSummary","resetHeroHeightBtn","heroDesktopAlign","heroMobileAlign","heroDesktopPaddingTop","heroDesktopPaddingTopValue","heroDesktopPaddingBottom","heroDesktopPaddingBottomValue","heroMobilePaddingTop","heroMobilePaddingTopValue","heroMobilePaddingBottom","heroMobilePaddingBottomValue","heroVerticalSummary","heroTitleDesktopSize","heroTitleDesktopSizeValue","heroBodyDesktopSize","heroBodyDesktopSizeValue","heroTitleMobileSize","heroTitleMobileSizeValue","heroBodyMobileSize","heroBodyMobileSizeValue","heroNoteDesktopSize","heroNoteDesktopSizeValue","heroNoteMobileSize","heroNoteMobileSizeValue","heroTypeSummary","resetHeroTypeBtn","addBackgroundBtn","preloadBackgroundSelect","backgroundList","projectJsonInput","importProjectJsonBtn","addProjectBtn","projectCardHeight","projectCardHeightValue","projectCardGap","projectCardGapValue","projectRounded","projectCardRadius","projectCardRadiusValue","projectRadiusField","projectLayoutSummary","resetProjectLayoutBtn","projectsList","addQnaBtn","qnaList","addServiceBtn","servicesList","contactTagline","addContactRowBtn","contactRowsList","downloadHtmlBtn","downloadStateBtn","importStateBtn","importStateInput","downloadZipBtn","writeWebsiteBtn","validationBox","previewFrame","previewFrameShell","refreshPreviewBtn","statusBar"].forEach(id => el[id] = document.getElementById(id));
+        bindTabs(); bindGeneral(); bindHero(); bindHeroLayout(); bindHeroVertical(); bindHeroTypography(); bindProjectLayout(); bindLists(); bindExport(); bindPreview();
+
+        const restoredDraft = restore();
+        if (!restoredDraft) {
+            await restoreLiveState();
+        }
+
+        renderAll();
+        markDirty(false);
+        restoreWebsiteConnection();
+        status("Đã tải dữ liệu Home. Nhấn “Lưu thay đổi” để cập nhật website.", "success");
+    }
+
+    function bindTabs() {
+        document.querySelectorAll(".sidebar-tab").forEach(btn => btn.addEventListener("click", () => {
+            document.querySelectorAll(".sidebar-tab").forEach(x => x.classList.toggle("active", x === btn));
+            document.querySelectorAll(".tab-panel").forEach(x => x.classList.toggle("active", x.dataset.panel === btn.dataset.tab));
+            if (btn.dataset.tab === "export") renderValidation();
+        }));
+    }
+
+    function bindGeneral() {
+        const binds = {
+            homeFileName:["settings","fileName"], pageTitle:["settings","pageTitle"], cssPath:["settings","cssPath"], jsPath:["settings","jsPath"], logoPath:["settings","logoPath"],
+            projectsSectionTitle:["sectionTitles","projects"], qnaSectionTitle:["sectionTitles","qna"], servicesSectionTitle:["sectionTitles","services"], contactSectionTitle:["sectionTitles","contact"],
+            footerCopyright:["footer","copyright"], footerEmail:["footer","email"], footerPhone:["footer","phone"]
+        };
+        Object.entries(binds).forEach(([id,path]) => el[id].addEventListener("input", () => {
+            setPath(state,path,el[id].value);
+            if(id === "homeFileName") {
+                state.settings.fileName = SITE_HOME_FILE;
+                el.homeFileName.value = SITE_HOME_FILE;
+                websiteHomeFileHandle = null;
+            }
+            queue();
+        }));
+        [el.partnerMt,el.partnerTitan].forEach(box => box.addEventListener("change", () => {
+            state.partners=[el.partnerMt,el.partnerTitan].filter(x=>x.checked).map(x=>x.value); queue();
+        }));
+        el.importHomeBtn.addEventListener("click",()=>el.importHomeInput.click());
+        el.importHomeInput.addEventListener("change",importHome);
+        el.websiteFolderBtn.addEventListener("click", () => window.open(SITE_HOME_FILE, "_blank", "noopener,noreferrer"));
+        el.reloadWebsiteBtn.addEventListener("click", () => loadHomeFromWebsite({ askBeforeDiscard: true }));
+        el.websiteFolderInput.addEventListener("change",loadWebsiteFolder);
+        el.newHomeBtn.addEventListener("click",()=>{
+            if(!confirm("Tạo trang chủ mới? Dữ liệu chưa lưu sẽ bị thay thế.")) return;
+            clearPreviewUrls(); state=normalizeState(blankState()); renderAll(); markDirty(true); status("Đã tạo trang chủ mới.","success");
+        });
+        el.saveHomeBtn.addEventListener("click", saveHomeToBrowser);
+    }
+
+    function bindHero() {
+        el.desktopTitle.addEventListener("input", () => {
+            const title = splitLayoutTitle(el.desktopTitle.value);
+            state.hero.desktopTop = title.beforeBreak;
+            state.hero.desktopBottom = title.afterBreak;
+            queue();
+        });
+
+        el.mobileTitle.addEventListener("input", () => {
+            const title = splitLayoutTitle(el.mobileTitle.value);
+            state.hero.mobileTop = title.beforeBreak;
+            state.hero.mobileBottom = title.afterBreak;
+            queue();
+        });
+
+        const binds = {
+            mobileParagraph: "mobileParagraph",
+            heroNote: "note"
+        };
+
+        Object.entries(binds).forEach(([id, key]) => {
+            el[id].addEventListener("input", () => {
+                state.hero[key] = el[id].value;
+                queue();
+            });
+        });
+
+        el.desktopParagraphs.addEventListener("input", () => {
+            state.hero.desktopParagraphs = paragraphs(el.desktopParagraphs.value);
+            queue();
+        });
+
+        el.addBackgroundBtn.addEventListener("click", () => {
+            state.hero.backgrounds.push({ id: uid(), path: "" });
+            renderBackgrounds();
+            queue();
+        });
+
+        el.preloadBackgroundSelect.addEventListener("change", () => {
+            state.hero.preloadPath = el.preloadBackgroundSelect.value;
+            queue();
+        });
+    }
+
+    function bindHeroLayout() {
+        const updateHeight = (key, value) => {
+            state.heroLayout[key] = clampNumber(
+                value,
+                25,
+                200,
+                state.heroLayout[key]
+            );
+
+            syncHeroLayoutControls();
+            queue();
+        };
+
+        el.heroDesktopHeight.addEventListener("input", () => {
+            updateHeight("desktopHeight", el.heroDesktopHeight.value);
+        });
+
+        el.heroMobileHeight.addEventListener("input", () => {
+            updateHeight("mobileHeight", el.heroMobileHeight.value);
+        });
+
+        el.resetHeroHeightBtn.addEventListener("click", () => {
+            state.heroLayout = {
+                desktopHeight: 100,
+                mobileHeight: 100
+            };
+
+            syncHeroLayoutControls();
+            queue();
+            status("Đã khôi phục chiều cao Hero về 100vh.", "success");
+        });
+    }
+
+    function syncHeroLayoutControls() {
+        const layout = normalizedHeroLayout(state.heroLayout);
+
+        state.heroLayout = layout;
+
+        el.heroDesktopHeight.value = String(layout.desktopHeight);
+        el.heroDesktopHeightValue.textContent =
+            `${layout.desktopHeight} vh`;
+
+        el.heroMobileHeight.value = String(layout.mobileHeight);
+        el.heroMobileHeightValue.textContent =
+            `${layout.mobileHeight} vh`;
+
+        el.heroHeightSummary.textContent =
+            `Desktop ${layout.desktopHeight}vh · Mobile ${layout.mobileHeight}vh`;
+    }
+
+    function bindHeroVertical() {
+        const numberControls = [
+            ["heroDesktopPaddingTop", "desktopPaddingTop", 0, 300],
+            ["heroDesktopPaddingBottom", "desktopPaddingBottom", 0, 300],
+            ["heroMobilePaddingTop", "mobilePaddingTop", 0, 240],
+            ["heroMobilePaddingBottom", "mobilePaddingBottom", 0, 240]
+        ];
+
+        numberControls.forEach(([elementId, key, minimum, maximum]) => {
+            el[elementId].addEventListener("input", () => {
+                state.heroVertical[key] = clampNumber(
+                    el[elementId].value,
+                    minimum,
+                    maximum,
+                    state.heroVertical[key]
+                );
+
+                syncHeroVerticalControls();
+                queue();
+            });
+        });
+
+        el.heroDesktopAlign.addEventListener("change", () => {
+            state.heroVertical.desktopAlign = el.heroDesktopAlign.value;
+            syncHeroVerticalControls();
+            queue();
+        });
+
+        el.heroMobileAlign.addEventListener("change", () => {
+            state.heroVertical.mobileAlign = el.heroMobileAlign.value;
+            syncHeroVerticalControls();
+            queue();
+        });
+    }
+
+    function syncHeroVerticalControls() {
+        const vertical = normalizedHeroVertical(state.heroVertical);
+        state.heroVertical = vertical;
+
+        el.heroDesktopAlign.value = vertical.desktopAlign;
+        el.heroMobileAlign.value = vertical.mobileAlign;
+
+        const values = [
+            ["heroDesktopPaddingTop", "heroDesktopPaddingTopValue", vertical.desktopPaddingTop],
+            ["heroDesktopPaddingBottom", "heroDesktopPaddingBottomValue", vertical.desktopPaddingBottom],
+            ["heroMobilePaddingTop", "heroMobilePaddingTopValue", vertical.mobilePaddingTop],
+            ["heroMobilePaddingBottom", "heroMobilePaddingBottomValue", vertical.mobilePaddingBottom]
+        ];
+
+        values.forEach(([inputId, outputId, value]) => {
+            el[inputId].value = String(value);
+            el[outputId].textContent = `${value} px`;
+        });
+
+        const labels = {
+            start: "căn trên",
+            center: "căn giữa",
+            end: "căn dưới"
+        };
+
+        el.heroVerticalSummary.textContent =
+            `Desktop: ${labels[vertical.desktopAlign]} · trên ${vertical.desktopPaddingTop}px · dưới ${vertical.desktopPaddingBottom}px · ` +
+            `Mobile: ${labels[vertical.mobileAlign]} · trên ${vertical.mobilePaddingTop}px · dưới ${vertical.mobilePaddingBottom}px`;
+    }
+
+    function bindHeroTypography() {
+        const controls = [
+            ["heroTitleDesktopSize", "titleDesktop", 20, 120],
+            ["heroBodyDesktopSize", "bodyDesktop", 10, 36],
+            ["heroTitleMobileSize", "titleMobile", 18, 72],
+            ["heroBodyMobileSize", "bodyMobile", 10, 28],
+            ["heroNoteDesktopSize", "noteDesktop", 8, 24],
+            ["heroNoteMobileSize", "noteMobile", 8, 22]
+        ];
+        controls.forEach(([id, key, min, max]) => {
+            el[id].addEventListener("input", () => {
+                state.heroTypography[key] = clampNumber(el[id].value, min, max, state.heroTypography[key]);
+                syncHeroTypographyControls();
+                queue();
+            });
+        });
+        el.resetHeroTypeBtn.addEventListener("click", () => {
+            state.heroTypography = { titleDesktop:64, bodyDesktop:16, titleMobile:34, bodyMobile:16, noteDesktop:12, noteMobile:12 };
+            syncHeroTypographyControls();
+            queue();
+            status("Đã khôi phục kích thước chữ Hero mặc định.", "success");
+        });
+    }
+
+    function syncHeroTypographyControls() {
+        const type = normalizedHeroTypography(state.heroTypography);
+        state.heroTypography = type;
+        const pairs = [
+            ["heroTitleDesktopSize", "heroTitleDesktopSizeValue", type.titleDesktop],
+            ["heroBodyDesktopSize", "heroBodyDesktopSizeValue", type.bodyDesktop],
+            ["heroTitleMobileSize", "heroTitleMobileSizeValue", type.titleMobile],
+            ["heroBodyMobileSize", "heroBodyMobileSizeValue", type.bodyMobile],
+            ["heroNoteDesktopSize", "heroNoteDesktopSizeValue", type.noteDesktop],
+            ["heroNoteMobileSize", "heroNoteMobileSizeValue", type.noteMobile]
+        ];
+        pairs.forEach(([inputId, outputId, value]) => { el[inputId].value = String(value); el[outputId].textContent = `${value} px`; });
+        el.heroTypeSummary.textContent = `Desktop: ${type.titleDesktop} / ${type.bodyDesktop} / ${type.noteDesktop} px · Mobile: ${type.titleMobile} / ${type.bodyMobile} / ${type.noteMobile} px`;
+    }
+
+    function bindProjectLayout() {
+        const updateNumber = (key, value, minimum, maximum) => {
+            state.projectLayout[key] = clampNumber(value, minimum, maximum, state.projectLayout[key]);
+            syncProjectLayoutControls();
+            queue();
+        };
+        el.projectCardHeight.addEventListener("input", () => updateNumber("height", el.projectCardHeight.value, 180, 700));
+        el.projectCardGap.addEventListener("input", () => updateNumber("gap", el.projectCardGap.value, 0, 60));
+        el.projectRounded.addEventListener("change", () => { state.projectLayout.rounded = el.projectRounded.checked; syncProjectLayoutControls(); queue(); });
+        el.projectCardRadius.addEventListener("input", () => updateNumber("radius", el.projectCardRadius.value, 1, 40));
+        el.resetProjectLayoutBtn.addEventListener("click", () => {
+            state.projectLayout = { height:450, gap:24, rounded:true, radius:4 };
+            syncProjectLayoutControls(); queue(); status("Đã khôi phục kích thước thẻ dự án mặc định.","success");
+        });
+    }
+
+    function syncProjectLayoutControls() {
+        const layout = normalizedProjectLayout(state.projectLayout);
+        state.projectLayout = layout;
+        el.projectCardHeight.value = String(layout.height);
+        el.projectCardHeightValue.textContent = `${layout.height} px`;
+        el.projectCardGap.value = String(layout.gap);
+        el.projectCardGapValue.textContent = `${layout.gap} px`;
+        el.projectRounded.checked = layout.rounded;
+        el.projectCardRadius.value = String(layout.radius);
+        el.projectCardRadiusValue.textContent = `${layout.radius} px`;
+        el.projectCardRadius.disabled = !layout.rounded;
+        el.projectRadiusField.classList.toggle("is-disabled", !layout.rounded);
+        el.projectLayoutSummary.textContent = layout.rounded
+            ? `Cao ${layout.height} px · Hở ${layout.gap} px · Bo góc ${layout.radius} px`
+            : `Cao ${layout.height} px · Hở ${layout.gap} px · Không bo góc`;
+    }
+
+    function bindLists() {
+        el.addProjectBtn.addEventListener("click",()=>{state.projects.push(blankProject());renderProjects();queue();});
+        el.addQnaBtn.addEventListener("click",()=>{const item=blankQna();state.qnas.push(item);openQnaId=item.id;renderQna();queue();window.requestAnimationFrame(()=>el.qnaList.querySelector(`[data-id="${CSS.escape(item.id)}"]`)?.scrollIntoView({block:"nearest"}));});
+        el.addServiceBtn.addEventListener("click",()=>{state.services.push(blankService());renderServices();queue();});
+        el.addContactRowBtn.addEventListener("click",()=>{state.contact.rows.push(blankContact());renderContact();queue();});
+        el.contactTagline.addEventListener("input",()=>{state.contact.tagline=el.contactTagline.value;queue();});
+        el.importProjectJsonBtn.addEventListener("click",()=>el.projectJsonInput.click());
+        el.projectJsonInput.addEventListener("change",importProjectJson);
+        [[el.backgroundList,"background"],[el.projectsList,"project"],[el.qnaList,"qna"],[el.servicesList,"service"],[el.contactRowsList,"contact"]].forEach(([container,type])=>{
+            container.addEventListener("input",onListInput); container.addEventListener("click",onListClick); bindDrag(container,type);
+        });
+    }
+
+    function bindExport() {
+        el.downloadHtmlBtn.addEventListener("click",()=>download(htmlName(),new Blob([buildHtml()],{type:"text/html;charset=utf-8"})));
+        el.downloadStateBtn.addEventListener("click",()=>download(baseName()+".home.json",new Blob([JSON.stringify(serializable(),null,2)],{type:"application/json"})));
+        el.importStateBtn.addEventListener("click",()=>el.importStateInput.click());
+        el.importStateInput.addEventListener("change",async()=>{
+            const f=el.importStateInput.files?.[0]; if(!f)return;
+            try{state=normalizeState(JSON.parse(await f.text()));renderAll();markDirty(true);status("Đã mở dữ liệu Home Manager.","success");}catch(e){status("File JSON không đúng định dạng.","error");}
+            el.importStateInput.value="";
+        });
+        el.downloadZipBtn.addEventListener("click",exportZip);
+        el.writeWebsiteBtn.addEventListener("click",saveHomeDirectly);
+    }
+
+    function bindPreview() {
+        el.refreshPreviewBtn.addEventListener("click",renderPreview);
+        document.querySelectorAll("[data-preview-width]").forEach(btn=>btn.addEventListener("click",()=>{
+            document.querySelectorAll("[data-preview-width]").forEach(x=>x.classList.toggle("active",x===btn));
+            el.previewFrameShell.classList.toggle("mobile",btn.dataset.previewWidth==="mobile");
+            renderPreview();
+        }));
+    }
+
+    function onListInput(e) {
+        const card=e.target.closest(".manager-card"), field=e.target.dataset.field; if(!card||!field)return;
+        const item=find(card.dataset.type,card.dataset.id); if(!item)return;
+        item[field]=field==="paragraphs"?paragraphs(e.target.value):e.target.value;
+        if(card.dataset.type==="background"&&field==="path") renderPreload();
+        const title=card.querySelector(".card-title");
+        if(title&&["title","question","label","path"].includes(field)) title.textContent=e.target.value||"Chưa đặt tên";
+        queue();
+    }
+
+    function onListClick(e) {
+        const card=e.target.closest(".manager-card");
+        if(!card)return;
+
+        const b=e.target.closest("[data-action]");
+
+        if(card.dataset.type==="qna" && !b && e.target.closest(".card-header")){
+            const wasOpen=card.classList.contains("is-open");
+            el.qnaList.querySelectorAll('.manager-card[data-type="qna"].is-open').forEach(item=>item.classList.remove("is-open"));
+            card.classList.toggle("is-open",!wasOpen);
+            openQnaId=wasOpen?null:card.dataset.id;
+            if(!wasOpen) window.requestAnimationFrame(()=>card.scrollIntoView({block:"nearest",behavior:"smooth"}));
+            return;
+        }
+
+        if(!b)return;
+        const type=card.dataset.type,id=card.dataset.id,a=b.dataset.action;
+        if(a==="remove") remove(type,id); else if(a==="up") move(type,id,-1); else if(a==="down") move(type,id,1);
+    }
+
+    function bindDrag(container,type) {
+        container.addEventListener("dragstart",e=>{const c=e.target.closest(".manager-card");if(!c)return;dragged={type,id:c.dataset.id};c.classList.add("dragging");});
+        container.addEventListener("dragend",()=>{dragged=null;container.querySelectorAll(".manager-card").forEach(c=>c.classList.remove("dragging","drag-target"));});
+        container.addEventListener("dragover",e=>{const c=e.target.closest(".manager-card");if(!c)return;e.preventDefault();c.classList.add("drag-target");});
+        container.addEventListener("dragleave",e=>e.target.closest(".manager-card")?.classList.remove("drag-target"));
+        container.addEventListener("drop",e=>{
+            const c=e.target.closest(".manager-card");if(!c||!dragged||dragged.type!==type)return;e.preventDefault();
+            const list=getList(type),from=list.findIndex(x=>x.id===dragged.id),to=list.findIndex(x=>x.id===c.dataset.id);if(from<0||to<0||from===to)return;
+            const [m]=list.splice(from,1);list.splice(to,0,m);renderType(type);queue();
+        });
+    }
+
+    async function importProjectJson() {
+        let count=0;
+        for(const f of Array.from(el.projectJsonInput.files||[])){
+            try{
+                const d=JSON.parse(await f.text()), p=d.project||{}, h=d.homeCard||{}, gallery=Array.isArray(d.gallery)?d.gallery:[];
+                const img=gallery.find(x=>x.id===(h.imageId||d.heroImageId))||gallery[0];
+                const imagePath=img?.fileName?[safe(d.settings?.assetRoot||"PROJECTS"),safe(p.folder||""),img.fileName].filter(Boolean).join("/"):"";
+                const item={id:uid(),href:ensureHtml(p.fileName||"Du_An_Moi.html"),title:h.title||p.name||"Dự án mới",slogan:h.slogan||p.slogan||"",category:h.category||p.type||"",imagePath};
+                const i=state.projects.findIndex(x=>norm(x.href).toLowerCase()===norm(item.href).toLowerCase()); if(i>=0)item.id=state.projects[i].id;
+                if(i>=0)state.projects[i]=item;else state.projects.push(item);count++;
+            }catch(err){console.warn(f.name,err);}
+        }
+        el.projectJsonInput.value="";renderProjects();queue();status(`Đã đọc ${count} dự án.`,"success");
+    }
+
+    async function importHome() {
+        const f=el.importHomeInput.files?.[0];if(!f)return;
+        try{state=normalizeState(parseHome(await f.text(),f.name));renderAll();markDirty(true);status(`Đã đọc ${f.name}.`,"success");}catch(err){console.error(err);status("Không thể đọc cấu trúc file này.","error");}
+        el.importHomeInput.value="";
+    }
+
+    function parseProjectLayout(documentValue) {
+        const body=documentValue.body;
+        const styleText=documentValue.querySelector("#dreamese-project-layout")?.textContent||"";
+        const read=(name,fallback)=>{const match=styleText.match(new RegExp(`--${name}\\s*:\s*([\d.]+)px`,"i"));return match?Number(match[1]):fallback;};
+        const height=Number(body?.dataset.projectHeight)||read("dreamese-project-height",450);
+        const gap=Number(body?.dataset.projectGap)||read("dreamese-project-gap",24);
+        const cssRadius=read("dreamese-project-radius",4);
+        const rounded=body?.dataset.projectRounded?body.dataset.projectRounded==="true":cssRadius>0;
+        const radius=Number(body?.dataset.projectRadius)||(cssRadius>0?cssRadius:4);
+        return normalizedProjectLayout({height,gap,rounded,radius});
+    }
+
+    function parseHeroLayout(documentValue) {
+        const body = documentValue.body;
+        const styleText = documentValue.querySelector(
+            "#dreamese-hero-layout"
+        )?.textContent || "";
+
+        const readValue = (variableName, fallback) => {
+            const match = styleText.match(
+                new RegExp(
+                    `--${variableName}\\s*:\\s*([\\d.]+)vh`,
+                    "i"
+                )
+            );
+
+            return match ? Number(match[1]) : fallback;
+        };
+
+        return normalizedHeroLayout({
+            desktopHeight:
+                Number(body?.dataset.heroDesktopHeight)
+                || readValue("dreamese-hero-height-desktop", 100),
+
+            mobileHeight:
+                Number(body?.dataset.heroMobileHeight)
+                || readValue("dreamese-hero-height-mobile", 100)
+        });
+    }
+
+    function parseHeroTypography(documentValue) {
+        const body = documentValue.body;
+        const styleText = documentValue.querySelector("#dreamese-hero-typography")?.textContent || "";
+        const readPx = (name, fallback) => {
+            const match = styleText.match(new RegExp(`--${name}\\s*:\\s*([\\d.]+)px`, "i"));
+            return match ? Number(match[1]) : fallback;
+        };
+        return normalizedHeroTypography({
+            titleDesktop:Number(body?.dataset.heroTitleDesktop)||readPx("dreamese-hero-title-desktop",64),
+            bodyDesktop:Number(body?.dataset.heroBodyDesktop)||readPx("dreamese-hero-body-desktop",16),
+            titleMobile:Number(body?.dataset.heroTitleMobile)||readPx("dreamese-hero-title-mobile",34),
+            bodyMobile:Number(body?.dataset.heroBodyMobile)||readPx("dreamese-hero-body-mobile",16),
+            noteDesktop:Number(body?.dataset.heroNoteDesktop)||readPx("dreamese-hero-note-desktop",12),
+            noteMobile:Number(body?.dataset.heroNoteMobile)||readPx("dreamese-hero-note-mobile",12)
+        });
+    }
+
+    function parseHeroVertical(documentValue) {
+        const body = documentValue.body;
+        const styleText = documentValue.querySelector(
+            "#dreamese-hero-vertical"
+        )?.textContent || "";
+
+        const readPx = (variableName, fallback) => {
+            const match = styleText.match(
+                new RegExp(
+                    `--${variableName}\\s*:\\s*([\\d.]+)px`,
+                    "i"
+                )
+            );
+
+            return match ? Number(match[1]) : fallback;
+        };
+
+        const validAlign = (value, fallback) => {
+            return ["start", "center", "end"].includes(value)
+                ? value
+                : fallback;
+        };
+
+        return normalizedHeroVertical({
+            desktopAlign: validAlign(
+                body?.dataset.heroDesktopAlign,
+                "center"
+            ),
+            mobileAlign: validAlign(
+                body?.dataset.heroMobileAlign,
+                "center"
+            ),
+            desktopPaddingTop:
+                Number(body?.dataset.heroDesktopPaddingTop)
+                || readPx("dreamese-hero-padding-top-desktop", 120),
+            desktopPaddingBottom:
+                Number(body?.dataset.heroDesktopPaddingBottom)
+                || readPx("dreamese-hero-padding-bottom-desktop", 120),
+            mobilePaddingTop:
+                Number(body?.dataset.heroMobilePaddingTop)
+                || readPx("dreamese-hero-padding-top-mobile", 100),
+            mobilePaddingBottom:
+                Number(body?.dataset.heroMobilePaddingBottom)
+                || readPx("dreamese-hero-padding-bottom-mobile", 100)
+        });
+    }
+
+    function parseHome(html,fileName) {
+        const d=new DOMParser().parseFromString(html,"text/html"),body=d.body;
+        const split=sel=>{const h=d.querySelector(sel);if(!h)return["",""];const c=h.cloneNode(true),s=c.querySelector(".hero-line"),b=s?.textContent.trim()||"";s?.remove();return[c.textContent.trim(),b];};
+        const [dt,db]=split(".hero-desktop h1"),[mt,mb]=split(".hero-mobile h1");
+        const projects=Array.from(d.querySelectorAll("#projectTrack > a.project")).map(a=>{const c=a.querySelector(".project-content"),sm=Array.from(c?.querySelectorAll(":scope > small")||[]),cc=c?.cloneNode(true);cc?.querySelectorAll("small").forEach(x=>x.remove());return{id:uid(),href:a.getAttribute("href")||"",title:cc?.textContent.trim()||"",slogan:sm[0]?.textContent.trim()||"",category:sm[1]?.textContent.trim()||"",imagePath:a.dataset.bg||""};});
+        const qnas=Array.from(d.querySelectorAll(".qna-card")).map(card=>{const c=card.querySelector(".qna-content-data"),ps=[];let sl="",sh="";Array.from(c?.children||[]).forEach(ch=>{if(ch.tagName!=="P")return;const a=ch.querySelector("a");if(a&&a.getAttribute("href")!=="#contact"){sl=a.textContent.trim();sh=a.getAttribute("href")||"";return;}const cp=ch.cloneNode(true);cp.querySelectorAll("strong,b").forEach(x=>x.replaceWith(`**${x.textContent.trim()}**`));ps.push(cp.textContent.trim());});const direct=Array.from(c?.children||[]).find(x=>x.tagName==="A"),img=c?.querySelector("img");return{id:uid(),question:card.querySelector(".qna-card-heading h3")?.textContent.trim()||"",answerTitle:c?.querySelector("h4")?.textContent.trim()||"",paragraphs:ps,secondaryLabel:sl,secondaryHref:sh,ctaLabel:direct?.textContent.trim()||"Trao đổi cùng KTS →",ctaHref:direct?.getAttribute("href")||"#contact",imagePath:img?.dataset.src||img?.getAttribute("src")||""};});
+        const services=Array.from(d.querySelectorAll(".services-cards > a.service-box")).map(a=>({id:uid(),href:a.getAttribute("href")||"",title:breakText(a.querySelector("h3")),description:a.querySelector("p")?.textContent.trim()||"",linkLabel:a.querySelector(".service-link")?.textContent.trim()||"Quy trình triển khai →"}));
+        const rows=Array.from(d.querySelectorAll("#contact .contact-row")).map(r=>({id:uid(),label:r.querySelector(".contact-label")?.textContent.trim()||"",content:breakText(r.querySelector(".contact-content"))}));
+        const bgs=(body?.dataset.bg||"").split(",").map(x=>x.trim()).filter(Boolean).map(path=>({id:uid(),path}));
+        return{id:uid(),settings:{fileName:ensureHtml(fileName),pageTitle:d.title||"Dreamese - Kiến trúc & Nội thất",cssPath:d.querySelector('link[rel="stylesheet"]')?.getAttribute("href")||"HOME.css",jsPath:d.querySelector("script[src]")?.getAttribute("src")||"HOME.js",logoPath:d.querySelector("nav .logo img")?.getAttribute("src")||"Dreamese_Studio.png"},partners:(body?.dataset.partners||"").split(",").map(x=>x.trim()).filter(Boolean),sectionTitles:{projects:d.querySelector("#projects > h2")?.textContent.trim()||"Dự án tiêu biểu",qna:d.querySelector("#qna > h2")?.textContent.trim()||"Góc giải đáp",services:d.querySelector("#services > h2")?.textContent.trim()||"Dịch vụ",contact:d.querySelector("#contact > h2")?.textContent.trim()||"Liên hệ"},projectLayout:parseProjectLayout(d),heroLayout:parseHeroLayout(d),heroVertical:parseHeroVertical(d),heroTypography:parseHeroTypography(d),hero:{desktopTop:dt,desktopBottom:db,desktopParagraphs:Array.from(d.querySelectorAll(".hero-desktop > p")).map(x=>x.textContent.trim()),mobileTop:mt,mobileBottom:mb,mobileParagraph:d.querySelector(".hero-mobile > p")?.textContent.trim()||"",note:d.querySelector(".hero-note")?.textContent.trim()||"",backgrounds:bgs,preloadPath:d.querySelector('link[rel="preload"][as="image"]')?.getAttribute("href")||bgs[0]?.path||""},projects,qnas,services,contact:{tagline:d.querySelector("#contact .contact-tagline")?.textContent.trim()||"",rows},footer:{copyright:d.querySelector(".footer-copyright")?.textContent.trim()||d.querySelector(".site-footer .footer-left")?.textContent.trim()||"© DREAMESE STUDIO – Architecture & Interior Design",email:d.querySelector('.footer-contact-fallback a[href^="mailto:"]')?.textContent.trim()||"vtv.arc@gmail.com",phone:d.querySelector('.footer-contact-fallback a[href^="tel:"]')?.textContent.trim()||"09 4363 4758"}};
+    }
+
+    function breakText(node){if(!node)return"";const c=node.cloneNode(true);c.querySelectorAll("br").forEach(x=>x.replaceWith("\n"));return c.textContent.trim();}
+
+
+    function openLiveDatabase() {
+        return new Promise((resolve, reject) => {
+            if (!("indexedDB" in window)) {
+                reject(new Error("IndexedDB không khả dụng."));
+                return;
+            }
+
+            const request = indexedDB.open(LIVE_DB_NAME, LIVE_DB_VERSION);
+
+            request.onupgradeneeded = () => {
+                const database = request.result;
+                if (!database.objectStoreNames.contains(LIVE_STORE_NAME)) {
+                    database.createObjectStore(LIVE_STORE_NAME);
+                }
+            };
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("Không thể mở dữ liệu Home."));
+        });
+    }
+
+    async function readLivePayload() {
+        try {
+            const database = await openLiveDatabase();
+            const payload = await new Promise((resolve, reject) => {
+                const transaction = database.transaction(LIVE_STORE_NAME, "readonly");
+                const request = transaction.objectStore(LIVE_STORE_NAME).get(LIVE_PAYLOAD_KEY);
+                request.onsuccess = () => resolve(request.result || null);
+                request.onerror = () => reject(request.error);
+            });
+            database.close();
+            if (payload) return payload;
+        } catch (error) {
+            console.warn("Không thể đọc IndexedDB Home.", error);
+        }
+
+        try {
+            const raw = localStorage.getItem(LIVE_LOCAL_KEY);
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
+    }
+
+    async function writeLivePayload(payload) {
+        let savedToIndexedDb = false;
+
+        try {
+            const database = await openLiveDatabase();
+            await new Promise((resolve, reject) => {
+                const transaction = database.transaction(LIVE_STORE_NAME, "readwrite");
+                transaction.objectStore(LIVE_STORE_NAME).put(payload, LIVE_PAYLOAD_KEY);
+                transaction.oncomplete = resolve;
+                transaction.onerror = () => reject(transaction.error);
+            });
+            database.close();
+            savedToIndexedDb = true;
+        } catch (error) {
+            console.warn("Không thể lưu IndexedDB, chuyển sang localStorage.", error);
+        }
+
+        try {
+            localStorage.setItem(LIVE_LOCAL_KEY, JSON.stringify(payload));
+        } catch (error) {
+            if (!savedToIndexedDb) throw error;
+        }
+    }
+
+    async function restoreLiveState() {
+        const payload = await readLivePayload();
+        if (!payload?.state) return false;
+
+        try {
+            state = normalizeState(payload.state);
+            persist();
+            return true;
+        } catch (error) {
+            console.warn("Không thể khôi phục dữ liệu Home đã lưu.", error);
+            return false;
+        }
+    }
+
+    function announceHomeUpdate(savedAt) {
+        try {
+            if ("BroadcastChannel" in window) {
+                const channel = new BroadcastChannel(LIVE_CHANNEL_NAME);
+                channel.postMessage({ type: "home-updated", savedAt });
+                window.setTimeout(() => channel.close(), 120);
+            }
+        } catch (error) {
+            console.warn("Không thể gửi tín hiệu cập nhật Home.", error);
+        }
+    }
+
+    async function saveHomeToBrowser() {
+        const payload = {
+            version: "0.9.4",
+            savedAt: new Date().toISOString(),
+            state: serializable(),
+            html: buildHtml()
+        };
+
+        try {
+            await writeLivePayload(payload);
+            persist();
+            markDirty(false);
+            announceHomeUpdate(payload.savedAt);
+            status("Đã lưu thay đổi. dreamese.html sẽ tự dùng nội dung mới.", "success");
+        } catch (error) {
+            console.error(error);
+            status(`Không thể lưu thay đổi: ${error.message}`, "error");
+        }
+    }
+
+    async function connectWebsiteFolder({ loadHome = true } = {}) {
+        if (!window.showDirectoryPicker) {
+            el.websiteFolderInput.click();
+            status("Trình duyệt này chỉ có thể nạp hình. Hãy dùng Chrome hoặc Edge để lưu trực tiếp.", "error");
+            return false;
+        }
+
+        try {
+            let directory = websiteDirectoryHandle;
+            let permission = directory
+                ? await queryDirectoryPermission(directory)
+                : "prompt";
+
+            if (!directory || permission === "denied") {
+                directory = await window.showDirectoryPicker({ mode: "readwrite" });
+            }
+
+            permission = await requestDirectoryPermission(directory);
+            if (permission !== "granted") {
+                websitePermissionState = permission;
+                syncWebsiteConnectionUi();
+                status("Chưa được cấp quyền chỉnh sửa thư mục website.", "error");
+                return false;
+            }
+
+            const validation = await validateSiteRoot(directory);
+            if (!validation.ok) {
+                websiteDirectoryHandle = null;
+                websiteHomeFileHandle = null;
+                websitePermissionState = "prompt";
+                syncWebsiteConnectionUi();
+                status(`Hãy chọn đúng thư mục Site chứa DHM.html, dreamese.html, HOME.css và HOME.js. Đang thiếu: ${validation.missing.join(", ")}.`, "error");
+                return false;
+            }
+
+            websiteDirectoryHandle = directory;
+            websitePermissionState = permission;
+            await rememberWebsiteHandle(directory);
+            syncWebsiteConnectionUi();
+
+            if (loadHome) {
+                const loaded = await loadHomeFromWebsite({ askBeforeDiscard: stateDirty });
+                if (!loaded) await hydrateWebsiteAssets();
+            } else {
+                await hydrateWebsiteAssets();
+            }
+
+            return true;
+        } catch (error) {
+            if (error?.name !== "AbortError") {
+                console.error(error);
+                status(`Không thể kết nối thư mục: ${error.message}`, "error");
+            }
+            return false;
+        }
+    }
+
+    async function restoreWebsiteConnection() {
+        if (!window.showDirectoryPicker || !window.indexedDB) {
+            syncWebsiteConnectionUi();
+            return;
+        }
+
+        try {
+            const remembered = await readRememberedWebsiteHandle();
+            if (!remembered) {
+                syncWebsiteConnectionUi();
+                return;
+            }
+
+            websiteDirectoryHandle = remembered;
+            websitePermissionState = await queryDirectoryPermission(remembered);
+            syncWebsiteConnectionUi();
+
+            if (websitePermissionState === "granted") {
+                const validation = await validateSiteRoot(remembered);
+                if (!validation.ok) {
+                    websiteDirectoryHandle = null;
+                    websiteHomeFileHandle = null;
+                    websitePermissionState = "prompt";
+                    syncWebsiteConnectionUi();
+                    status(`Thư mục cũ không còn đúng cấu trúc Site. Thiếu: ${validation.missing.join(", ")}.`, "error");
+                    return;
+                }
+                await loadHomeFromWebsite({ askBeforeDiscard: false });
+            }
+        } catch (error) {
+            console.warn("Không thể khôi phục thư mục website", error);
+            syncWebsiteConnectionUi();
+        }
+    }
+
+    async function loadHomeFromWebsite({ askBeforeDiscard = false } = {}) {
+        if (!websiteDirectoryHandle) {
+            return connectWebsiteFolder({ loadHome: true });
+        }
+
+        const permission = await requestDirectoryPermission(websiteDirectoryHandle);
+        websitePermissionState = permission;
+        syncWebsiteConnectionUi();
+        if (permission !== "granted") {
+            status("Cần cấp lại quyền để đọc Home từ website.", "error");
+            return false;
+        }
+
+        if (askBeforeDiscard && stateDirty) {
+            const accepted = confirm("Đọc lại Home từ website? Các thay đổi chưa lưu trong app sẽ bị thay thế.");
+            if (!accepted) return false;
+        }
+
+        try {
+            const result = await findHomeFile(websiteDirectoryHandle);
+            if (!result) {
+                websiteHomeFileHandle = null;
+                status(`Không tìm thấy ${htmlName()} trong thư mục đã chọn. Bạn vẫn có thể bấm “Lưu trực tiếp” để tạo file.`, "error");
+                return false;
+            }
+
+            const file = await result.handle.getFile();
+            const parsed = parseHome(await file.text(), result.name);
+            state = normalizeState(parsed);
+            websiteHomeFileHandle = result.handle;
+            clearPreviewUrls();
+            renderAll();
+            markDirty(false);
+            await hydrateWebsiteAssets();
+            status(`Đã mở trực tiếp ${result.name} từ thư mục “${websiteDirectoryHandle.name}”.`, "success");
+            return true;
+        } catch (error) {
+            console.error(error);
+            status(`Không thể đọc Home: ${error.message}`, "error");
+            return false;
+        }
+    }
+
+    async function saveHomeDirectly() {
+        persist();
+
+        if (!websiteDirectoryHandle) {
+            const connected = await connectWebsiteFolder({ loadHome: false });
+            if (!connected) {
+                status("Dữ liệu vẫn được giữ trong trình duyệt, nhưng chưa ghi vào website.", "error");
+                return;
+            }
+        }
+
+        const permission = await requestDirectoryPermission(websiteDirectoryHandle);
+        websitePermissionState = permission;
+        syncWebsiteConnectionUi();
+        if (permission !== "granted") {
+            status("Cần cấp quyền chỉnh sửa để lưu trực tiếp.", "error");
+            return;
+        }
+
+        try {
+            const validation = await validateSiteRoot(websiteDirectoryHandle);
+            if (!validation.ok) {
+                status(`Không lưu vì thư mục Site đang thiếu: ${validation.missing.join(", ")}.`, "error");
+                return;
+            }
+            const targetName = SITE_HOME_FILE;
+            const fileHandle = await websiteDirectoryHandle.getFileHandle(targetName, { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(buildHtml());
+            await writable.close();
+            websiteHomeFileHandle = fileHandle;
+            markDirty(false);
+            status(`Đã lưu trực tiếp vào ${targetName}. Không cần tải và chép đè thủ công.`, "success");
+        } catch (error) {
+            console.error(error);
+            status(`Không thể lưu trực tiếp: ${error.message}`, "error");
+        }
+    }
+
+    async function findHomeFile(directory) {
+        try {
+            const handle = await directory.getFileHandle(SITE_HOME_FILE);
+            return { name: SITE_HOME_FILE, handle };
+        } catch (error) {
+            if (error?.name === "NotFoundError") return null;
+            throw error;
+        }
+    }
+
+    async function validateSiteRoot(directory) {
+        const missing = [];
+        for (const name of SITE_REQUIRED_FILES) {
+            try {
+                await directory.getFileHandle(name);
+            } catch (error) {
+                if (error?.name === "NotFoundError" || error?.name === "TypeMismatchError") {
+                    missing.push(name);
+                    continue;
+                }
+                throw error;
+            }
+        }
+        return { ok: missing.length === 0, missing };
+    }
+
+    async function hydrateWebsiteAssets() {
+        if (!websiteDirectoryHandle || websitePermissionState !== "granted") return;
+
+        clearPreviewUrls();
+        let count = 0;
+        const uniquePaths = Array.from(new Set(assets().map(item => item.path).filter(Boolean)));
+
+        for (const assetPath of uniquePaths) {
+            try {
+                const handle = await getFileHandleByPath(websiteDirectoryHandle, assetPath);
+                if (!handle) continue;
+                const file = await handle.getFile();
+                previewUrls.set(assetPath, URL.createObjectURL(file));
+                count += 1;
+            } catch (error) {
+                if (error?.name !== "NotFoundError") console.warn(assetPath, error);
+            }
+        }
+
+        renderAllLists();
+        renderPreview();
+        if (count) status(`Đã kết nối Home và nạp ${count} hình xem trước.`, "success");
+    }
+
+    async function getFileHandleByPath(root, pathValue) {
+        const normalized = norm(pathValue);
+        if (!normalized || /^(data:|https?:|blob:)/i.test(normalized)) return null;
+        const parts = normalized.split("/").filter(part => part && part !== ".");
+        if (!parts.length || parts.some(part => part === "..")) return null;
+
+        let directory = root;
+        for (const part of parts.slice(0, -1)) {
+            directory = await directory.getDirectoryHandle(part);
+        }
+        return directory.getFileHandle(parts.at(-1));
+    }
+
+    async function queryDirectoryPermission(handle) {
+        if (!handle?.queryPermission) return "granted";
+        try { return await handle.queryPermission({ mode: "readwrite" }); }
+        catch (error) { return "prompt"; }
+    }
+
+    async function requestDirectoryPermission(handle) {
+        if (!handle) return "denied";
+        const current = await queryDirectoryPermission(handle);
+        if (current === "granted" || !handle.requestPermission) return current;
+        try { return await handle.requestPermission({ mode: "readwrite" }); }
+        catch (error) { return current; }
+    }
+
+    function syncWebsiteConnectionUi() {
+        if (!el.websiteConnectionState) return;
+
+        el.websiteConnectionState.textContent = stateDirty
+            ? "Có thay đổi chưa lưu"
+            : "Đã đồng bộ với Home";
+        el.websiteConnectionState.dataset.state = stateDirty ? "dirty" : "connected";
+
+        el.reloadWebsiteBtn.hidden = true;
+        el.websiteFolderBtn.textContent = "Mở website";
+        el.saveHomeBtn.textContent = "Lưu thay đổi";
+
+        if (el.writeWebsiteBtn) {
+            el.writeWebsiteBtn.textContent = websiteDirectoryHandle && websitePermissionState === "granted"
+                ? "Ghi lại dreamese.html"
+                : "Chọn thư mục và ghi file";
+        }
+    }
+
+    function markDirty(value = true) {
+        stateDirty = Boolean(value);
+        syncWebsiteConnectionUi();
+    }
+
+    function openHandleDatabase() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(FS_DB_NAME, 1);
+            request.onupgradeneeded = () => {
+                const database = request.result;
+                if (!database.objectStoreNames.contains(FS_STORE_NAME)) {
+                    database.createObjectStore(FS_STORE_NAME);
+                }
+            };
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async function rememberWebsiteHandle(handle) {
+        if (!window.indexedDB) return;
+        const database = await openHandleDatabase();
+        await new Promise((resolve, reject) => {
+            const transaction = database.transaction(FS_STORE_NAME, "readwrite");
+            transaction.objectStore(FS_STORE_NAME).put(handle, FS_ROOT_KEY);
+            transaction.oncomplete = resolve;
+            transaction.onerror = () => reject(transaction.error);
+        });
+        database.close();
+    }
+
+    async function readRememberedWebsiteHandle() {
+        if (!window.indexedDB) return null;
+        const database = await openHandleDatabase();
+        const result = await new Promise((resolve, reject) => {
+            const transaction = database.transaction(FS_STORE_NAME, "readonly");
+            const request = transaction.objectStore(FS_STORE_NAME).get(FS_ROOT_KEY);
+            request.onsuccess = () => resolve(request.result || null);
+            request.onerror = () => reject(request.error);
+        });
+        database.close();
+        return result;
+    }
+
+    function loadWebsiteFolder() {
+        clearPreviewUrls(); const files=Array.from(el.websiteFolderInput.files||[]).filter(f=>IMAGE_RE.test(f.name)); let count=0;
+        for(const a of assets()){
+            const wanted=norm(a.path).toLowerCase();if(!wanted)continue;
+            const matches=files.filter(f=>{const r=norm(f.webkitRelativePath||f.name).toLowerCase();return r===wanted||r.endsWith("/"+wanted)||f.name.toLowerCase()===wanted.split("/").at(-1);});
+            if(matches.length===1){previewUrls.set(a.path,URL.createObjectURL(matches[0]));count++;}
+        }
+        el.websiteFolderInput.value="";renderAllLists();renderPreview();status(`Đã ghép ${count} hình từ website.`,"success");
+    }
+
+    function renderAll(){sync();renderAllLists();renderValidation();renderPreview();persist();}
+    function sync(){
+        const vals={homeFileName:state.settings.fileName,pageTitle:state.settings.pageTitle,cssPath:state.settings.cssPath,jsPath:state.settings.jsPath,logoPath:state.settings.logoPath,projectsSectionTitle:state.sectionTitles.projects,qnaSectionTitle:state.sectionTitles.qna,servicesSectionTitle:state.sectionTitles.services,contactSectionTitle:state.sectionTitles.contact,footerCopyright:state.footer.copyright,footerEmail:state.footer.email,footerPhone:state.footer.phone,desktopTitle:[state.hero.desktopTop,state.hero.desktopBottom].filter(Boolean).join("\n"),desktopParagraphs:state.hero.desktopParagraphs.join("\n\n"),mobileTitle:[state.hero.mobileTop,state.hero.mobileBottom].filter(Boolean).join("\n"),mobileParagraph:state.hero.mobileParagraph,heroNote:state.hero.note,contactTagline:state.contact.tagline};
+        Object.entries(vals).forEach(([id,v])=>el[id].value=v??"");el.partnerMt.checked=state.partners.includes("mt");el.partnerTitan.checked=state.partners.includes("titan");
+        syncHeroLayoutControls();
+        syncHeroVerticalControls();
+        syncHeroTypographyControls();
+        syncProjectLayoutControls();
+    }
+    function renderAllLists(){renderBackgrounds();renderProjects();renderQna();renderServices();renderContact();}
+    function renderBackgrounds(){el.backgroundList.innerHTML=state.hero.backgrounds.map((x,i)=>card("background",x.id,i,x.path||"Hình nền mới",preview(x.path),`<label class="compact-field"><span>Đường dẫn hình</span><input data-field="path" value="${ea(x.path)}"></label>`)).join("");renderPreload();}
+    function renderPreload(){el.preloadBackgroundSelect.innerHTML=state.hero.backgrounds.length?state.hero.backgrounds.map((x,i)=>`<option value="${ea(x.path)}">${String(i+1).padStart(2,"0")} — ${eh(x.path||"Chưa có đường dẫn")}</option>`).join(""):'<option value="">Chưa có hình nền</option>';if(!state.hero.backgrounds.some(x=>x.path===state.hero.preloadPath))state.hero.preloadPath=state.hero.backgrounds[0]?.path||"";el.preloadBackgroundSelect.value=state.hero.preloadPath;}
+    function renderProjects(){el.projectsList.innerHTML=state.projects.map((x,i)=>card("project",x.id,i,x.title||"Dự án mới",preview(x.imagePath),`<div class="inline-grid"><label class="compact-field"><span>Tên dự án</span><input data-field="title" value="${ea(x.title)}"></label><label class="compact-field"><span>File trang dự án</span><input data-field="href" value="${ea(x.href)}"></label></div><div class="inline-grid"><label class="compact-field"><span>Slogan</span><input data-field="slogan" value="${ea(x.slogan)}"></label><label class="compact-field"><span>Loại hình</span><input data-field="category" value="${ea(x.category)}"></label></div><label class="compact-field"><span>Đường dẫn ảnh đại diện</span><input data-field="imagePath" value="${ea(x.imagePath)}"></label>`)).join("");}
+    function renderQna(){
+        const oldScroll=el.qnaList.scrollTop;
+        el.qnaList.innerHTML=state.qnas.map((x,i)=>card("qna",x.id,i,x.question||"Câu hỏi mới",x.imagePath?preview(x.imagePath):"",`<label class="compact-field"><span>Câu hỏi</span><textarea data-field="question" rows="2">${eh(x.question)}</textarea></label><label class="compact-field"><span>Tiêu đề câu trả lời</span><input data-field="answerTitle" value="${ea(x.answerTitle)}"></label><label class="compact-field"><span>Nội dung trả lời</span><textarea data-field="paragraphs" rows="8">${eh(x.paragraphs.join("\n\n"))}</textarea></label><div class="inline-grid"><label class="compact-field"><span>Liên kết phụ — nội dung</span><input data-field="secondaryLabel" value="${ea(x.secondaryLabel)}"></label><label class="compact-field"><span>Liên kết phụ — href</span><input data-field="secondaryHref" value="${ea(x.secondaryHref)}"></label></div><div class="inline-grid"><label class="compact-field"><span>Nút cuối — nội dung</span><input data-field="ctaLabel" value="${ea(x.ctaLabel)}"></label><label class="compact-field"><span>Nút cuối — href</span><input data-field="ctaHref" value="${ea(x.ctaHref)}"></label></div><label class="compact-field"><span>Ảnh minh họa</span><input data-field="imagePath" value="${ea(x.imagePath)}"></label>`)).join("");
+        if(openQnaId){
+            const openCard=Array.from(el.qnaList.querySelectorAll('.manager-card[data-type="qna"]')).find(item=>item.dataset.id===openQnaId);
+            openCard?.classList.add("is-open");
+        }
+        el.qnaList.scrollTop=oldScroll;
+    }
+    function renderServices(){el.servicesList.innerHTML=state.services.map((x,i)=>card("service",x.id,i,x.title||"Dịch vụ mới","",`<div class="inline-grid"><label class="compact-field"><span>Tên dịch vụ</span><textarea data-field="title" rows="3">${eh(x.title)}</textarea></label><label class="compact-field"><span>File quy trình</span><input data-field="href" value="${ea(x.href)}"></label></div><label class="compact-field"><span>Mô tả</span><textarea data-field="description" rows="5">${eh(x.description)}</textarea></label><label class="compact-field"><span>Dòng liên kết</span><input data-field="linkLabel" value="${ea(x.linkLabel)}"></label>`)).join("");}
+    function renderContact(){el.contactRowsList.innerHTML=state.contact.rows.map((x,i)=>card("contact",x.id,i,x.label||"Dòng liên hệ","",`<div class="inline-grid"><label class="compact-field"><span>Nhãn</span><input data-field="label" value="${ea(x.label)}"></label><label class="compact-field"><span>Nội dung — xuống dòng sẽ thành &lt;br&gt;</span><textarea data-field="content" rows="4">${eh(x.content)}</textarea></label></div>`)).join("");}
+    function preview(path){return `<img class="asset-preview" src="${ea(previewUrls.get(path)||placeholder(path))}" alt="${ea(path)}">`;}
+    function card(type,id,i,title,prev,fields){const openClass=type==="qna"&&id===openQnaId?" is-open":"";return `<article class="manager-card${openClass}" data-type="${type}" data-id="${ea(id)}" draggable="true"><div class="card-header"><div class="card-identity"><span class="card-number">${String(i+1).padStart(2,"0")}</span><strong class="card-title">${eh(title)}</strong></div><div class="card-actions"><button class="icon-button" data-action="up" type="button">↑</button><button class="icon-button" data-action="down" type="button">↓</button><button class="mini-button" data-action="remove" type="button">Xóa</button></div></div><div class="card-body ${prev?"":"no-preview"}">${prev}<div class="card-fields">${fields}</div></div></article>`;}
+
+    function getList(type){return type==="background"?state.hero.backgrounds:type==="project"?state.projects:type==="qna"?state.qnas:type==="service"?state.services:state.contact.rows;}
+    function find(type,id){return getList(type).find(x=>x.id===id);}
+    function renderType(type){if(type==="background")renderBackgrounds();else if(type==="project")renderProjects();else if(type==="qna")renderQna();else if(type==="service")renderServices();else renderContact();}
+    function remove(type,id){const l=getList(type),i=l.findIndex(x=>x.id===id);if(i<0)return;const [r]=l.splice(i,1);if(type==="background"&&state.hero.preloadPath===r.path)state.hero.preloadPath=l[0]?.path||"";if(type==="qna"&&openQnaId===id)openQnaId=null;renderType(type);queue();}
+    function move(type,id,off){const l=getList(type),i=l.findIndex(x=>x.id===id),j=i+off;if(i<0||j<0||j>=l.length)return;const [x]=l.splice(i,1);l.splice(j,0,x);renderType(type);queue();}
+
+    function buildHtml(){
+        const bgs=state.hero.backgrounds.map(x=>x.path.trim()).filter(Boolean), preload=state.hero.preloadPath||bgs[0]||"", partners=state.partners.join(",");
+        const projectLayout=normalizedProjectLayout(state.projectLayout);
+        const projectRadius=projectLayout.rounded?projectLayout.radius:0;
+        const heroLayout=normalizedHeroLayout(state.heroLayout);
+        const heroVertical=normalizedHeroVertical(state.heroVertical);
+        const heroTypography=normalizedHeroTypography(state.heroTypography);
+        const projectLayoutCss=`<style id="dreamese-project-layout">
+        :root {
+            --dreamese-project-height: ${projectLayout.height}px;
+            --dreamese-project-gap: ${projectLayout.gap}px;
+            --dreamese-project-radius: ${projectRadius}px;
+        }
+        .project-track { gap: var(--dreamese-project-gap); }
+        .project { height: var(--dreamese-project-height); border-radius: var(--dreamese-project-radius); }
+    </style>`;
+
+        const heroLayoutCss=`<style id="dreamese-hero-layout">
+        :root {
+            --dreamese-hero-height-desktop: ${heroLayout.desktopHeight}vh;
+            --dreamese-hero-height-mobile: ${heroLayout.mobileHeight}vh;
+        }
+
+        #home {
+            min-height: var(--dreamese-hero-height-desktop);
+        }
+
+        @media (max-width: 900px) {
+            #home {
+                min-height: var(--dreamese-hero-height-mobile);
+            }
+        }
+    </style>`;
+
+        const heroVerticalCss=`<style id="dreamese-hero-vertical">
+        :root {
+            --dreamese-hero-padding-top-desktop: ${heroVertical.desktopPaddingTop}px;
+            --dreamese-hero-padding-bottom-desktop: ${heroVertical.desktopPaddingBottom}px;
+            --dreamese-hero-padding-top-mobile: ${heroVertical.mobilePaddingTop}px;
+            --dreamese-hero-padding-bottom-mobile: ${heroVertical.mobilePaddingBottom}px;
+        }
+
+        #home {
+            box-sizing: border-box;
+            align-items: ${heroAlignToCss(heroVertical.desktopAlign)};
+            padding-top: var(--dreamese-hero-padding-top-desktop);
+            padding-bottom: var(--dreamese-hero-padding-bottom-desktop);
+        }
+
+        @media (max-width: 900px) {
+            #home {
+                align-items: ${heroAlignToCss(heroVertical.mobileAlign)};
+                padding-top: var(--dreamese-hero-padding-top-mobile);
+                padding-bottom: var(--dreamese-hero-padding-bottom-mobile);
+            }
+        }
+    </style>`;
+
+        const heroTypographyCss=`<style id="dreamese-hero-typography">
+        :root {
+            --dreamese-hero-title-desktop: ${heroTypography.titleDesktop}px;
+            --dreamese-hero-body-desktop: ${heroTypography.bodyDesktop}px;
+            --dreamese-hero-title-mobile: ${heroTypography.titleMobile}px;
+            --dreamese-hero-body-mobile: ${heroTypography.bodyMobile}px;
+            --dreamese-hero-note-desktop: ${heroTypography.noteDesktop}px;
+            --dreamese-hero-note-mobile: ${heroTypography.noteMobile}px;
+        }
+        .hero-desktop h1 { font-size:var(--dreamese-hero-title-desktop); }
+        .hero-desktop > p { font-size:var(--dreamese-hero-body-desktop); }
+        .hero-note { font-size:var(--dreamese-hero-note-desktop); }
+        @media (max-width:900px) {
+            .hero-mobile h1 { font-size:var(--dreamese-hero-title-mobile); }
+            .hero-mobile > p { font-size:var(--dreamese-hero-body-mobile); }
+            .hero-note { font-size:var(--dreamese-hero-note-mobile); }
+        }
+    </style>`;
+
+        const bgAttr=bgs.length?`\n    data-bg="\n        ${bgs.map(ea).join(",\n        ")}"`:"";
+        const projects=state.projects.map(x=>`            <a href="${ea(x.href)}" class="project" data-bg="${ea(x.imagePath)}">\n                <span class="project-content">\n                    ${eh(x.title)}<br>\n                    <small>${eh(x.slogan)}</small>\n                    <small class="project-meta">${eh(x.category)}</small>\n                </span>\n            </a>`).join("\n\n");
+        const qnas=state.qnas.map((x,i)=>{const ps=x.paragraphs.map(p=>`                    <p>${light(p)}</p>`).join("\n"),sec=x.secondaryLabel&&x.secondaryHref?`\n                    <p><a href="${ea(x.secondaryHref)}" class="qna-cta-link">${eh(x.secondaryLabel)}</a></p>`:"",cta=x.ctaLabel&&x.ctaHref?`\n                    <a href="${ea(x.ctaHref)}" class="qna-cta-link">${eh(x.ctaLabel)}</a>`:"",img=x.imagePath?`\n                    <img data-src="${ea(x.imagePath)}" class="qna-content-image" alt="Hình minh họa nội dung giải đáp" loading="lazy" decoding="async">`:"";return `            <!-- Câu hỏi ${i+1} -->\n            <div class="qna-card">\n                <div class="qna-card-heading">\n                    <span class="qna-num">${String(i+1).padStart(2,"0")}</span>\n                    <h3>${eh(x.question)}</h3>\n                </div>\n                <div class="qna-content-data">\n                    <h4>${eh(x.answerTitle)}</h4>\n${ps}${sec}${cta}${img}\n                </div>\n            </div>`;}).join("\n\n");
+        const services=state.services.map(x=>`        <a href="${ea(x.href)}" class="service-box">\n            <h3>${lines(x.title)}</h3>\n            <p>${eh(x.description)}</p>\n            <span class="service-link">${eh(x.linkLabel)}</span>\n        </a>`).join("\n\n");
+        const rows=state.contact.rows.map(x=>`    <div class="contact-row">\n        <div class="contact-label">${eh(x.label)}</div>\n        <div class="contact-content">${lines(x.content)}</div>\n    </div>`).join("\n\n");
+        return `<!DOCTYPE html>\n<html lang="vi">\n<head>\n    <meta charset="UTF-8">\n    <title>${eh(state.settings.pageTitle)}</title>\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    ${preload?`<link rel="preload" as="image" href="${ea(preload)}" fetchpriority="high">`:""}\n    <link rel="stylesheet" href="${ea(state.settings.cssPath)}">\n    ${projectLayoutCss}\n    ${heroLayoutCss}\n    ${heroVerticalCss}\n    ${heroTypographyCss}\n    <script src="${ea(state.settings.jsPath)}" defer><\/script>\n</head>\n<body\n    data-partners="${ea(partners)}"\n    data-project-height="${projectLayout.height}"\n    data-project-gap="${projectLayout.gap}"\n    data-project-rounded="${projectLayout.rounded}"\n    data-project-radius="${projectLayout.radius}"\n    data-hero-desktop-height="${heroLayout.desktopHeight}"\n    data-hero-mobile-height="${heroLayout.mobileHeight}"\n    data-hero-desktop-align="${heroVertical.desktopAlign}"\n    data-hero-mobile-align="${heroVertical.mobileAlign}"\n    data-hero-desktop-padding-top="${heroVertical.desktopPaddingTop}"\n    data-hero-desktop-padding-bottom="${heroVertical.desktopPaddingBottom}"\n    data-hero-mobile-padding-top="${heroVertical.mobilePaddingTop}"\n    data-hero-mobile-padding-bottom="${heroVertical.mobilePaddingBottom}"\n    data-hero-title-desktop="${heroTypography.titleDesktop}"\n    data-hero-body-desktop="${heroTypography.bodyDesktop}"\n    data-hero-title-mobile="${heroTypography.titleMobile}"\n    data-hero-body-mobile="${heroTypography.bodyMobile}"\n    data-hero-note-desktop="${heroTypography.noteDesktop}"\n    data-hero-note-mobile="${heroTypography.noteMobile}"${bgAttr}>\n<nav>\n    <div class="logo"><img src="${ea(state.settings.logoPath)}" alt="DREAMESE STUDIO" decoding="async" fetchpriority="high"><span class="logo-text">DREAMESE STUDIO</span></div>\n    <ul><li><a href="#home">Về chúng tôi</a></li><li><a href="#projects">Dự án</a></li><li><a href="#qna">Góc giải đáp</a></li><li><a href="#services">Dịch vụ</a></li><li><a href="#contact">Liên hệ</a></li></ul>\n</nav>\n<section id="home"><div>\n    <div class="hero-desktop"><h1>${eh(state.hero.desktopTop)}<br><span class="hero-line">${eh(state.hero.desktopBottom)}</span></h1>\n${state.hero.desktopParagraphs.map(p=>`        <p>${eh(p)}</p>`).join("\n")}\n    </div>\n    <div class="hero-mobile"><h1>${eh(state.hero.mobileTop)}<br><span class="hero-line">${eh(state.hero.mobileBottom)}</span></h1><p>${eh(state.hero.mobileParagraph)}</p></div>\n    <div class="hero-note">${eh(state.hero.note)}</div>\n</div></section>\n<section id="projects"><h2>${eh(state.sectionTitles.projects)}</h2><div class="project-wrapper"><button class="nav-btn prev" type="button" aria-label="Xem dự án trước">‹</button><div class="project-track" id="projectTrack">\n${projects}\n        </div><button class="nav-btn next" type="button" aria-label="Xem dự án tiếp theo">›</button></div></section>\n<section id="qna"><h2>${eh(state.sectionTitles.qna)}</h2><div class="qna-wrapper"><div class="qna-slider">\n${qnas}\n        </div><div class="qna-preview-desktop"><div class="sticky-content"><button class="close-preview" type="button" aria-label="Đóng nội dung giải đáp">×</button><div id="desktop-content-placeholder"><div class="qna-empty-state"><p>Chọn một câu hỏi để xem chi tiết</p></div></div></div></div></div></section>\n<section id="services" class="services-section"><h2>${eh(state.sectionTitles.services)}</h2><div class="services-cards">\n${services}\n    </div></section>\n<section id="contact"><h2>${eh(state.sectionTitles.contact)}</h2><div class="contact-tagline">${eh(state.contact.tagline)}</div>\n${rows}\n</section>\n<footer class="site-footer"><div class="footer-inner"><div class="footer-left">${eh(state.footer.copyright)}</div><div class="footer-partners" data-partners-slot="footer" aria-label="Đối tác"></div></div></footer>\n</body>\n</html>\n`;
+    }
+
+    function renderPreview(){
+        const hero = state.hero.backgrounds[0]?.path;
+        const heroSrc = previewUrls.get(hero) || placeholder(hero || "Hero");
+        const previewIsMobile = el.previewFrameShell.classList.contains("mobile");
+        const previewWidth = Math.max(320, el.previewFrame.clientWidth || 560);
+        const desktopPreviewScale = previewIsMobile
+            ? 1
+            : Math.max(0.28, Math.min(1, previewWidth / 1600));
+        const projectLayout=normalizedProjectLayout(state.projectLayout);
+        const projectRadius=projectLayout.rounded?projectLayout.radius:0;
+        const heroLayout=normalizedHeroLayout(state.heroLayout);
+        const heroVertical=normalizedHeroVertical(state.heroVertical);
+        const heroTypography=normalizedHeroTypography(state.heroTypography);
+        const totalDesktopGap=projectLayout.gap*5;
+
+        const pro = state.projects.map(x => `
+            <article
+                class="project-card"
+                style="background-image:url('${ea(previewUrls.get(x.imagePath) || placeholder(x.imagePath || x.title))}')">
+                <div class="project-card-content">
+                    <b>${eh(x.title)}</b>
+                    <small>${eh(x.slogan)}</small>
+                    <em>${eh(x.category)}</em>
+                </div>
+            </article>
+        `).join("");
+
+        const qs = state.qnas.map((x, i) => `
+            <button
+                class="qna-card-preview"
+                type="button"
+                data-qna-index="${i}">
+                <span>${String(i + 1).padStart(2, "0")}</span>
+                <b>${eh(x.question)}</b>
+            </button>
+        `).join("");
+
+        const qnaDetails = state.qnas.map((x, i) => `
+            <article class="qna-detail" data-qna-detail="${i}">
+                <button class="qna-close" type="button" aria-label="Đóng">×</button>
+                <h3>${eh(x.answerTitle)}</h3>
+                ${x.paragraphs.map(p => `<p>${light(p)}</p>`).join("")}
+                ${x.secondaryLabel && x.secondaryHref
+                    ? `<a href="${ea(x.secondaryHref)}">${eh(x.secondaryLabel)}</a>`
+                    : ""}
+                ${x.ctaLabel && x.ctaHref
+                    ? `<a href="${ea(x.ctaHref)}">${eh(x.ctaLabel)}</a>`
+                    : ""}
+                ${x.imagePath
+                    ? `<img src="${ea(previewUrls.get(x.imagePath) || placeholder(x.imagePath))}" alt="">`
+                    : ""}
+            </article>
+        `).join("");
+
+        const ss = state.services.map(x => `
+            <article class="service-card">
+                <h3>${lines(x.title)}</h3>
+                <p>${eh(x.description)}</p>
+                <small>${eh(x.linkLabel)}</small>
+            </article>
+        `).join("");
+
+        const cr = state.contact.rows.map(x => `
+            <div class="contact-row-preview">
+                <b>${eh(x.label)}</b>
+                <span>${lines(x.content)}</span>
+            </div>
+        `).join("");
+
+        const partnerMarkup = state.partners.map(code => {
+            if (code === "mt") {
+                return `
+                    <span class="partner-preview">
+                        <i>MT</i>
+                        <b>MT CONSTRUCTION</b>
+                    </span>
+                `;
+            }
+
+            if (code === "titan") {
+                return `
+                    <span class="partner-preview">
+                        <i>TITAN</i>
+                        <b>TITAN CONSTRUCTION</b>
+                    </span>
+                `;
+            }
+
+            return `
+                <span class="partner-preview">
+                    <i>${eh(code)}</i>
+                    <b>${eh(code)}</b>
+                </span>
+            `;
+        }).join("");
+
+        el.previewFrame.srcdoc = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        @font-face{
+            font-family:"Avo";
+            src:
+                local("UTM Avo"),
+                url("../Fonts/UTM_Avo.ttf") format("truetype");
+            font-display:swap;
+        }
+
+        @font-face{
+            font-family:"God";
+            src:
+                local("UTM God WordR"),
+                url("../Fonts/UTM_God_WordR.ttf") format("truetype");
+            font-display:swap;
+        }
+
+        *{
+            box-sizing:border-box;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            --page-background:url("${ea(heroSrc)}");
+
+            position:relative;
+            margin:0;
+            overflow-x:hidden;
+            background:#000;
+            color:#eee;
+            font-family:"Avo",Arial,sans-serif;
+        }
+
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            z-index:-2;
+            background:
+                linear-gradient(rgba(0,0,0,.74),rgba(0,0,0,.78)),
+                var(--page-background) center/cover no-repeat;
+        }
+
+        body::after{
+            content:"";
+            position:fixed;
+            inset:0;
+            z-index:-1;
+            background:rgba(0,0,0,.08);
+            pointer-events:none;
+        }
+
+        h1,
+        h2,
+        h3,
+        .logo{
+            font-family:"God",Georgia,serif;
+            font-weight:400;
+        }
+
+        nav{
+            position:sticky;
+            top:0;
+            z-index:20;
+            height:55px;
+            padding:0 6%;
+            border-bottom:1px solid rgba(255,255,255,.08);
+            background:rgba(0,0,0,.94);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+
+        .logo{
+            color:#fff;
+            font-size:12px;
+            letter-spacing:.14em;
+        }
+
+        .links{
+            display:flex;
+            gap:14px;
+            color:#aaa;
+            font-size:8px;
+        }
+
+        .hero{
+            min-height:${heroLayout.desktopHeight}vh;
+            padding:
+                ${heroVertical.desktopPaddingTop * desktopPreviewScale}px
+                8%
+                ${heroVertical.desktopPaddingBottom * desktopPreviewScale}px;
+            display:grid;
+            align-content:${heroAlignToGrid(heroVertical.desktopAlign)};
+        }
+
+        .hero h1{
+            max-width:720px;
+            margin:0;
+            color:#fff;
+            font-size:${heroTypography.titleDesktop}px;
+            line-height:1.18;
+        }
+
+        .hero-line{
+            display:inline-block;
+            color:inherit;
+            font:inherit;
+            white-space:nowrap;
+        }
+
+        .hero p{
+            max-width:650px;
+            color:#ccc;
+            font-size:${heroTypography.bodyDesktop}px;
+            line-height:1.75;
+        }
+
+        .hero-note{
+            margin-top:20px;
+            color:#b48a5a;
+            font-size:${heroTypography.noteDesktop}px;
+            letter-spacing:.14em;
+        }
+
+        .page-section{
+            padding:${120 * desktopPreviewScale}px 10%;
+            background:transparent;
+        }
+
+        .page-section > h2{
+            position:relative;
+            margin:0 0 ${50 * desktopPreviewScale}px;
+            color:#b48a5a;
+            font-size:${Math.max(11,35.2*desktopPreviewScale)}px;
+            text-align:left;
+        }
+
+        .page-section > h2::after{
+            content:"";
+            position:absolute;
+            left:0;
+            bottom:${-10 * desktopPreviewScale}px;
+            width:${60 * desktopPreviewScale}px;
+            height:${Math.max(1,3 * desktopPreviewScale)}px;
+            background:#b48a5a;
+        }
+
+        /* =================================================
+           PROJECTS — 1 HÀNG × 6 THẺ
+        ================================================= */
+
+        .project-slider{
+            position:relative;
+            width:110%;
+            margin-left:-5%;
+            overflow:hidden;
+            touch-action:pan-y;
+            overscroll-behavior-x:contain;
+        }
+
+        .project-nav{
+            position:absolute;
+            top:50%;
+            z-index:10;
+            transform:translateY(-50%);
+            width:${Math.max(18,50*desktopPreviewScale)}px;
+            height:${Math.max(18,50*desktopPreviewScale)}px;
+            padding:0;
+            border:0;
+            border-radius:50%;
+            background:rgba(180,138,90,.8);
+            color:#fff;
+            font-size:24px;
+            cursor:pointer;
+            transition:.25s ease;
+        }
+
+        .project-nav:hover{
+            background:#fff;
+            color:#000;
+        }
+
+        .project-nav:disabled{
+            opacity:.28;
+            pointer-events:none;
+        }
+
+        #projectPrev{left:5%}
+        #projectNext{right:5%}
+
+        .project-track-preview{
+            display:flex;
+            gap:${projectLayout.gap*desktopPreviewScale}px;
+            padding:${20*desktopPreviewScale}px 0;
+            will-change:transform;
+            transition:transform .6s cubic-bezier(.25,1,.5,1);
+        }
+
+        .project-track-preview.is-dragging{
+            transition:none;
+        }
+
+        .project-card{
+            position:relative;
+            display:block;
+            flex:0 0 ${350*desktopPreviewScale}px;
+            min-width:${350*desktopPreviewScale}px;
+            height:${projectLayout.height*desktopPreviewScale}px;
+            overflow:hidden;
+            background-position:center;
+            background-size:cover;
+            border-radius:${projectRadius*desktopPreviewScale}px;
+            contain:layout paint;
+        }
+
+        .project-card::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(transparent 30%,rgba(0,0,0,.92));
+        }
+
+        .project-card-content{
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            z-index:1;
+            width:100%;
+            padding:${25 * desktopPreviewScale}px ${20 * desktopPreviewScale}px;
+            background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+        }
+
+        .project-card-content b,
+        .project-card-content small,
+        .project-card-content em{
+            display:block;
+        }
+
+        .project-card-content b{
+            color:#fff;
+            font-family:"God",Georgia,serif;
+            font-size:${Math.max(5.5,19.2*desktopPreviewScale)}px;
+        }
+
+        .project-card-content small{
+            margin-top:${4*desktopPreviewScale}px;
+            color:#ddd;
+            font-size:${Math.max(5,13*desktopPreviewScale)}px;
+        }
+
+        .project-card-content em{
+            margin-top:${6*desktopPreviewScale}px;
+            color:#b48a5a;
+            font-size:${Math.max(4.5,11*desktopPreviewScale)}px;
+            font-style:italic;
+            letter-spacing:.12em;
+            text-transform:uppercase;
+        }
+
+        /* =================================================
+           Q&A — DANH SÁCH DỌC TOÀN CHIỀU NGANG
+        ================================================= */
+
+        .qna-section{
+            background:rgba(0,0,0,.12);
+            backdrop-filter:blur(4px);
+        }
+
+        .qna-layout{
+            display:flex;
+            align-items:flex-start;
+            gap:22px;
+        }
+
+        .qna-list{
+            width:100%;
+            height:275px;
+            padding-right:8px;
+            overflow-y:auto;
+            transition:width .35s ease;
+        }
+
+        .qna-layout.active .qna-list{
+            width:43%;
+        }
+
+        .qna-card-preview{
+            width:100%;
+            min-height:37px;
+            margin:0 0 7px;
+            padding:9px 12px;
+            border:1px solid rgba(255,255,255,.12);
+            border-radius:5px;
+            background:rgba(255,255,255,.045);
+            color:#fff;
+            text-align:left;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            transition:.2s ease;
+        }
+
+        .qna-card-preview:hover,
+        .qna-card-preview.active{
+            transform:translateX(3px);
+            border-left-color:#b48a5a;
+            background:rgba(180,138,90,.11);
+        }
+
+        .qna-card-preview span{
+            flex:0 0 auto;
+            color:#b48a5a;
+            font-family:"God",Georgia,serif;
+            font-size:9px;
+        }
+
+        .qna-card-preview b{
+            font-size:8px;
+            font-weight:400;
+        }
+
+        .qna-list::-webkit-scrollbar{
+            width:3px;
+        }
+
+        .qna-list::-webkit-scrollbar-thumb{
+            background:#b48a5a;
+            border-radius:10px;
+        }
+
+        .qna-detail-panel{
+            display:none;
+            width:57%;
+            max-height:275px;
+            overflow-y:auto;
+            padding:20px;
+            border:1px solid rgba(255,255,255,.13);
+            border-radius:6px;
+            background:rgba(13,13,13,.9);
+        }
+
+        .qna-layout.active .qna-detail-panel{
+            display:block;
+        }
+
+        .qna-detail{
+            display:none;
+            position:relative;
+        }
+
+        .qna-detail.active{
+            display:block;
+        }
+
+        .qna-detail h3{
+            margin:0 30px 14px 0;
+            color:#ffc685;
+            font-size:16px;
+        }
+
+        .qna-detail p{
+            color:#ccc;
+            font-size:8px;
+            line-height:1.8;
+        }
+
+        .qna-detail a{
+            display:inline-block;
+            margin:8px 12px 8px 0;
+            color:#b48a5a;
+            font-size:8px;
+            text-decoration:none;
+        }
+
+        .qna-detail img{
+            width:100%;
+            margin-top:10px;
+            border-radius:5px;
+        }
+
+        .qna-close{
+            position:absolute;
+            top:-4px;
+            right:0;
+            border:0;
+            background:transparent;
+            color:#777;
+            font-size:22px;
+            cursor:pointer;
+        }
+
+        /* =================================================
+           SERVICES / QUY TRÌNH
+        ================================================= */
+
+        .services-grid{
+            display:grid;
+            grid-template-columns:repeat(4,minmax(0,1fr));
+            gap:12px;
+        }
+
+        .service-card{
+            min-height:145px;
+            padding:22px 16px;
+            border:1px solid rgba(255,255,255,.13);
+            background:rgba(0,0,0,.38);
+            transition:.25s ease;
+        }
+
+        .service-card:hover{
+            transform:translateY(-5px);
+            border-color:#b48a5a;
+            background:rgba(180,138,90,.1);
+        }
+
+        .service-card h3{
+            margin:0 0 12px;
+            color:#b48a5a;
+            font-size:14px;
+            line-height:1.2;
+        }
+
+        .service-card p{
+            min-height:46px;
+            margin:0;
+            color:#ddd;
+            font-size:7.5px;
+            line-height:1.65;
+        }
+
+        .service-card small{
+            display:block;
+            margin-top:14px;
+            color:#b48a5a;
+            font-size:7px;
+            font-style:italic;
+        }
+
+        /* =================================================
+           CONTACT
+        ================================================= */
+
+        .contact-section{
+            border-top:1px solid rgba(255,255,255,.1);
+            background:rgba(0,0,0,.22);
+        }
+
+        .contact-tagline-preview{
+            margin:-2px 0 18px;
+            color:#b48a5a;
+            font-family:"God",Georgia,serif;
+            font-size:10px;
+            letter-spacing:.04em;
+        }
+
+        .contact-data{
+            max-width:620px;
+        }
+
+        .contact-row-preview{
+            margin-bottom:10px;
+            display:grid;
+            grid-template-columns:70px minmax(0,1fr);
+            gap:12px;
+            color:#eee;
+            font-size:8px;
+            line-height:1.65;
+        }
+
+        .contact-row-preview b{
+            color:#bbb;
+            font-weight:600;
+        }
+
+        /* =================================================
+           FOOTER
+        ================================================= */
+
+        .site-footer-preview{
+            padding:17px 7.5%;
+            border-top:1px solid rgba(255,255,255,.08);
+            background:#000;
+            color:#555;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            font-size:7px;
+        }
+
+        .footer-copyright-preview{
+            font-family:"God",Georgia,serif;
+        }
+
+        .footer-partners-preview{
+            display:flex;
+            align-items:center;
+            justify-content:flex-end;
+            gap:8px;
+        }
+
+        .footer-partners-preview > small{
+            color:#666;
+            font-size:6px;
+            letter-spacing:.13em;
+            text-transform:uppercase;
+        }
+
+        .partner-preview{
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
+            color:#777;
+        }
+
+        .partner-preview i{
+            min-width:20px;
+            min-height:13px;
+            padding:2px 4px;
+            border:1px solid #555;
+            color:#888;
+            font-size:6px;
+            font-style:normal;
+            display:grid;
+            place-items:center;
+        }
+
+        .partner-preview b{
+            font-size:6px;
+            font-weight:400;
+            white-space:nowrap;
+        }
+
+        .preview-mobile .links{
+            display:none;
+        }
+
+        .preview-mobile .hero{
+            min-height:${heroLayout.mobileHeight}vh;
+            padding:
+                ${heroVertical.mobilePaddingTop}px
+                7%
+                ${heroVertical.mobilePaddingBottom}px;
+            align-content:${heroAlignToGrid(heroVertical.mobileAlign)};
+        }
+
+        .preview-mobile .hero h1{
+            font-size:${heroTypography.titleMobile}px;
+        }
+        .preview-mobile .hero p{
+            font-size:${heroTypography.bodyMobile}px;
+        }
+
+        .preview-mobile .hero-note{
+            font-size:${heroTypography.noteMobile}px;
+        }
+
+        .preview-mobile .page-section{
+            padding:44px 7%;
+        }
+
+        .preview-mobile .project-slider{
+            width:calc(100% + 14%);
+            margin-left:-7%;
+            padding-left:7%;
+            padding-right:7%;
+            overflow-x:auto;
+            overflow-y:hidden;
+            scroll-snap-type:x mandatory;
+            scrollbar-width:none;
+            -webkit-overflow-scrolling:touch;
+            touch-action:pan-x pan-y;
+        }
+
+        .preview-mobile .project-slider::-webkit-scrollbar{
+            display:none;
+        }
+
+        .preview-mobile .project-nav{
+            display:none;
+        }
+
+        .preview-mobile .project-card{
+            flex:0 0 min(320px,78vw);
+            min-width:min(320px,78vw);
+            height:${projectLayout.height}px;
+            border-radius:${projectRadius}px;
+            scroll-snap-align:start;
+            user-select:none;
+            -webkit-user-drag:none;
+        }
+
+        .preview-mobile .project-track-preview{
+            width:max-content;
+            gap:${projectLayout.gap}px;
+            padding:16px 0 24px;
+            transform:none !important;
+            transition:none !important;
+            will-change:auto;
+        }
+
+        .preview-mobile .project-card-content{
+            left:0;
+            right:0;
+            bottom:0;
+            padding:22px 18px;
+        }
+
+        .preview-mobile .project-card-content b{font-size:1.05rem}
+        .preview-mobile .project-card-content small{font-size:.85rem;margin-top:4px}
+        .preview-mobile .project-card-content em{font-size:.7rem;margin-top:6px}
+
+        .preview-mobile .qna-layout,
+        .preview-mobile .qna-layout.active{
+            display:block;
+        }
+
+        .preview-mobile .qna-list,
+        .preview-mobile .qna-layout.active .qna-list{
+            width:100%;
+            height:304px;
+            max-height:304px;
+            padding-right:5px;
+            overflow-x:hidden;
+            overflow-y:auto;
+            overscroll-behavior:contain;
+        }
+
+        .preview-mobile .qna-card-preview{
+            min-height:48px;
+            height:48px;
+            margin-bottom:8px;
+            padding:0 12px;
+            overflow:hidden;
+        }
+
+        .preview-mobile .qna-card-preview b{
+            min-width:0;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+        }
+
+        .preview-mobile .qna-detail-panel,
+        .preview-mobile .qna-layout.active .qna-detail-panel{
+            width:100%;
+            max-height:72vh;
+            margin-top:12px;
+            overflow-y:auto;
+        }
+
+        .preview-mobile .services-grid{
+            grid-template-columns:1fr;
+        }
+
+        .preview-mobile .contact-row-preview{
+            grid-template-columns:1fr;
+            gap:2px;
+        }
+
+        .preview-mobile .site-footer-preview{
+            flex-direction:column;
+            align-items:flex-start;
+        }
+
+        .preview-mobile .footer-partners-preview{
+            justify-content:flex-start;
+            flex-wrap:wrap;
+        }
+    </style>
+</head>
+
+<body class="${previewIsMobile ? "preview-mobile" : "preview-desktop"}">
+    <nav>
+        <div class="logo">DREAMESE STUDIO</div>
+
+        <div class="links">
+            VỀ CHÚNG TÔI · DỰ ÁN · GIẢI ĐÁP · DỊCH VỤ · LIÊN HỆ
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>
+            ${eh(state.hero.desktopTop)}<br>
+            <span class="hero-line">${eh(state.hero.desktopBottom)}</span>
+        </h1>
+
+        ${state.hero.desktopParagraphs.map(p => `<p>${eh(p)}</p>`).join("")}
+
+        <div class="hero-note">${eh(state.hero.note)}</div>
+    </section>
+
+    <section class="page-section">
+        <h2>${eh(state.sectionTitles.projects)}</h2>
+
+        <div class="project-slider">
+            <button class="project-nav" id="projectPrev" type="button">‹</button>
+
+            <div class="project-track-preview" id="previewProjects">
+                ${pro}
+            </div>
+
+            <button class="project-nav" id="projectNext" type="button">›</button>
+        </div>
+    </section>
+
+    <section class="page-section qna-section">
+        <h2>${eh(state.sectionTitles.qna)}</h2>
+
+        <div class="qna-layout" id="previewQnaLayout">
+            <div class="qna-list" id="previewQnaList">
+                ${qs}
+            </div>
+
+            <div class="qna-detail-panel" id="previewQnaDetailPanel">
+                ${qnaDetails}
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <h2>${eh(state.sectionTitles.services)}</h2>
+
+        <div class="services-grid">
+            ${ss}
+        </div>
+    </section>
+
+    <section class="page-section contact-section">
+        <h2>${eh(state.sectionTitles.contact)}</h2>
+
+        <div class="contact-tagline-preview">
+            ${eh(state.contact.tagline)}
+        </div>
+
+        <div class="contact-data">
+            ${cr}
+        </div>
+    </section>
+
+    <footer class="site-footer-preview">
+        <span class="footer-copyright-preview">
+            ${eh(state.footer.copyright)}
+        </span>
+
+        <span class="footer-partners-preview">
+            ${state.partners.length
+                ? `<small>In collaboration with</small>${partnerMarkup}`
+                : `<small>${eh(state.footer.email)} - ${eh(state.footer.phone)}</small>`}
+        </span>
+    </footer>
+
+    <script>
+        (function(){
+            var projectTrack = document.getElementById("previewProjects");
+            var projectWrapper = projectTrack.closest(".project-slider");
+            var projectPrev = document.getElementById("projectPrev");
+            var projectNext = document.getElementById("projectNext");
+            var projectItems = Array.from(projectTrack.querySelectorAll(".project-card"));
+            var projectIndex = 0;
+            var wheelLocked = false;
+            var activePointerId = null;
+            var dragStartX = 0;
+            var dragStartY = 0;
+            var dragCurrentX = 0;
+            var dragBaseTranslate = 0;
+            var dragDirection = "";
+
+            function projectConfig(){
+                var style = getComputedStyle(projectTrack);
+                var gap = parseFloat(style.columnGap || style.gap) || 0;
+                var itemWidth = projectItems[0]
+                    ? projectItems[0].getBoundingClientRect().width
+                    : 350;
+                var step = itemWidth + gap;
+                var wrapperWidth = projectWrapper.getBoundingClientRect().width;
+                var visibleCount = Math.max(1, Math.floor((wrapperWidth + gap) / step));
+                var maxIndex = Math.max(0, projectItems.length - visibleCount);
+                return { step:step, maxIndex:maxIndex };
+            }
+
+            function updateProjects(animate){
+                if (document.body.classList.contains("preview-mobile")) {
+                    projectTrack.classList.remove("is-dragging");
+                    projectTrack.style.transform = "none";
+                    projectPrev.disabled = true;
+                    projectNext.disabled = true;
+                    return;
+                }
+
+                var config = projectConfig();
+                projectIndex = Math.max(0, Math.min(projectIndex, config.maxIndex));
+                projectTrack.classList.toggle("is-dragging", animate === false);
+                projectTrack.style.transform = "translate3d(" + (-projectIndex * config.step) + "px,0,0)";
+                projectPrev.disabled = projectIndex <= 0;
+                projectNext.disabled = projectIndex >= config.maxIndex;
+            }
+
+            function moveProject(direction){
+                projectIndex += direction;
+                updateProjects(true);
+            }
+
+            projectPrev.addEventListener("click", function(){ moveProject(-1); });
+            projectNext.addEventListener("click", function(){ moveProject(1); });
+
+            projectWrapper.addEventListener("wheel", function(event){
+                if (document.body.classList.contains("preview-mobile")) return;
+                var delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+                    ? event.deltaX
+                    : event.deltaY;
+                if (Math.abs(delta) < 4) return;
+                var direction = delta > 0 ? 1 : -1;
+                var config = projectConfig();
+                var atStart = projectIndex <= 0 && direction < 0;
+                var atEnd = projectIndex >= config.maxIndex && direction > 0;
+                if (atStart || atEnd) return;
+                event.preventDefault();
+                if (wheelLocked) return;
+                wheelLocked = true;
+                moveProject(direction);
+                setTimeout(function(){ wheelLocked = false; }, 420);
+            }, { passive:false });
+
+            projectWrapper.addEventListener("pointerdown", function(event){
+                if (document.body.classList.contains("preview-mobile")) return;
+                if (event.pointerType === "mouse") return;
+                activePointerId = event.pointerId;
+                dragStartX = event.clientX;
+                dragStartY = event.clientY;
+                dragCurrentX = event.clientX;
+                dragDirection = "";
+                dragBaseTranslate = -projectIndex * projectConfig().step;
+                projectWrapper.setPointerCapture && projectWrapper.setPointerCapture(event.pointerId);
+            });
+
+            projectWrapper.addEventListener("pointermove", function(event){
+                if (event.pointerId !== activePointerId) return;
+                var dx = event.clientX - dragStartX;
+                var dy = event.clientY - dragStartY;
+                dragCurrentX = event.clientX;
+                if (!dragDirection) {
+                    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+                    dragDirection = Math.abs(dx) > Math.abs(dy) ? "horizontal" : "vertical";
+                }
+                if (dragDirection !== "horizontal") return;
+                event.preventDefault();
+                projectTrack.classList.add("is-dragging");
+                projectTrack.style.transform = "translate3d(" + (dragBaseTranslate + dx) + "px,0,0)";
+            }, { passive:false });
+
+            function finishProjectPointer(event){
+                if (event.pointerId !== activePointerId) return;
+                var dx = dragCurrentX - dragStartX;
+                var horizontal = dragDirection === "horizontal";
+                activePointerId = null;
+                dragDirection = "";
+                if (horizontal && Math.abs(dx) >= 45) {
+                    projectIndex += dx < 0 ? 1 : -1;
+                }
+                updateProjects(true);
+            }
+
+            projectWrapper.addEventListener("pointerup", finishProjectPointer);
+            projectWrapper.addEventListener("pointercancel", finishProjectPointer);
+            addEventListener("resize", function(){ updateProjects(false); });
+            updateProjects(false);
+
+            var qnaLayout = document.getElementById("previewQnaLayout");
+            var qnaButtons = Array.from(
+                document.querySelectorAll(".qna-card-preview")
+            );
+            var qnaDetails = Array.from(
+                document.querySelectorAll(".qna-detail")
+            );
+
+            function closeQna(){
+                qnaLayout.classList.remove("active");
+
+                qnaButtons.forEach(function(button){
+                    button.classList.remove("active");
+                });
+
+                qnaDetails.forEach(function(detail){
+                    detail.classList.remove("active");
+                });
+            }
+
+            qnaButtons.forEach(function(button){
+                button.addEventListener("click", function(){
+                    var index = button.dataset.qnaIndex;
+
+                    qnaLayout.classList.add("active");
+
+                    qnaButtons.forEach(function(item){
+                        item.classList.toggle("active", item === button);
+                    });
+
+                    qnaDetails.forEach(function(detail){
+                        detail.classList.toggle(
+                            "active",
+                            detail.dataset.qnaDetail === index
+                        );
+                    });
+                });
+            });
+
+            document.querySelectorAll(".qna-close").forEach(function(button){
+                button.addEventListener("click", closeQna);
+            });
+        })();
+    <\/script>
+</body>
+</html>`;
+    }
+
+    function renderValidation(){const issues=[];if(!state.settings.fileName.trim())issues.push("Chưa có tên file HTML.");if(!state.hero.backgrounds.length)issues.push("Chưa có hình nền Hero.");if(!state.projects.length)issues.push("Chưa có dự án.");if(!state.qnas.length)issues.push("Chưa có Q&A.");const bad=state.projects.filter(x=>!x.title.trim()||!x.href.trim()||!x.imagePath.trim()).length;if(bad)issues.push(`${bad} dự án còn thiếu thông tin.`);el.validationBox.className="validation-box "+(issues.length?"warning":"success");el.validationBox.innerHTML=issues.length?`<strong>Cần chú ý:</strong><br>${issues.map(eh).join("<br>")}`:"Trang chủ đã sẵn sàng để xuất.";}
+
+    async function exportZip(){const z=new StoreZip();await z.text(htmlName(),buildHtml());await z.text(baseName()+".home.json",JSON.stringify(serializable(),null,2));await z.text("HUONG-DAN.txt",`Chép ${htmlName()} vào thư mục gốc website. Website cần HOME.css, HOME.js, logo và các thư mục hình đúng đường dẫn.`);download(baseName()+"-Home-Website.zip",z.build());status("Đã tạo ZIP.","success");}
+    async function writeWebsite(){ return saveHomeDirectly();
+    }
+
+    function blankState(){
+        return {
+            id:uid(),
+            settings:{
+                fileName:"dreamese.html",
+                pageTitle:"Dreamese - Kiến trúc & Nội thất",
+                cssPath:"HOME.css",
+                jsPath:"HOME.js",
+                logoPath:"Dreamese_Studio.png"
+            },
+            partners:[],
+            sectionTitles:{
+                projects:"Dự án tiêu biểu",
+                qna:"Góc giải đáp",
+                services:"Dịch vụ",
+                contact:"Liên hệ"
+            },
+            projectLayout:{height:450,gap:24,rounded:true,radius:4},
+            heroLayout:{desktopHeight:100,mobileHeight:100},
+            heroVertical:{
+                desktopAlign:"center",
+                mobileAlign:"center",
+                desktopPaddingTop:120,
+                desktopPaddingBottom:120,
+                mobilePaddingTop:100,
+                mobilePaddingBottom:100
+            },
+            heroTypography:{
+                titleDesktop:64,
+                bodyDesktop:16,
+                titleMobile:34,
+                bodyMobile:16,
+                noteDesktop:12,
+                noteMobile:12
+            },
+            hero:{
+                desktopTop:"Những câu chuyện được kể lại",
+                desktopBottom:"bằng không gian sống thật.",
+                desktopParagraphs:[],
+                mobileTop:"Thiết kế không gian",
+                mobileBottom:"kể câu chuyện của bạn",
+                mobileParagraph:"",
+                note:"DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ",
+                backgrounds:[],
+                preloadPath:""
+            },
+            projects:[],
+            qnas:[],
+            services:[],
+            contact:{
+                tagline:"DREAMESE STUDIO – Đồng hành kiến tạo không gian sống.",
+                rows:[]
+            },
+            footer:{
+                copyright:"© DREAMESE STUDIO – Architecture & Interior Design",
+                email:"vtv.arc@gmail.com",
+                phone:"09 4363 4758"
+            }
+        };
+    }
+
+    function blankProject(){
+        return {id:uid(),href:"Du_An_Moi.html",title:"Dự án mới",slogan:"",category:"",imagePath:""};
+    }
+
+    function blankQna(){
+        return {
+            id:uid(),
+            question:"Câu hỏi mới",
+            answerTitle:"",
+            paragraphs:[],
+            secondaryLabel:"",
+            secondaryHref:"",
+            ctaLabel:"Trao đổi cùng KTS →",
+            ctaHref:"#contact",
+            imagePath:""
+        };
+    }
+
+    function blankService(){
+        return {id:uid(),href:"",title:"Dịch vụ mới",description:"",linkLabel:"Quy trình triển khai →"};
+    }
+
+    function blankContact(){
+        return {id:uid(),label:"Thông tin:",content:""};
+    }
+
+    function normalizeState(source){
+        const base=blankState();
+        const input=source||{};
+
+        return {
+            id:input.id||base.id,
+            settings:{...base.settings,...input.settings,fileName:SITE_HOME_FILE},
+            partners:Array.isArray(input.partners)?input.partners:[],
+            sectionTitles:{...base.sectionTitles,...input.sectionTitles},
+            projectLayout:normalizedProjectLayout(input.projectLayout||base.projectLayout),
+            heroLayout:normalizedHeroLayout(input.heroLayout||base.heroLayout),
+            heroVertical:normalizedHeroVertical(input.heroVertical||base.heroVertical),
+            heroTypography:normalizedHeroTypography(input.heroTypography||base.heroTypography),
+            hero:{
+                ...base.hero,
+                ...input.hero,
+                desktopParagraphs:Array.isArray(input.hero?.desktopParagraphs)
+                    ? input.hero.desktopParagraphs
+                    : paragraphs(input.hero?.desktopParagraphs||""),
+                backgrounds:Array.isArray(input.hero?.backgrounds)
+                    ? input.hero.backgrounds.map(item=>({
+                        id:item.id||uid(),
+                        path:item.path||""
+                    }))
+                    : []
+            },
+            projects:Array.isArray(input.projects)
+                ? input.projects.map(item=>({...blankProject(),...item,id:item.id||uid()}))
+                : [],
+            qnas:Array.isArray(input.qnas)
+                ? input.qnas.map(item=>({
+                    ...blankQna(),
+                    ...item,
+                    id:item.id||uid(),
+                    paragraphs:Array.isArray(item.paragraphs)
+                        ? item.paragraphs
+                        : paragraphs(item.paragraphs||"")
+                }))
+                : [],
+            services:Array.isArray(input.services)
+                ? input.services.map(item=>({...blankService(),...item,id:item.id||uid()}))
+                : [],
+            contact:{
+                ...base.contact,
+                ...input.contact,
+                rows:Array.isArray(input.contact?.rows)
+                    ? input.contact.rows.map(item=>({...blankContact(),...item,id:item.id||uid()}))
+                    : []
+            },
+            footer:{...base.footer,...input.footer}
+        };
+    }
+
+    function assets(){
+        return [
+            ...state.hero.backgrounds.map(item=>({path:item.path})),
+            ...state.projects.map(item=>({path:item.imagePath})),
+            ...state.qnas.map(item=>({path:item.imagePath}))
+        ];
+    }
+
+    function clearPreviewUrls(){
+        previewUrls.forEach(url=>URL.revokeObjectURL(url));
+        previewUrls.clear();
+    }
+
+    function setPath(object,path,value){
+        let target=object;
+        path.slice(0,-1).forEach(key=>target=target[key]);
+        target[path.at(-1)]=value;
+    }
+
+    function splitLayoutTitle(value){
+        const titleLines=String(value||"")
+            .replace(/\r/g,"")
+            .split("\n");
+        const beforeBreak=(titleLines.shift()||"").trim();
+        const afterBreak=titleLines.join(" ").trim();
+        return {beforeBreak,afterBreak};
+    }
+
+    function serializable(){return JSON.parse(JSON.stringify(state));}
+    function persist(){
+        try{
+            localStorage.setItem(STORAGE_KEY,JSON.stringify(serializable()));
+            return true;
+        }catch(error){
+            console.warn("Không thể lưu bản nháp Home Manager.", error);
+            return false;
+        }
+    }
+    function restore(){
+        try{
+            const raw=localStorage.getItem(STORAGE_KEY);
+            if(!raw)return false;
+            const saved=JSON.parse(raw);
+            if(!saved)return false;
+            state=normalizeState(saved);
+            return true;
+        }catch(error){
+            console.warn("Không thể khôi phục bản nháp Home Manager.", error);
+            return false;
+        }
+    }
+    function queue(){
+        persist();
+        markDirty(true);
+        renderValidation();
+        clearTimeout(previewTimer);
+        previewTimer=setTimeout(renderPreview,220);
+    }
+
+    function clampNumber(value,minimum,maximum,fallback){const number=Number(value);if(!Number.isFinite(number))return fallback;return Math.max(minimum,Math.min(maximum,Math.round(number)));}
+    function normalizedProjectLayout(layout){const source=layout||{};return{height:clampNumber(source.height,25,900,450),gap:clampNumber(source.gap,0,60,24),rounded:source.rounded!==false,radius:clampNumber(source.radius,1,40,4)};}
+    function normalizedHeroLayout(layout){const source=layout||{};return{desktopHeight:clampNumber(source.desktopHeight,25,200,100),mobileHeight:clampNumber(source.mobileHeight,25,200,100)};}
+    function normalizedHeroVertical(vertical){
+        const source=vertical||{};
+        const align=value=>["start","center","end"].includes(value)?value:"center";
+        return{
+            desktopAlign:align(source.desktopAlign),
+            mobileAlign:align(source.mobileAlign),
+            desktopPaddingTop:clampNumber(source.desktopPaddingTop,0,300,120),
+            desktopPaddingBottom:clampNumber(source.desktopPaddingBottom,0,300,120),
+            mobilePaddingTop:clampNumber(source.mobilePaddingTop,0,240,100),
+            mobilePaddingBottom:clampNumber(source.mobilePaddingBottom,0,240,100)
+        };
+    }
+    function heroAlignToCss(value){
+        return value==="start"?"flex-start":value==="end"?"flex-end":"center";
+    }
+    function heroAlignToGrid(value){
+        return value==="start"?"start":value==="end"?"end":"center";
+    }
+    function normalizedHeroTypography(type){const source=type||{};return{titleDesktop:clampNumber(source.titleDesktop,20,120,64),bodyDesktop:clampNumber(source.bodyDesktop,10,36,16),titleMobile:clampNumber(source.titleMobile,18,72,34),bodyMobile:clampNumber(source.bodyMobile,10,28,16),noteDesktop:clampNumber(source.noteDesktop,8,24,12),noteMobile:clampNumber(source.noteMobile,8,22,12)};}
+
+    function paragraphs(v){return String(v||"").split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean);}
+    function lines(v){return String(v||"").split(/\r?\n/).map(eh).join("<br>");}
+    function light(v){return eh(v).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");}
+    function norm(v){return String(v||"").replaceAll("\\","/").replace(/^\.?\//,"").replace(/\/+/g,"/");}
+    function safe(v){return String(v||"").trim().replace(/[\\/:*?"<>|]+/g,"_").replace(/\s+/g,"_");}
+    function ensureHtml(v){const x=String(v||"dreamese.html").trim();return /\.html?$/i.test(x)?x:x+".html";}
+    function htmlName(){return SITE_HOME_FILE;}
+    function baseName(){return htmlName().replace(/\.html?$/i,"");}
+    function phoneHref(v){const d=String(v||"").replace(/[^\d+]/g,"");return d.startsWith("0")?"+84"+d.slice(1):d;}
+    function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random();}
+    function status(m,t=""){el.statusBar.textContent=m;el.statusBar.className=("status-bar "+t).trim();}
+    function eh(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+    function ea(v){return eh(v).replaceAll("\n","&#10;");}
+    function placeholder(label){const name=String(label||"Image").split("/").at(-1).slice(0,28),svg=`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect width="100%" height="100%" fill="#181818"/><path d="M0 520L220 300L390 450L520 330L800 600H0Z" fill="#282828"/><circle cx="615" cy="155" r="55" fill="#b48a5a" opacity=".48"/><text x="50%" y="52%" fill="#888" font-family="Arial" font-size="28" text-anchor="middle">${eh(name)}</text></svg>`;return"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);}
+    function download(name,blob){const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);status(`Đã tạo ${name}.`,"success");}
+
+    class StoreZip{constructor(){this.f=[];}async text(path,text){this.f.push({path:norm(path),bytes:new TextEncoder().encode(text)});}build(){const lp=[],cp=[];let off=0;for(const e of this.f){const n=new TextEncoder().encode(e.path),crc=crc32(e.bytes),dt=dos(new Date()),lh=new Uint8Array(30+n.length),lv=new DataView(lh.buffer);lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);lv.setUint16(8,0,true);lv.setUint16(10,dt.time,true);lv.setUint16(12,dt.date,true);lv.setUint32(14,crc,true);lv.setUint32(18,e.bytes.length,true);lv.setUint32(22,e.bytes.length,true);lv.setUint16(26,n.length,true);lh.set(n,30);lp.push(lh,e.bytes);const ch=new Uint8Array(46+n.length),cv=new DataView(ch.buffer);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x0800,true);cv.setUint16(12,dt.time,true);cv.setUint16(14,dt.date,true);cv.setUint32(16,crc,true);cv.setUint32(20,e.bytes.length,true);cv.setUint32(24,e.bytes.length,true);cv.setUint16(28,n.length,true);cv.setUint32(42,off,true);ch.set(n,46);cp.push(ch);off+=lh.length+e.bytes.length;}const size=cp.reduce((s,x)=>s+x.length,0),end=new Uint8Array(22),v=new DataView(end.buffer);v.setUint32(0,0x06054b50,true);v.setUint16(8,this.f.length,true);v.setUint16(10,this.f.length,true);v.setUint32(12,size,true);v.setUint32(16,off,true);return new Blob([...lp,...cp,end],{type:"application/zip"});}}
+    function dos(d){const y=Math.max(1980,d.getFullYear());return{time:(d.getHours()<<11)|(d.getMinutes()<<5)|Math.floor(d.getSeconds()/2),date:((y-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate()};}
+    const CT=(()=>{const t=new Uint32Array(256);for(let i=0;i<256;i++){let v=i;for(let b=0;b<8;b++)v=(v&1)?0xedb88320^(v>>>1):v>>>1;t[i]=v>>>0;}return t;})();
+    function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=CT[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
+})();
+
+    </script>
+</head>
+<body>
+<header class="app-header">
+    <div class="brand">
+        <div class="brand-mark">D</div>
+        <div>
+            <h1>Dreamese Home Manager <small>v0.9.4</small></h1>
+            <p>Quản trị và lưu thay đổi trực tiếp cho dreamese.html trên cùng website</p>
+        </div>
+    </div>
+    <div class="header-actions">
+        <input id="importHomeInput" type="file" accept=".html,text/html" hidden>
+        <input id="websiteFolderInput" type="file" multiple webkitdirectory directory hidden>
+        <button class="button button-ghost" id="importHomeBtn" type="button">Mở bản HTML khác</button>
+        <button class="button button-ghost" id="websiteFolderBtn" type="button">Mở website</button>
+        <button class="button button-ghost" id="reloadWebsiteBtn" type="button" hidden>Đọc lại Home</button>
+        <span class="connection-pill" id="websiteConnectionState" data-state="connected">Đã đồng bộ với Home</span>
+        <button class="button button-ghost" id="newHomeBtn" type="button">Trang chủ mới</button>
+        <button class="button" id="saveHomeBtn" type="button">Lưu thay đổi</button>
+    </div>
+</header>
+
+<main class="app-shell">
+    <aside class="sidebar">
+        <button class="sidebar-tab active" data-tab="general" type="button"><span>01</span>Tổng quan</button>
+        <button class="sidebar-tab" data-tab="hero" type="button"><span>02</span>Hero & hình nền</button>
+        <button class="sidebar-tab" data-tab="projects" type="button"><span>03</span>Dự án tiêu biểu</button>
+        <button class="sidebar-tab" data-tab="qna" type="button"><span>04</span>Góc giải đáp</button>
+        <button class="sidebar-tab" data-tab="services" type="button"><span>05</span>Dịch vụ & liên hệ</button>
+        <button class="sidebar-tab" data-tab="export" type="button"><span>06</span>Lưu &amp; sao lưu</button>
+        <div class="sidebar-note">
+            <strong>File dùng chung</strong>
+            <code>DHM.html</code><code>dreamese.html</code><code>HOME.css</code><code>HOME.js</code><code>PROJECTS/...</code>
+        </div>
+    </aside>
+
+    <section class="workspace">
+        <div class="editor-column">
+            <section class="tab-panel active" data-panel="general">
+                <div class="panel-heading"><div><span class="eyebrow">THIẾT LẬP CHUNG</span><h2>Thông tin trang chủ</h2></div></div><p class="help-box"><strong>Cấu trúc sử dụng:</strong> đặt <code>DHM.html</code>, <code>dreamese.html</code>, <code>HOME.css</code> và <code>HOME.js</code> trong cùng thư mục Site. Sau khi chỉnh sửa, chỉ cần bấm <strong>Lưu thay đổi</strong>; trang Home sẽ tự đọc dữ liệu mới giống Chapter Manager.</p>
+                <div class="form-grid two-columns">
+                    <label class="field"><span>File Home cố định</span><input id="homeFileName" type="text" value="dreamese.html" readonly></label>
+                    <label class="field"><span>Tiêu đề tab trình duyệt</span><input id="pageTitle" type="text"></label>
+                    <label class="field"><span>Đường dẫn HOME.css</span><input id="cssPath" type="text"></label>
+                    <label class="field"><span>Đường dẫn HOME.js</span><input id="jsPath" type="text"></label>
+                    <label class="field"><span>Đường dẫn logo Dreamese</span><input id="logoPath" type="text"></label>
+                </div>
+                <div class="settings-card">
+                    <h3>Đối tác hiển thị trong footer</h3>
+                    <div class="checkbox-row">
+                        <label class="check-field"><input id="partnerMt" type="checkbox" value="mt"><span>MT Construction</span></label>
+                        <label class="check-field"><input id="partnerTitan" type="checkbox" value="titan"><span>TITAN Construction</span></label>
+                    </div>
+                    <p>Bỏ chọn toàn bộ để footer chuyển sang dạng không có đối tác.</p>
+                </div>
+                <div class="settings-card">
+                    <h3>Tiêu đề các khu vực</h3>
+                    <div class="form-grid two-columns">
+                        <label class="field"><span>Dự án</span><input id="projectsSectionTitle" type="text"></label>
+                        <label class="field"><span>Góc giải đáp</span><input id="qnaSectionTitle" type="text"></label>
+                        <label class="field"><span>Dịch vụ</span><input id="servicesSectionTitle" type="text"></label>
+                        <label class="field"><span>Liên hệ</span><input id="contactSectionTitle" type="text"></label>
+                    </div>
+                </div>
+                <div class="settings-card">
+                    <h3>Footer</h3>
+                    <label class="field"><span>Dòng bản quyền</span><input id="footerCopyright" type="text"></label>
+                    <div class="form-grid two-columns">
+                        <label class="field"><span>Email dự phòng</span><input id="footerEmail" type="email"></label>
+                        <label class="field"><span>Hotline dự phòng</span><input id="footerPhone" type="text"></label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="hero">
+                <div class="panel-heading"><div><span class="eyebrow">GIỚI THIỆU STUDIO</span><h2>Hero và hình nền chuyển động</h2></div></div>
+                <div class="settings-card">
+                    <h3>Nội dung Desktop</h3>
+                    <label class="field">
+                        <span>Tiêu đề Hero Desktop — một câu</span>
+                        <textarea id="desktopTitle" rows="3"></textarea>
+                        <small>
+                            Nhập một câu hoàn chỉnh và nhấn Enter tại vị trí muốn xuống dòng.
+                            Hai dòng có cùng font, màu sắc và mức độ nhấn.
+                        </small>
+                    </label>
+
+                    <label class="field">
+                        <span>Các đoạn giới thiệu</span>
+                        <textarea id="desktopParagraphs" rows="9"></textarea>
+                        <small>Mỗi đoạn cách nhau bằng một dòng trống.</small>
+                    </label>
+                </div>
+                <div class="settings-card">
+                    <h3>Nội dung Mobile</h3>
+                    <label class="field">
+                        <span>Tiêu đề Hero Mobile — một câu</span>
+                        <textarea id="mobileTitle" rows="3"></textarea>
+                        <small>
+                            Enter chỉ tạo vị trí xuống dòng; không tạo phần tiêu đề nhấn mạnh riêng.
+                        </small>
+                    </label>
+
+                    <label class="field">
+                        <span>Đoạn giới thiệu Mobile</span>
+                        <textarea id="mobileParagraph" rows="5"></textarea>
+                    </label>
+                    <label class="field"><span>Dòng ghi chú thương hiệu</span><input id="heroNote" type="text"></label>
+                </div>
+                <div class="settings-card hero-type-settings">
+                    <div class="layout-settings-heading">
+                        <div>
+                            <span class="eyebrow">KÍCH THƯỚC CHỮ HERO</span>
+                            <h3>Typography Desktop và Mobile</h3>
+                        </div>
+
+                        <button class="button button-ghost" id="resetHeroTypeBtn" type="button">
+                            Khôi phục mặc định
+                        </button>
+                    </div>
+
+                    <div class="layout-control-grid">
+                        <label class="range-field"><span>Tiêu đề Hero Desktop</span><div class="range-row"><input id="heroTitleDesktopSize" type="range" min="20" max="120" step="1"><output id="heroTitleDesktopSizeValue">64 px</output></div></label>
+                        <label class="range-field"><span>Nội dung giới thiệu Desktop</span><div class="range-row"><input id="heroBodyDesktopSize" type="range" min="10" max="36" step="1"><output id="heroBodyDesktopSizeValue">16 px</output></div></label>
+                        <label class="range-field"><span>Tiêu đề Hero Mobile</span><div class="range-row"><input id="heroTitleMobileSize" type="range" min="18" max="72" step="1"><output id="heroTitleMobileSizeValue">34 px</output></div></label>
+                        <label class="range-field"><span>Nội dung giới thiệu Mobile</span><div class="range-row"><input id="heroBodyMobileSize" type="range" min="10" max="28" step="1"><output id="heroBodyMobileSizeValue">16 px</output></div></label>
+                        <label class="range-field"><span>Tagline Desktop</span><div class="range-row"><input id="heroNoteDesktopSize" type="range" min="8" max="24" step="1"><output id="heroNoteDesktopSizeValue">12 px</output></div></label>
+                        <label class="range-field"><span>Tagline Mobile</span><div class="range-row"><input id="heroNoteMobileSize" type="range" min="8" max="22" step="1"><output id="heroNoteMobileSizeValue">12 px</output></div></label>
+                    </div>
+
+                    <div class="layout-path-preview" id="heroTypeSummary">
+                        Desktop: 64 / 16 / 12 px · Mobile: 34 / 16 / 12 px
+                    </div>
+                </div>
+
+                <div class="settings-card hero-layout-settings">
+                    <div class="layout-settings-heading">
+                        <div>
+                            <span class="eyebrow">KÍCH THƯỚC HERO</span>
+                            <h3>Chiều cao khu vực giới thiệu</h3>
+                        </div>
+
+                        <button
+                            class="button button-ghost"
+                            id="resetHeroHeightBtn"
+                            type="button">
+                            Khôi phục mặc định
+                        </button>
+                    </div>
+
+                    <div class="layout-control-grid">
+                        <label class="range-field">
+                            <span>Chiều cao Hero Desktop</span>
+
+                            <div class="range-row">
+                                <input
+                                    id="heroDesktopHeight"
+                                    type="range"
+                                    min="25"
+                                    max="200"
+                                    step="5">
+
+                                <output id="heroDesktopHeightValue">100 vh</output>
+                            </div>
+
+                            <small>100vh tương đương chiều cao màn hình trình duyệt.</small>
+                        </label>
+
+                        <label class="range-field">
+                            <span>Chiều cao Hero Mobile</span>
+
+                            <div class="range-row">
+                                <input
+                                    id="heroMobileHeight"
+                                    type="range"
+                                    min="25"
+                                    max="200"
+                                    step="5">
+
+                                <output id="heroMobileHeightValue">100 vh</output>
+                            </div>
+
+                            <small>Điều chỉnh độc lập cho màn hình điện thoại.</small>
+                        </label>
+                    </div>
+
+                    <div class="layout-path-preview" id="heroHeightSummary">
+                        Desktop 100vh · Mobile 100vh
+                    </div>
+
+                    <div class="hero-vertical-divider"></div>
+
+                    <div class="form-grid two-columns hero-align-grid">
+                        <label class="field">
+                            <span>Căn dọc nội dung Hero Desktop</span>
+                            <select id="heroDesktopAlign">
+                                <option value="start">Căn phía trên</option>
+                                <option value="center">Căn giữa trên và dưới</option>
+                                <option value="end">Căn phía dưới</option>
+                            </select>
+                        </label>
+
+                        <label class="field">
+                            <span>Căn dọc nội dung Hero Mobile</span>
+                            <select id="heroMobileAlign">
+                                <option value="start">Căn phía trên</option>
+                                <option value="center">Căn giữa trên và dưới</option>
+                                <option value="end">Căn phía dưới</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="layout-control-grid">
+                        <label class="range-field">
+                            <span>Khoảng trống phía trên Desktop</span>
+                            <div class="range-row">
+                                <input id="heroDesktopPaddingTop" type="range" min="0" max="300" step="5">
+                                <output id="heroDesktopPaddingTopValue">120 px</output>
+                            </div>
+                        </label>
+
+                        <label class="range-field">
+                            <span>Khoảng trống phía dưới Desktop</span>
+                            <div class="range-row">
+                                <input id="heroDesktopPaddingBottom" type="range" min="0" max="300" step="5">
+                                <output id="heroDesktopPaddingBottomValue">120 px</output>
+                            </div>
+                        </label>
+
+                        <label class="range-field">
+                            <span>Khoảng trống phía trên Mobile</span>
+                            <div class="range-row">
+                                <input id="heroMobilePaddingTop" type="range" min="0" max="240" step="5">
+                                <output id="heroMobilePaddingTopValue">100 px</output>
+                            </div>
+                        </label>
+
+                        <label class="range-field">
+                            <span>Khoảng trống phía dưới Mobile</span>
+                            <div class="range-row">
+                                <input id="heroMobilePaddingBottom" type="range" min="0" max="240" step="5">
+                                <output id="heroMobilePaddingBottomValue">100 px</output>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="layout-path-preview" id="heroVerticalSummary">
+                        Desktop: căn giữa · trên 120px · dưới 120px
+                    </div>
+                </div>
+
+                <div class="panel-heading compact-heading">
+                    <div><span class="eyebrow">BACKGROUND SLIDER</span><h2>Danh sách hình nền</h2></div>
+                    <button class="button" id="addBackgroundBtn" type="button">Thêm hình nền</button>
+                </div>
+                <label class="field"><span>Ảnh preload đầu tiên</span><select id="preloadBackgroundSelect"></select></label>
+                <div class="manager-list" id="backgroundList"></div>
+            </section>
+
+            <section class="tab-panel" data-panel="projects">
+                <div class="panel-heading">
+                    <div><span class="eyebrow">PROJECT SLIDER</span><h2>Quản lý dự án tiêu biểu</h2></div>
+                    <div class="panel-actions">
+                        <input id="projectJsonInput" type="file" accept=".json,application/json" multiple hidden>
+                        <button class="button button-ghost" id="importProjectJsonBtn" type="button">Thêm từ Project Manager</button>
+                        <button class="button" id="addProjectBtn" type="button">Thêm dự án</button>
+                    </div>
+                </div>
+                <p class="help-box">Có thể chọn nhiều file <code>*.project.json</code> được xuất từ Dreamese Project Manager.</p>
+                <div class="settings-card project-layout-settings">
+                    <div class="layout-settings-heading">
+                        <div>
+                            <span class="eyebrow">HÌNH DÁNG THẺ DỰ ÁN</span>
+                            <h3>Kích thước và khoảng cách</h3>
+                        </div>
+
+                        <button
+                            class="button button-ghost"
+                            id="resetProjectLayoutBtn"
+                            type="button">
+                            Khôi phục mặc định
+                        </button>
+                    </div>
+
+                    <div class="layout-control-grid">
+                        <label class="range-field">
+                            <span>Chiều cao thẻ dự án</span>
+
+                            <div class="range-row">
+                                <input
+                                    id="projectCardHeight"
+                                    type="range"
+                                    min="25"
+                                    max="900"
+                                    step="5">
+
+                                <output id="projectCardHeightValue">450 px</output>
+                            </div>
+                        </label>
+
+                        <label class="range-field">
+                            <span>Khoảng hở giữa các dự án</span>
+
+                            <div class="range-row">
+                                <input
+                                    id="projectCardGap"
+                                    type="range"
+                                    min="0"
+                                    max="60"
+                                    step="1">
+
+                                <output id="projectCardGapValue">24 px</output>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="rounded-settings-row">
+                        <label class="check-field rounded-toggle">
+                            <input id="projectRounded" type="checkbox">
+                            <span>Bo góc thẻ dự án</span>
+                        </label>
+
+                        <label class="range-field radius-field" id="projectRadiusField">
+                            <span>Mức bo góc</span>
+
+                            <div class="range-row">
+                                <input
+                                    id="projectCardRadius"
+                                    type="range"
+                                    min="1"
+                                    max="40"
+                                    step="1">
+
+                                <output id="projectCardRadiusValue">4 px</output>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="layout-path-preview" id="projectLayoutSummary">
+                        Cao 450 px · Hở 24 px · Bo góc 4 px
+                    </div>
+                </div>
+
+                <div class="manager-list" id="projectsList"></div>
+            </section>
+
+            <section class="tab-panel" data-panel="qna">
+                <div class="panel-heading">
+                    <div><span class="eyebrow">GÓC GIẢI ĐÁP</span><h2>Quản lý câu hỏi và câu trả lời</h2></div>
+                    <button class="button" id="addQnaBtn" type="button">Thêm câu hỏi</button>
+                </div>
+                <p class="help-box">Danh sách hiển thị 5 tiêu đề đầy đủ và một phần tiêu đề thứ 6. Bấm vào tiêu đề để mở chỉnh sửa. Mỗi đoạn trả lời cách nhau bằng một dòng trống; dùng <code>**nội dung**</code> để in đậm.</p>
+                <div class="manager-list" id="qnaList"></div>
+            </section>
+
+            <section class="tab-panel" data-panel="services">
+                <div class="panel-heading">
+                    <div><span class="eyebrow">DỊCH VỤ</span><h2>Thẻ dịch vụ</h2></div>
+                    <button class="button" id="addServiceBtn" type="button">Thêm dịch vụ</button>
+                </div>
+                <p class="help-box">Trong tên dịch vụ, xuống dòng tại vị trí muốn tạo thẻ <code>&lt;br&gt;</code>.</p>
+                <div class="manager-list" id="servicesList"></div>
+                <div class="panel-heading section-divider-heading">
+                    <div><span class="eyebrow">LIÊN HỆ</span><h2>Thông tin liên hệ</h2></div>
+                    <button class="button" id="addContactRowBtn" type="button">Thêm dòng liên hệ</button>
+                </div>
+                <label class="field"><span>Dòng giới thiệu</span><input id="contactTagline" type="text"></label>
+                <div class="manager-list" id="contactRowsList"></div>
+            </section>
+
+            <section class="tab-panel" data-panel="export">
+                <div class="panel-heading"><div><span class="eyebrow">HOÀN THÀNH</span><h2>Lưu và sao lưu trang Home</h2></div></div>
+                <div class="export-grid">
+                    <article class="export-card direct-save-card"><h3>Ghi cố định vào file</h3><p>Nút <strong>Lưu thay đổi</strong> phía trên đã đủ để cập nhật Home giống Chapter Manager. Chỉ dùng mục này khi cần ghi nội dung mới vĩnh viễn vào file <code>dreamese.html</code>.</p><button class="button" id="writeWebsiteBtn" type="button">Chọn thư mục và ghi file</button></article>
+                    <article class="export-card"><h3>Bản sao HTML</h3><p>Tùy chọn tải một bản HTML dự phòng. Không bắt buộc dùng để cập nhật website.</p><button class="button button-ghost" id="downloadHtmlBtn" type="button">Tải bản sao HTML</button></article>
+                    <article class="export-card"><h3>Dữ liệu chỉnh sửa</h3><p>Lưu JSON để phục hồi đầy đủ nội dung trong app khi cần.</p><div class="stack-actions"><input id="importStateInput" type="file" accept=".json,application/json" hidden><button class="button button-ghost" id="downloadStateBtn" type="button">Tải JSON</button><button class="button button-ghost" id="importStateBtn" type="button">Mở JSON</button></div></article>
+                    <article class="export-card"><h3>Gói ZIP dự phòng</h3><p>Bao gồm HTML, JSON và hướng dẫn sử dụng.</p><button class="button button-ghost" id="downloadZipBtn" type="button">Tải ZIP</button></article>
+                </div>
+                <div class="validation-box" id="validationBox"></div>
+            </section>
+        </div>
+
+        <aside class="preview-column">
+            <div class="preview-heading">
+                <div><span class="eyebrow">XEM TRƯỚC</span><h2>dreamese.html</h2></div>
+                <div class="preview-actions">
+                    <button class="mini-button active" data-preview-width="desktop" type="button">Desktop</button>
+                    <button class="mini-button" data-preview-width="mobile" type="button">Mobile</button>
+                    <button class="mini-button" id="refreshPreviewBtn" type="button">Làm mới</button>
+                </div>
+            </div>
+            <div class="preview-frame-shell" id="previewFrameShell"><iframe id="previewFrame" title="Xem trước trang chủ Dreamese"></iframe></div>
+            <div class="status-bar" id="statusBar">Sẵn sàng.</div>
+        </aside>
+    </section>
+</main>
+</body>
+</html>

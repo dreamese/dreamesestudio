@@ -2,6 +2,98 @@
     "use strict";
 
     /* =====================================================
+       0. DREAMESE PROJECT MANAGER — LƯU THAY ĐỔI TRỰC TIẾP
+
+       DPM.html lưu phiên bản HTML theo đúng tên file project
+       trong IndexedDB. Mỗi trang project đọc bản đã lưu trước
+       khi khởi tạo giao diện. File HTML gốc trên ổ đĩa vẫn được
+       giữ nguyên cho đến khi người dùng chọn "Ghi cố định".
+    ===================================================== */
+    const PROJECT_SAVE_DB = "dreamese-site-manager";
+    const PROJECT_SAVE_STORE = "project-pages";
+    const PROJECT_SAVE_VERSION = 1;
+    const PROJECT_SAVE_CHANNEL = "dreamese-project-updates";
+
+    function currentProjectFileName() {
+        const pathName = decodeURIComponent(window.location.pathname || "");
+        return pathName.split("/").filter(Boolean).pop() || "";
+    }
+
+    function openProjectSaveDatabase() {
+        return new Promise((resolve, reject) => {
+            if (!("indexedDB" in window)) {
+                reject(new Error("Trình duyệt không hỗ trợ IndexedDB."));
+                return;
+            }
+
+            const request = indexedDB.open(PROJECT_SAVE_DB, PROJECT_SAVE_VERSION);
+
+            request.onupgradeneeded = () => {
+                const database = request.result;
+                if (!database.objectStoreNames.contains(PROJECT_SAVE_STORE)) {
+                    database.createObjectStore(PROJECT_SAVE_STORE, { keyPath: "fileName" });
+                }
+            };
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("Không mở được dữ liệu project."));
+        });
+    }
+
+    async function readSavedProjectPage(fileName) {
+        if (!fileName) return null;
+
+        try {
+            const database = await openProjectSaveDatabase();
+            const record = await new Promise((resolve, reject) => {
+                const transaction = database.transaction(PROJECT_SAVE_STORE, "readonly");
+                const request = transaction.objectStore(PROJECT_SAVE_STORE).get(fileName);
+                request.onsuccess = () => resolve(request.result || null);
+                request.onerror = () => reject(request.error);
+            });
+            database.close();
+            if (record) return record;
+        } catch (error) {
+            console.warn("Không đọc được bản project từ IndexedDB:", error);
+        }
+
+        try {
+            const fallback = localStorage.getItem(`dreamese-project-page:${fileName}`);
+            return fallback ? JSON.parse(fallback) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    async function applySavedProjectPage() {
+        const fileName = currentProjectFileName();
+        if (!fileName || !/\.html?$/i.test(fileName)) return false;
+
+        const record = await readSavedProjectPage(fileName);
+        const currentRevision = document.documentElement.dataset.dreameseProjectRevision || "";
+
+        if (!record?.html || !record.revision || record.revision === currentRevision) {
+            return false;
+        }
+
+        document.open();
+        document.write(record.html);
+        document.close();
+        return true;
+    }
+
+    function watchProjectManagerUpdates() {
+        if (!("BroadcastChannel" in window)) return;
+
+        const channel = new BroadcastChannel(PROJECT_SAVE_CHANNEL);
+        channel.addEventListener("message", (event) => {
+            const fileName = currentProjectFileName();
+            if (event.data?.fileName === fileName) window.location.reload();
+        });
+    }
+
+
+    /* =====================================================
        1. DỮ LIỆU ĐỐI TÁC
        Muốn dùng đối tác khác, thêm dữ liệu tại đây và đổi
        data-partner trong thẻ <body> của trang HTML.
@@ -859,9 +951,25 @@
         requestAnimationFrame(() => document.body.classList.add("loaded"));
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init, { once: true });
-    } else {
-        init();
+    async function bootstrapProjectPage() {
+        if (await applySavedProjectPage()) return;
+
+        watchProjectManagerUpdates();
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init, { once: true });
+        } else {
+            init();
+        }
     }
+
+    bootstrapProjectPage().catch((error) => {
+        console.warn("Không thể nạp bản project đã lưu:", error);
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init, { once: true });
+        } else {
+            init();
+        }
+    });
 })();

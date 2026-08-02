@@ -785,22 +785,81 @@ h2::after {
         flex-direction: column;
     }
 
+    /* Mobile giữ danh sách gọn: 5 tiêu đề đầy đủ + một phần tiêu đề thứ 6. */
     .qna-wrapper.active-view .qna-slider,
     .qna-slider {
         width: 100%;
-        height: auto;
-        max-height: none;
-        padding-right: 0;
-        overflow: visible;
+        height: 360px;
+        max-height: 360px;
+        padding-right: 6px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
     }
 
+    .qna-card {
+        height: 58px;
+        min-height: 58px;
+        margin-bottom: 8px;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 9px;
+    }
+
+    .qna-card-heading {
+        height: 100%;
+        min-height: 58px;
+        padding: 0 14px;
+        align-items: center;
+    }
+
+    .qna-card h3 {
+        min-width: 0;
+        overflow: hidden;
+        font-size: 0.9rem;
+        line-height: 1.35;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .qna-num {
+        flex: 0 0 auto;
+        margin-right: 12px;
+        font-size: 18px;
+    }
+
+    /* Nội dung được mở thành một khung riêng bên dưới danh sách,
+       nhờ vậy số lượng tiêu đề đang nhìn thấy không bị thay đổi. */
     .qna-preview-desktop {
-        display: none !important;
+        display: block !important;
+        width: 100%;
+        max-height: 0;
+        margin-top: 0;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        transition: max-height 0.35s ease, margin-top 0.35s ease, opacity 0.25s ease;
+    }
+
+    .qna-wrapper.active-view .qna-preview-desktop {
+        width: 100%;
+        max-height: 78vh;
+        margin-top: 12px;
+        overflow: visible;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .sticky-content {
+        position: relative;
+        top: auto;
+        max-height: 72vh;
+        padding: 34px 22px 24px;
     }
 
     .qna-card.mobile-open .qna-content-data {
-        display: block;
-        padding: 24px 0 4px 40px;
+        display: none;
     }
 
     .services-cards {

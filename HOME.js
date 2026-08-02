@@ -1,5 +1,117 @@
-(() => {
+(async () => {
     "use strict";
+
+    /* =====================================================
+       0. HOME LIVE DATA — DÙNG CHUNG VỚI DHM.html
+
+       Cơ chế tương tự Chapter Manager:
+       - DHM.html lưu HTML/cấu hình vào IndexedDB.
+       - dreamese.html tự đọc bản đã lưu khi mở.
+       - Không cần tải HTML rồi chép đè sau mỗi lần chỉnh sửa.
+    ===================================================== */
+    const LIVE_DB_NAME = "dreamese-home-live-v1";
+    const LIVE_DB_VERSION = 1;
+    const LIVE_STORE_NAME = "content";
+    const LIVE_PAYLOAD_KEY = "home-payload-v1";
+    const LIVE_LOCAL_KEY = "dreamese-home-live-payload-v1";
+    const LIVE_CHANNEL_NAME = "dreamese-home-live-updates";
+    const RUNTIME_MARKER = "dhmRuntimeApplied";
+
+    function openLiveDatabase() {
+        return new Promise((resolve, reject) => {
+            if (!("indexedDB" in window)) {
+                reject(new Error("IndexedDB không khả dụng."));
+                return;
+            }
+
+            const request = indexedDB.open(LIVE_DB_NAME, LIVE_DB_VERSION);
+
+            request.onupgradeneeded = () => {
+                const database = request.result;
+                if (!database.objectStoreNames.contains(LIVE_STORE_NAME)) {
+                    database.createObjectStore(LIVE_STORE_NAME);
+                }
+            };
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error("Không thể mở dữ liệu Home."));
+        });
+    }
+
+    async function readLivePayload() {
+        try {
+            const database = await openLiveDatabase();
+            const payload = await new Promise((resolve, reject) => {
+                const transaction = database.transaction(LIVE_STORE_NAME, "readonly");
+                const request = transaction.objectStore(LIVE_STORE_NAME).get(LIVE_PAYLOAD_KEY);
+                request.onsuccess = () => resolve(request.result || null);
+                request.onerror = () => reject(request.error);
+            });
+            database.close();
+            if (payload) return payload;
+        } catch (error) {
+            console.warn("Không thể đọc IndexedDB Home.", error);
+        }
+
+        try {
+            const raw = localStorage.getItem(LIVE_LOCAL_KEY);
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
+    }
+
+    function prepareRuntimeHtml(html, savedAt = "") {
+        const parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
+        if (!parsed.body || !parsed.querySelector("#home")) return "";
+
+        parsed.documentElement.dataset[RUNTIME_MARKER] = "true";
+        if (savedAt) parsed.documentElement.dataset.dhmSavedAt = savedAt;
+
+        return `<!DOCTYPE html>\n${parsed.documentElement.outerHTML}`;
+    }
+
+    async function applySavedHome() {
+        if (document.documentElement.dataset[RUNTIME_MARKER] === "true") {
+            return false;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("home-default")) return false;
+
+        const payload = await readLivePayload();
+        if (!payload?.html) return false;
+
+        const runtimeHtml = prepareRuntimeHtml(payload.html, payload.savedAt);
+        if (!runtimeHtml) return false;
+
+        document.open();
+        document.write(runtimeHtml);
+        document.close();
+        return true;
+    }
+
+    function initLiveReload() {
+        try {
+            if ("BroadcastChannel" in window) {
+                const channel = new BroadcastChannel(LIVE_CHANNEL_NAME);
+                channel.addEventListener("message", (event) => {
+                    if (event.data?.type === "home-updated") {
+                        window.location.reload();
+                    }
+                });
+            }
+        } catch (error) {
+            console.warn("Không thể bật tự động tải lại Home.", error);
+        }
+
+        window.addEventListener("storage", (event) => {
+            if (event.key === LIVE_LOCAL_KEY && event.newValue) {
+                window.location.reload();
+            }
+        });
+    }
+
 
     /* =====================================================
        1. DỮ LIỆU ĐỐI TÁC
@@ -602,35 +714,29 @@
             const contentBox = card.querySelector(".qna-content-data");
             if (!contentBox) return;
 
-            const isDesktop = window.innerWidth > 900;
-            const wasOpenOnMobile = card.classList.contains("mobile-open");
+            const wasOpen = card.classList.contains("active");
 
             resetCards();
 
-            if (!isDesktop && wasOpenOnMobile) {
+            if (wasOpen) {
+                wrapper.classList.remove("active-view");
+                setEmptyState();
                 return;
             }
 
             card.classList.add("active");
             card.setAttribute("aria-expanded", "true");
+            wrapper.classList.add("active-view");
 
-            if (isDesktop) {
-                wrapper.classList.add("active-view");
-                const contentFragment = document.createDocumentFragment();
+            const contentFragment = document.createDocumentFragment();
 
-                contentBox.childNodes.forEach((node) => {
-                    contentFragment.append(node.cloneNode(true));
-                });
+            contentBox.childNodes.forEach((node) => {
+                contentFragment.append(node.cloneNode(true));
+            });
 
-                desktopPlaceholder.replaceChildren(contentFragment);
-                hydrateLazyImages(desktopPlaceholder);
-                stickyContent.scrollTop = 0;
-                return;
-            }
-
-            wrapper.classList.remove("active-view");
-            card.classList.add("mobile-open");
-            hydrateLazyImages(contentBox);
+            desktopPlaceholder.replaceChildren(contentFragment);
+            hydrateLazyImages(desktopPlaceholder);
+            stickyContent.scrollTop = 0;
         }
 
         cards.forEach((card) => {
@@ -671,6 +777,11 @@
         initProjectSlider();
         initQna();
     }
+
+    const replacedBySavedHome = await applySavedHome();
+    if (replacedBySavedHome) return;
+
+    initLiveReload();
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", init, { once: true });
