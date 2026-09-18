@@ -1,19 +1,118 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vũ Tiên Vương — Portfolio</title>
-<script>
-(function(){
-  var h=location.hash||'';
-  if(h==='#projects') h='#works';
-  location.replace('index.html'+h);
-})();
-</script>
-<noscript><meta http-equiv="refresh" content="0;url=index.html"></noscript>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Vũ Tiên Vương — Architect / Design Leader</title>
+  <meta name="description" content="Portfolio cá nhân của Vũ Tiên Vương — Architect / Design Leader.">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="margin:0;background:#080808;color:#f2efe8;font-family:Arial,sans-serif;display:grid;place-items:center;min-height:100vh">
-<a href="index.html" style="color:#e4c51f">Open portfolio →</a>
+<body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home"><span></span>VŨ TIÊN VƯƠNG</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+    <nav id="siteNav">
+      <a href="#home">Home</a>
+      <a href="#works">Selected Works</a>
+      <a href="#experience">Experience</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-grid"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Architect / Design Leader</p>
+          <h1>Vũ Tiên<br>Vương</h1>
+          <div class="hero-rule"></div>
+          <div class="hero-facts">
+            <span>Architecture</span><span>Interior</span><span>Design Management</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#works">Selected Works</a>
+            <a class="btn ghost" href="#contact">Contact</a>
+          </div>
+
+          <div class="hero-stats">
+            <div><strong>2018</strong><small>Practice</small></div>
+            <div><strong>10+</strong><small>Team</small></div>
+            <div><strong>100%</strong><small>Design → Build</small></div>
+          </div>
+        </div>
+        <figure class="portrait">
+          <img src="https://avatars.githubusercontent.com/u/260638674?v=4" alt="Vũ Tiên Vương">
+        </figure>
+      </div>
+    </section>
+
+    <section class="works" id="works">
+      <div class="container">
+        <header class="section-title">
+          <p class="eyebrow">Selected Works</p>
+          <h2>Dự án tiêu biểu</h2>
+        </header>
+        <div class="project-grid">
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/RUSTANIA/A_ExC_008.1.png" alt="Rustania Homes" class="project-preview ready"><div class="project-loading"><span>01</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>01</span><span>Villa</span></div><h3>Rustania Homes</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Lean_Villa/ExC_05.2.jpg" alt="Lean Villa" class="project-preview ready"><div class="project-loading"><span>02</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>02</span><span>Villa</span></div><h3>Lean Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TT_Villa/ExC_06.1.jpg" alt="T&T Villa" class="project-preview ready"><div class="project-loading"><span>03</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>03</span><span>Villa</span></div><h3>T&T Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Thu_Dieu/ExC_01.2.jpg" alt="Thu Điếu" class="project-preview ready"><div class="project-loading"><span>04</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>04</span><span>Villa</span></div><h3>Thu Điếu</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/SimplePC/Ext_001.3.png" alt="Mr Đặng Villa" class="project-preview ready"><div class="project-loading"><span>05</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>05</span><span>Villa</span></div><h3>Mr Đặng Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TVT_House/F1.jpg" alt="TVT Home" class="project-preview ready"><div class="project-loading"><span>06</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>06</span><span>Townhouse</span></div><h3>TVT Home</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Chateur_QL_Villa/Chateur_ExC_02.jpg" alt="Breath Villa" class="project-preview ready"><div class="project-loading"><span>07</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>07</span><span>Villa</span></div><h3>Breath Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TranPhuong_Villa/TP-Villa_Up_02.1.png" alt="Cù Lao Villa" class="project-preview ready"><div class="project-loading"><span>08</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>08</span><span>Villa</span></div><h3>Cù Lao Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/PN1/PN1_ExC_09.1.png" alt="Nhuận Home" class="project-preview ready"><div class="project-loading"><span>09</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>09</span><span>Villa</span></div><h3>Nhuận Home</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TouchHome/ExC_01.1.png" alt="Touch House" class="project-preview ready"><div class="project-loading"><span>10</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>10</span><span>Villa</span></div><h3>Touch House</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Lavender/C8.jpg" alt="Lavender Restaurant" class="project-preview ready"><div class="project-loading"><span>11</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>11</span><span>Restaurant</span></div><h3>Lavender Restaurant</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TN_Cottage/TN_Bal_02.jpg" alt="Heal Hill" class="project-preview ready"><div class="project-loading"><span>12</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>12</span><span>Bungalow</span></div><h3>Heal Hill</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/ThanVanNhiep/C8.jpg" alt="ThanVanNhiep Office" class="project-preview ready"><div class="project-loading"><span>13</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>13</span><span>Office</span></div><h3>ThanVanNhiep Office</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Ada_Office/Ada_0F_02.2.png" alt="Ada Office" class="project-preview ready"><div class="project-loading"><span>14</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>14</span><span>Office</span></div><h3>Ada Office</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="assets/vsss-placeholder.svg" alt="VSSS" class="project-preview ready"><div class="project-loading"><span>15</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>15</span><span>Institutional</span></div><h3>VSSS</h3></div></button></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-study is-hidden" id="case-study" aria-hidden="true">
+      <div class="container">
+        <header class="case-head">
+          <div><p class="eyebrow" id="caseNumber">01 · Villa</p><h2 id="caseTitle">Rustania Homes</h2></div>
+          <div class="case-actions"><button class="case-nav" id="prevProject" type="button">←</button><button class="case-nav" id="nextProject" type="button">→</button></div>
+        </header>
+        <div class="case-gallery" id="caseGallery"></div>
+        <div class="view-all-wrap"><a id="viewAllBtn" class="view-all" href="https://dreamese.github.io/dreamesestudio/Rustania.html">Xem tất cả <span>↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="approach" id="approach"><div class="container"><header class="section-title"><p class="eyebrow">Design Approach</p><h2>Phù hợp · Thẩm mỹ<br>Công năng · Khả thi</h2></header></div></section>
+
+    <section class="experience" id="experience"><div class="container"><header class="section-title"><p class="eyebrow">Experience</p><h2>Career</h2></header><div class="career">
+      <div><time>03/2026 — Nay</time><strong>Titan Construction</strong><span>Trưởng phòng Thiết kế</span></div>
+      <div><time>11/2025 — 02/2026</time><strong>Freelance / Tư vấn dự án</strong><span>Kiến trúc sư độc lập</span></div>
+      <div><time>08/2024 — 11/2025</time><strong>Xhome Cần Thơ</strong><span>Trưởng phòng Design Center 02</span></div>
+      <div><time>02/2022 — 10/2023</time><strong>VTN Architects</strong><span>Kiến trúc sư</span></div>
+      <div><time>11/2018 — 09/2019</time><strong>LIM Concept</strong><span>Kiến trúc sư thiết kế</span></div>
+    </div></div></section>
+
+    <section class="about" id="about"><div class="container about-grid"><div><p class="eyebrow">About</p><h2>Vũ Tiên Vương</h2></div><div class="about-data">
+      <div><span>Education</span><b>Đại học Quốc tế Hồng Bàng</b></div>
+      <div><span>Study</span><b>Università Politecnica delle Marche</b></div>
+      <div><span>Tools</span><b>Revit · AutoCAD · SketchUp · 3ds Max · Photoshop</b></div>
+      <div><span>Focus</span><b>Design Direction · HSKT · Team · Site</b></div>
+    </div></div></section>
+
+    <section class="contact" id="contact"><div class="container"><p class="eyebrow">Contact</p><h2>Let’s work<br>together.</h2><div class="contact-row">
+      <a href="tel:+84943634758">0943 634 758</a><a href="mailto:vtv.arc@gmail.com">vtv.arc@gmail.com</a><span>Architect / Design Leader</span>
+    </div></div></section>
+  </main>
+
+  <footer><div class="container"><span>© 2026 Vũ Tiên Vương</span><a href="#home">↑ Top</a></div></footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true"><button class="lb-close" id="lbClose">×</button><button class="lb-nav lb-prev" id="lbPrev">←</button><img id="lbImage" alt=""><button class="lb-nav lb-next" id="lbNext">→</button></div>
+  <script src="js/script.js"></script>
 </body>
 </html>
