@@ -1,152 +1,118 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dreamese Studio — Architecture & Interior</title>
-<style>
-:root{--black:#080808;--panel:#101010;--line:#262626;--white:#f2f0e9;--muted:#9b9a94;--yellow:#f1d300}
-*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--black)}body{margin:0;background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
-a{color:inherit;text-decoration:none}button{font:inherit}section{scroll-margin-top:70px}
-header{height:70px;position:fixed;z-index:70;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 3.2vw;background:rgba(8,8,8,.78);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}
-.logo{font-weight:700;letter-spacing:.19em;font-size:15px}.logo:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--yellow);margin-right:9px}
-nav{display:flex;gap:27px;font-size:10px;text-transform:uppercase;letter-spacing:.16em}nav a{color:#c7c6c0}nav a:hover{color:var(--yellow)}
-.kicker{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:var(--yellow)}
-.about{min-height:100vh;padding:130px 4vw 70px;display:grid;grid-template-columns:1.25fr .75fr;gap:8vw;align-items:center;background:#0b0b0b}
-.about h1{font-size:clamp(50px,7.6vw,122px);line-height:.84;letter-spacing:-.065em;margin:15px 0 28px;font-weight:500}.about h1 span{color:var(--yellow)}
-.about p{font-size:clamp(18px,2vw,30px);line-height:1.35;max-width:700px}.about aside{color:#999;line-height:1.8;border-left:1px solid #333;padding-left:30px}
-.projects{position:relative;min-height:100vh;padding:105px 3.2vw 55px;background:#080808;overflow:hidden}
-.bg-stage{position:absolute;inset:0;pointer-events:none;overflow:hidden}.bg-image{position:absolute;inset:-5%;background-position:center;background-size:cover;opacity:.18;filter:grayscale(35%) contrast(1.12);transform:scale(1.04);transition:opacity .65s ease,background-image .3s ease}
-.bg-stage:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.45),#080808 85%)}
-.projects-inner{position:relative;z-index:2}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.head h2{font-size:clamp(48px,7vw,105px);font-weight:500;letter-spacing:-.065em;line-height:.85;margin:0}.head p{color:#8d8d88;font-size:12px;max-width:300px;line-height:1.55}
-.project-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.project-card{position:relative;aspect-ratio:1.28/1;background:#151515;overflow:hidden;border:1px solid #1e1e1e;cursor:pointer}
-.project-card .image{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s ease,filter .35s;filter:saturate(.82)}
-.project-card:hover .image{transform:scale(1.045);filter:saturate(1)}
-.project-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.88));transition:.3s}
-.project-card:hover:after{background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.91))}
-.meta{position:absolute;z-index:3;left:17px;right:17px;bottom:16px}.meta small{display:flex;justify-content:space-between;color:#aaa;font-size:9px;text-transform:uppercase;letter-spacing:.13em}.meta h3{font-size:clamp(18px,1.65vw,27px);font-weight:500;letter-spacing:-.035em;margin:8px 0 3px}.meta p{margin:0;color:#b7b7b2;font-size:11px}.project-card:hover h3{color:var(--yellow)}
-/* Public project pages are used as image sources in this prototype; fallback gradients keep cards usable if remote image loading is blocked. */
-.p1 .image{background-image:linear-gradient(135deg,transparent,rgba(0,0,0,.1)),url("https://dreamese.github.io/dreamesestudio/PROJECTS/RUSTANIA/1.jpg"),linear-gradient(135deg,#454545,#111)}
-.p2 .image{background-image:url("https://dreamese.github.io/dreamesestudio/PROJECTS/LEAN/1.jpg"),linear-gradient(135deg,#343434,#111)}
-.p3 .image{background-image:url("https://dreamese.github.io/dreamesestudio/PROJECTS/TT/1.jpg"),linear-gradient(135deg,#4a4a4a,#111)}
-.p4 .image{background-image:url("https://dreamese.github.io/dreamesestudio/PROJECTS/NAMTHIEN/1.jpg"),linear-gradient(135deg,#303030,#111)}
-.p5 .image{background-image:linear-gradient(145deg,#3b3526,#111)}.p6 .image{background-image:linear-gradient(145deg,#242a29,#101010)}.p7 .image{background-image:linear-gradient(145deg,#3b3b3b,#121212)}.p8 .image{background-image:linear-gradient(145deg,#2e2925,#101010)}
-.p9 .image{background-image:linear-gradient(145deg,#2a2f2b,#101010)}.p10 .image{background-image:linear-gradient(145deg,#373126,#101010)}.p11 .image{background-image:linear-gradient(145deg,#252525,#101010)}.p12 .image{background-image:linear-gradient(145deg,#313526,#101010)}
-.p13 .image{background-image:linear-gradient(145deg,#2b2b32,#101010)}.p14 .image{background-image:linear-gradient(145deg,#3b342c,#101010)}
-.blog{min-height:100vh;padding:110px 3.2vw 70px;background:#0c0c0c}.blog .head{border-bottom:1px solid var(--line);padding-bottom:25px}.video-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,26vw);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:none}.video-card{scroll-snap-align:start;position:relative;aspect-ratio:9/13;background:#181818;border:0;padding:0;color:#fff;overflow:hidden;text-align:left;cursor:pointer}
-.video-card .poster{position:absolute;inset:0;background:linear-gradient(145deg,#303030,#101010);transition:.45s}.video-card:nth-child(2n) .poster{background:linear-gradient(145deg,#4b410d,#101010)}.video-card:nth-child(3n) .poster{background:linear-gradient(145deg,#252c2b,#101010)}
-.video-card:hover .poster{transform:scale(1.04)}.video-card:after{content:"▶";position:absolute;z-index:2;top:18px;right:18px;width:48px;height:48px;border-radius:50%;background:var(--yellow);color:#000;display:grid;place-items:center;font-size:14px}
-.vmeta{position:absolute;z-index:2;left:18px;right:18px;bottom:18px}.vmeta small{color:var(--yellow);letter-spacing:.12em;text-transform:uppercase;font-size:9px}.vmeta h3{font-size:22px;line-height:1.03;margin:8px 0 0;font-weight:500;letter-spacing:-.035em}
-.services{min-height:100vh;padding:110px 4vw;background:#efeee8;color:#111}.services .kicker{color:#111}.service-list{border-top:1px solid #aaa}.service{display:grid;grid-template-columns:70px 1.1fr 1fr;gap:20px;padding:28px 0;border-bottom:1px solid #aaa;align-items:center}.service b{font-size:clamp(24px,3vw,42px);font-weight:500}.service p{color:#666;line-height:1.6}
-.contact{min-height:100vh;padding:110px 4vw 40px;background:var(--yellow);color:#0b0b0b;display:flex;flex-direction:column;justify-content:space-between}.contact .kicker{color:#111}.contact h2{font-size:clamp(58px,10vw,155px);line-height:.78;letter-spacing:-.07em;margin:15px 0;font-weight:500}.contact-grid{border-top:1px solid #111;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding-top:22px}.contact small{display:block;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px}
-/* Swipeable blog viewer */
-.viewer{position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.96);display:none;flex-direction:column}.viewer.open{display:flex}.viewer-bar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 3vw;border-bottom:1px solid #292929}.viewer-count{font-size:11px;color:#aaa;letter-spacing:.14em}.viewer-close{border:0;background:var(--yellow);color:#000;width:43px;height:43px;border-radius:50%;font-size:21px;cursor:pointer}
-.viewer-track-wrap{flex:1;overflow:hidden;touch-action:pan-y}.viewer-track{height:100%;display:flex;transition:transform .38s cubic-bezier(.2,.8,.2,1)}.slide{min-width:100%;height:100%;display:grid;place-items:center;padding:28px 8vw 45px}.slide-inner{width:min(1000px,100%)}.video-box{aspect-ratio:16/9;background:#121212;display:grid;place-items:center;border:1px solid #242424}.video-placeholder{text-align:center;color:#8d8d88;padding:30px}.video-placeholder b{display:block;color:#fff;font-size:22px;margin-bottom:8px}.slide h3{font-size:clamp(25px,3vw,42px);font-weight:500;letter-spacing:-.04em;margin:18px 0 0}.viewer-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:50px;height:50px;border-radius:50%;border:1px solid #444;background:rgba(0,0,0,.45);color:#fff;font-size:23px;cursor:pointer}.viewer-arrow:hover{background:var(--yellow);color:#000;border-color:var(--yellow)}.prev{left:2vw}.next{right:2vw}.swipe-hint{text-align:center;color:#777;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding-bottom:14px}
-@media(max-width:1050px){.project-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:760px){header{height:62px;padding:0 18px}nav{gap:14px}nav a:nth-child(1),nav a:nth-child(4){display:none}.about{grid-template-columns:1fr;padding-left:22px;padding-right:22px}.projects,.blog{padding-left:14px;padding-right:14px}.head{display:block}.head p{margin-top:16px}.project-grid{grid-template-columns:repeat(2,1fr);gap:7px}.project-card{aspect-ratio:1/1.05}.meta{left:12px;right:12px;bottom:12px}.meta p{display:none}.video-row{grid-auto-columns:68vw}.service{grid-template-columns:42px 1fr}.service p{grid-column:2}.contact-grid{grid-template-columns:1fr}.viewer-arrow{display:none}.slide{padding:18px 16px}.video-box{aspect-ratio:9/16;max-height:65vh}.slide-inner{width:min(430px,100%)}}
-@media(max-width:420px){.project-grid{grid-template-columns:1fr 1fr}.meta h3{font-size:16px}.meta small{font-size:7px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Vũ Tiên Vương — Architect / Design Leader</title>
+  <meta name="description" content="Portfolio cá nhân của Vũ Tiên Vương — Architect / Design Leader.">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header><a class="logo" href="#projects">DREAMESE</a><nav><a href="#about">Về chúng tôi</a><a href="#projects">Dự án</a><a href="#blog">Blog</a><a href="#services">Dịch vụ</a><a href="#contact">Liên hệ</a></nav></header>
+  <div class="scroll-progress" id="scrollProgress"></div>
 
-<section id="about" class="about">
-<div><div class="kicker">Dreamese Studio</div><h1>Những câu chuyện<br>được kể lại bằng<br><span>không gian sống.</span></h1><p>Thiết kế không gian như viết một câu chuyện sống.</p></div>
-<aside>Chúng tôi tin rằng mỗi công trình luôn bắt đầu từ con người và những câu chuyện mang tính ước vọng.<br><br>DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ.</aside>
-</section>
+  <header class="site-header">
+    <a class="brand" href="#home"><span></span>VŨ TIÊN VƯƠNG</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+    <nav id="siteNav">
+      <a href="#home">Home</a>
+      <a href="#works">Selected Works</a>
+      <a href="#experience">Experience</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<section id="projects" class="projects">
-<div class="bg-stage"><div class="bg-image" id="projectBg"></div></div>
-<div class="projects-inner">
-<div class="head"><h2>Dự án<br>tiêu biểu.</h2><p>Kiến trúc & Nội thất — những câu chuyện được kể lại bằng không gian sống.</p></div>
-<div class="project-grid">
-<a class="project-card p1" data-bg="linear-gradient(120deg,#302b20,#080808)" href="https://dreamese.github.io/dreamesestudio/Rustania.html"><div class="image"></div><div class="meta"><small><span>01</span><span>Biệt thự</span></small><h3>Rustania Homes</h3><p>Trải nghiệm sức sống mới</p></div></a>
-<a class="project-card p2" data-bg="linear-gradient(120deg,#222b29,#080808)" href="https://dreamese.github.io/dreamesestudio/Lean_Villa.html"><div class="image"></div><div class="meta"><small><span>02</span><span>Biệt thự</span></small><h3>Lean Villa</h3><p>Điểm tựa tinh thần</p></div></a>
-<a class="project-card p3" data-bg="linear-gradient(120deg,#39322b,#080808)" href="https://dreamese.github.io/dreamesestudio/TT_Villa.html"><div class="image"></div><div class="meta"><small><span>03</span><span>Biệt thự</span></small><h3>T&T Villa</h3><p>Sự tương phản trong ánh nhìn</p></div></a>
-<a class="project-card p4" data-bg="linear-gradient(120deg,#242424,#080808)" href="https://dreamese.github.io/dreamesestudio/NamThien1.html"><div class="image"></div><div class="meta"><small><span>04</span><span>Biệt thự</span></small><h3>Thu Điếu</h3><p>Nốt nhạc tĩnh của thanh âm</p></div></a>
-<div class="project-card p5" data-bg="linear-gradient(120deg,#3b3526,#080808)"><div class="image"></div><div class="meta"><small><span>05</span><span>Biệt thự</span></small><h3>Mr Đặng Villa</h3><p>Không phù phiếm</p></div></div>
-<div class="project-card p6" data-bg="linear-gradient(120deg,#24302d,#080808)"><div class="image"></div><div class="meta"><small><span>06</span><span>Nhà phố</span></small><h3>TVT Home</h3><p>Trỗi dậy và Bứt phá</p></div></div>
-<div class="project-card p7" data-bg="linear-gradient(120deg,#333,#080808)"><div class="image"></div><div class="meta"><small><span>07</span><span>Biệt thự</span></small><h3>Breath Villa</h3><p>Lắng nghe những nhịp chậm</p></div></div>
-<div class="project-card p8" data-bg="linear-gradient(120deg,#302822,#080808)"><div class="image"></div><div class="meta"><small><span>08</span><span>Biệt thự</span></small><h3>Cù Lao Villa</h3><p>Theo luồng cảm xúc</p></div></div>
-<div class="project-card p9" data-bg="linear-gradient(120deg,#28302a,#080808)"><div class="image"></div><div class="meta"><small><span>09</span><span>Biệt thự</span></small><h3>Nhuận Home</h3><p>Về nhà</p></div></div>
-<div class="project-card p10" data-bg="linear-gradient(120deg,#3b3225,#080808)"><div class="image"></div><div class="meta"><small><span>10</span><span>Biệt thự</span></small><h3>Touch House</h3><p>Điểm chạm của không gian</p></div></div>
-<div class="project-card p11" data-bg="linear-gradient(120deg,#292929,#080808)"><div class="image"></div><div class="meta"><small><span>11</span><span>Nhà hàng</span></small><h3>Lavender Restaurant</h3><p>Giá trị chuyển biến</p></div></div>
-<div class="project-card p12" data-bg="linear-gradient(120deg,#323622,#080808)"><div class="image"></div><div class="meta"><small><span>12</span><span>Bungalow</span></small><h3>Heal Hill</h3><p>Góc thiền</p></div></div>
-<div class="project-card p13" data-bg="linear-gradient(120deg,#292934,#080808)"><div class="image"></div><div class="meta"><small><span>13</span><span>Văn phòng</span></small><h3>ThanVanNhiep Office</h3><p>Riêng tư cởi mở</p></div></div>
-<div class="project-card p14" data-bg="linear-gradient(120deg,#3b332c,#080808)"><div class="image"></div><div class="meta"><small><span>14</span><span>Văn phòng</span></small><h3>Ada Office</h3><p>Đối thoại</p></div></div>
-</div></div>
-</section>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-grid"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Architect / Design Leader</p>
+          <h1>Vũ Tiên<br>Vương</h1>
+          <div class="hero-rule"></div>
+          <div class="hero-facts">
+            <span>Architecture</span><span>Interior</span><span>Design Management</span>
+          </div>
 
-<section id="blog" class="blog">
-<div class="head"><h2>Blog /<br>Video Stories.</h2><p>Chạm vào video để xem. Trong popup có thể vuốt trái/phải để chuyển trực tiếp sang video tiếp theo.</p></div>
-<div class="video-row">
-<button class="video-card" data-index="0"><div class="poster"></div><div class="vmeta"><small>Dreamese Stories · 01</small><h3>Câu chuyện của một không gian sống.</h3></div></button>
-<button class="video-card" data-index="1"><div class="poster"></div><div class="vmeta"><small>Design Talk · 02</small><h3>Thiết kế không chỉ là một bản vẽ.</h3></div></button>
-<button class="video-card" data-index="2"><div class="poster"></div><div class="vmeta"><small>Material · 03</small><h3>Vật liệu, ánh sáng và cảm xúc.</h3></div></button>
-<button class="video-card" data-index="3"><div class="poster"></div><div class="vmeta"><small>Behind the design · 04</small><h3>Từ câu chuyện đến hình hài công trình.</h3></div></button>
-<button class="video-card" data-index="4"><div class="poster"></div><div class="vmeta"><small>Site story · 05</small><h3>Khi bản vẽ trở thành không gian thật.</h3></div></button>
-</div>
-</section>
+          <div class="hero-actions">
+            <a class="btn primary" href="#works">Selected Works</a>
+            <a class="btn ghost" href="#contact">Contact</a>
+          </div>
 
-<section id="services" class="services">
-<div class="head"><h2>Dịch vụ.</h2><div class="kicker">Dreamese / Services</div></div>
-<div class="service-list">
-<div class="service"><span>01</span><b>Thiết kế — Thi công trọn gói</b><p>Đồng bộ từ thẩm mỹ thiết kế, kỹ thuật thi công và chịu trách nhiệm trên toàn bộ ngân sách xây dựng.</p></div>
-<div class="service"><span>02</span><b>Thiết kế — Quản lý dự án</b><p>Đảm bảo và kiểm soát tính nhất quán từ bản vẽ thiết kế, kỹ thuật đến triển khai thi công.</p></div>
-<div class="service"><span>03</span><b>Thiết kế Kiến trúc</b><p>Tối ưu không gian sử dụng, thẩm mỹ hình khối và xây dựng bản sắc riêng cho công trình.</p></div>
-<div class="service"><span>04</span><b>Thiết kế Nội thất</b><p>Đồng bộ vật liệu và chi phí, hướng đến xây dựng lối sống cá nhân hóa.</p></div>
-</div>
-</section>
+          <div class="hero-stats">
+            <div><strong>2018</strong><small>Practice</small></div>
+            <div><strong>10+</strong><small>Team</small></div>
+            <div><strong>100%</strong><small>Design → Build</small></div>
+          </div>
+        </div>
+        <figure class="portrait">
+          <img src="https://avatars.githubusercontent.com/u/260638674?v=4" alt="Vũ Tiên Vương">
+        </figure>
+      </div>
+    </section>
 
-<section id="contact" class="contact">
-<div><div class="kicker">Dreamese Studio</div><h2>Đồng hành<br>kiến tạo.</h2></div>
-<div class="contact-grid"><div><small>Hotline</small>09 4363 4758 — KTS. Vương<br>0903 888 200 — KS. Toàn</div><div><small>Email</small>vtv.arc@gmail.com</div><div><small>Studio</small>Trần Văn Thời — Cà Mau<br>11/8/32 ĐHT 17, Đông Hưng Thuận, TP.HCM</div></div>
-</section>
+    <section class="works" id="works">
+      <div class="container">
+        <header class="section-title">
+          <p class="eyebrow">Selected Works</p>
+          <h2>Dự án tiêu biểu</h2>
+        </header>
+        <div class="project-grid">
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/RUSTANIA/A_ExC_008.1.png" alt="Rustania Homes" class="project-preview ready"><div class="project-loading"><span>01</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>01</span><span>Villa</span></div><h3>Rustania Homes</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Lean_Villa/ExC_05.2.jpg" alt="Lean Villa" class="project-preview ready"><div class="project-loading"><span>02</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>02</span><span>Villa</span></div><h3>Lean Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TT_Villa/ExC_06.1.jpg" alt="T&T Villa" class="project-preview ready"><div class="project-loading"><span>03</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>03</span><span>Villa</span></div><h3>T&T Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Thu_Dieu/ExC_01.2.jpg" alt="Thu Điếu" class="project-preview ready"><div class="project-loading"><span>04</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>04</span><span>Villa</span></div><h3>Thu Điếu</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/SimplePC/Ext_001.3.png" alt="Mr Đặng Villa" class="project-preview ready"><div class="project-loading"><span>05</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>05</span><span>Villa</span></div><h3>Mr Đặng Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TVT_House/F1.jpg" alt="TVT Home" class="project-preview ready"><div class="project-loading"><span>06</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>06</span><span>Townhouse</span></div><h3>TVT Home</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Chateur_QL_Villa/Chateur_ExC_02.jpg" alt="Breath Villa" class="project-preview ready"><div class="project-loading"><span>07</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>07</span><span>Villa</span></div><h3>Breath Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TranPhuong_Villa/TP-Villa_Up_02.1.png" alt="Cù Lao Villa" class="project-preview ready"><div class="project-loading"><span>08</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>08</span><span>Villa</span></div><h3>Cù Lao Villa</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/PN1/PN1_ExC_09.1.png" alt="Nhuận Home" class="project-preview ready"><div class="project-loading"><span>09</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>09</span><span>Villa</span></div><h3>Nhuận Home</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TouchHome/ExC_01.1.png" alt="Touch House" class="project-preview ready"><div class="project-loading"><span>10</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>10</span><span>Villa</span></div><h3>Touch House</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Lavender/C8.jpg" alt="Lavender Restaurant" class="project-preview ready"><div class="project-loading"><span>11</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>11</span><span>Restaurant</span></div><h3>Lavender Restaurant</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/TN_Cottage/TN_Bal_02.jpg" alt="Heal Hill" class="project-preview ready"><div class="project-loading"><span>12</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>12</span><span>Bungalow</span></div><h3>Heal Hill</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/ThanVanNhiep/C8.jpg" alt="ThanVanNhiep Office" class="project-preview ready"><div class="project-loading"><span>13</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>13</span><span>Office</span></div><h3>ThanVanNhiep Office</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="https://dreamese.github.io/dreamesestudio/PROJECTS/Ada_Office/Ada_0F_02.2.png" alt="Ada Office" class="project-preview ready"><div class="project-loading"><span>14</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>14</span><span>Office</span></div><h3>Ada Office</h3></div></button></article>
+          <article class="project-card"><button class="project-open" type="button"><div class="project-media"><img src="assets/vsss-placeholder.svg" alt="VSSS" class="project-preview ready"><div class="project-loading"><span>15</span></div><div class="project-view">Case Study ↓</div></div><div class="project-info"><div class="project-meta"><span>15</span><span>Institutional</span></div><h3>VSSS</h3></div></button></article>
+        </div>
+      </div>
+    </section>
 
-<div class="viewer" id="viewer">
-<div class="viewer-bar"><div><span class="logo">DREAMESE BLOG</span> <span class="viewer-count" id="viewerCount"></span></div><button class="viewer-close" id="viewerClose">×</button></div>
-<button class="viewer-arrow prev" id="prev">‹</button><button class="viewer-arrow next" id="next">›</button>
-<div class="viewer-track-wrap" id="gestureZone"><div class="viewer-track" id="viewerTrack">
-<div class="slide"><div class="slide-inner"><div class="video-box"><div class="video-placeholder"><b>VIDEO 01</b>Gắn URL video Dreamese/Titan vào đây.</div></div><h3>Câu chuyện của một không gian sống.</h3></div></div>
-<div class="slide"><div class="slide-inner"><div class="video-box"><div class="video-placeholder"><b>VIDEO 02</b>Swipe ← → để chuyển video mà không đóng popup.</div></div><h3>Thiết kế không chỉ là một bản vẽ.</h3></div></div>
-<div class="slide"><div class="slide-inner"><div class="video-box"><div class="video-placeholder"><b>VIDEO 03</b>Hỗ trợ YouTube / Vimeo / MP4.</div></div><h3>Vật liệu, ánh sáng và cảm xúc.</h3></div></div>
-<div class="slide"><div class="slide-inner"><div class="video-box"><div class="video-placeholder"><b>VIDEO 04</b>Desktop dùng nút ← → hoặc phím mũi tên.</div></div><h3>Từ câu chuyện đến hình hài công trình.</h3></div></div>
-<div class="slide"><div class="slide-inner"><div class="video-box"><div class="video-placeholder"><b>VIDEO 05</b>Mobile / iPad vuốt trực tiếp.</div></div><h3>Khi bản vẽ trở thành không gian thật.</h3></div></div>
-</div></div><div class="swipe-hint">Swipe / drag ← &nbsp; video stories &nbsp; →</div></div>
+    <section class="case-study is-hidden" id="case-study" aria-hidden="true">
+      <div class="container">
+        <header class="case-head">
+          <div><p class="eyebrow" id="caseNumber">01 · Villa</p><h2 id="caseTitle">Rustania Homes</h2></div>
+          <div class="case-actions"><button class="case-nav" id="prevProject" type="button">←</button><button class="case-nav" id="nextProject" type="button">→</button></div>
+        </header>
+        <div class="case-gallery" id="caseGallery"></div>
+        <div class="view-all-wrap"><a id="viewAllBtn" class="view-all" href="https://dreamese.github.io/dreamesestudio/Rustania.html">Xem tất cả <span>↗</span></a></div>
+      </div>
+    </section>
 
-<script>
-// First visible frame = Projects. About remains physically above and can be reached by scrolling upward.
-// Hide page until initial scroll is applied, preventing an About flash.
-document.documentElement.style.visibility="hidden";
-window.addEventListener("load",()=>{
-  const explicit=location.hash && location.hash!=="#projects";
-  const target=explicit ? document.querySelector(location.hash) : document.getElementById("projects");
-  if(!explicit) history.replaceState(null,"","#projects");
-  if(target) window.scrollTo(0,target.offsetTop);
-  requestAnimationFrame(()=>document.documentElement.style.visibility="visible");
-});
+    <section class="approach" id="approach"><div class="container"><header class="section-title"><p class="eyebrow">Design Approach</p><h2>Phù hợp · Thẩm mỹ<br>Công năng · Khả thi</h2></header></div></section>
 
-// Project cards affect the large black background field.
-const bg=document.getElementById("projectBg");
-document.querySelectorAll(".project-card").forEach(card=>{
-  card.addEventListener("mouseenter",()=>{bg.style.backgroundImage=card.dataset.bg||"";bg.style.opacity=".34"});
-  card.addEventListener("mouseleave",()=>{bg.style.opacity=".18"});
-});
+    <section class="experience" id="experience"><div class="container"><header class="section-title"><p class="eyebrow">Experience</p><h2>Career</h2></header><div class="career">
+      <div><time>03/2026 — Nay</time><strong>Titan Construction</strong><span>Trưởng phòng Thiết kế</span></div>
+      <div><time>11/2025 — 02/2026</time><strong>Freelance / Tư vấn dự án</strong><span>Kiến trúc sư độc lập</span></div>
+      <div><time>08/2024 — 11/2025</time><strong>Xhome Cần Thơ</strong><span>Trưởng phòng Design Center 02</span></div>
+      <div><time>02/2022 — 10/2023</time><strong>VTN Architects</strong><span>Kiến trúc sư</span></div>
+      <div><time>11/2018 — 09/2019</time><strong>LIM Concept</strong><span>Kiến trúc sư thiết kế</span></div>
+    </div></div></section>
 
-// Swipeable blog popup
-const viewer=document.getElementById("viewer"),track=document.getElementById("viewerTrack"),count=document.getElementById("viewerCount");
-const total=track.children.length; let current=0,startX=0,deltaX=0,dragging=false;
-function render(){track.style.transform=`translateX(${-current*100}%)`;count.textContent=` ${String(current+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`}
-function openViewer(i){current=i;render();viewer.classList.add("open");document.body.style.overflow="hidden"}
-function closeViewer(){viewer.classList.remove("open");document.body.style.overflow=""}
-function go(d){current=(current+d+total)%total;render()}
-document.querySelectorAll(".video-card").forEach(b=>b.onclick=()=>openViewer(+b.dataset.index));
-document.getElementById("viewerClose").onclick=closeViewer;document.getElementById("prev").onclick=()=>go(-1);document.getElementById("next").onclick=()=>go(1);
-document.addEventListener("keydown",e=>{if(!viewer.classList.contains("open"))return;if(e.key==="Escape")closeViewer();if(e.key==="ArrowLeft")go(-1);if(e.key==="ArrowRight")go(1)});
-const zone=document.getElementById("gestureZone");
-zone.addEventListener("pointerdown",e=>{startX=e.clientX;deltaX=0;dragging=true;zone.setPointerCapture(e.pointerId)});
-zone.addEventListener("pointermove",e=>{if(dragging)deltaX=e.clientX-startX});
-zone.addEventListener("pointerup",()=>{if(Math.abs(deltaX)>55)go(deltaX<0?1:-1);dragging=false});
-</script>
-</body></html>
+    <section class="about" id="about"><div class="container about-grid"><div><p class="eyebrow">About</p><h2>Vũ Tiên Vương</h2></div><div class="about-data">
+      <div><span>Education</span><b>Đại học Quốc tế Hồng Bàng</b></div>
+      <div><span>Study</span><b>Università Politecnica delle Marche</b></div>
+      <div><span>Tools</span><b>Revit · AutoCAD · SketchUp · 3ds Max · Photoshop</b></div>
+      <div><span>Focus</span><b>Design Direction · HSKT · Team · Site</b></div>
+    </div></div></section>
+
+    <section class="contact" id="contact"><div class="container"><p class="eyebrow">Contact</p><h2>Let’s work<br>together.</h2><div class="contact-row">
+      <a href="tel:+84943634758">0943 634 758</a><a href="mailto:vtv.arc@gmail.com">vtv.arc@gmail.com</a><span>Architect / Design Leader</span>
+    </div></div></section>
+  </main>
+
+  <footer><div class="container"><span>© 2026 Vũ Tiên Vương</span><a href="#home">↑ Top</a></div></footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true"><button class="lb-close" id="lbClose">×</button><button class="lb-nav lb-prev" id="lbPrev">←</button><img id="lbImage" alt=""><button class="lb-nav lb-next" id="lbNext">→</button></div>
+  <script src="js/script.js"></script>
+</body>
+</html>
