@@ -72,6 +72,29 @@
             .hero-note { font-size:var(--dreamese-hero-note-mobile); }
         }
     </style>
+    <style id="dreamese-mt-collaboration">
+        #home .hero-mt-collaboration {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 22px;
+            color: #ccc;
+            font-family: "Avo", sans-serif;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        #home .hero-mt-collaboration img {
+            display: block;
+            width: 88px;
+            height: auto;
+            flex: 0 0 auto;
+        }
+        @media (max-width: 900px) {
+            #home .hero-mt-collaboration { gap: 12px; font-size: 11px; margin-top: 18px; }
+            #home .hero-mt-collaboration img { width: 72px; }
+            #home .hero-mt-collaboration span { min-width: 0; }
+        }
+    </style>
     <script src="HOME.js" defer></script>
 </head>
 <body
@@ -113,13 +136,15 @@
 </nav>
 <section id="home"><div>
     <div class="hero-desktop"><h1>Những câu chuyện được kể lại <br><span class="hero-line">bằng không gian sống</span></h1>
+        <div class="hero-mt-collaboration" aria-label="In collaborate with MT Construction"><img src="MT_Logo.png" alt="Logo MT Construction" width="962" height="584" decoding="async"><span>In collaborate with MT Construction</span></div>
         <p>Chúng tôi tin rằng, mỗi công trình thiết kế luôn bắt đầu từ con người và những câu chuyện mang tính ước vọng.</p>
         <p>Ở Dreamese, Kiến trúc sư đóng vai trò như những Dịch giả biến những câu chuyện,
                 những ước vọng tưởng chừng như rất mơ hồ thành không gian sống đích thực.</p>
         <p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất
                 để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.</p>
     </div>
-    <div class="hero-mobile"><h1>Thiết kế không gian<br><span class="hero-line">như viết 1 câu chuyện sống</span></h1><p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất
+    <div class="hero-mobile"><h1>Thiết kế không gian<br><span class="hero-line">như viết 1 câu chuyện sống</span></h1>
+        <div class="hero-mt-collaboration" aria-label="In collaborate with MT Construction"><img src="MT_Logo.png" alt="Logo MT Construction" width="962" height="584" decoding="async"><span>In collaborate with MT Construction</span></div><p>Ở Dreamese, chúng tôi tôn trọng, trân quý và luôn luôn lắng nghe khách hàng 1 cách chân thành nhất
 để mọi công trình là những chặng đường đáng nhớ và mang tính thành tựu.
 Hân hạnh được đồng hành kể lại những câu chuyện trường tồn này</p></div>
     <div class="hero-note">DREAMESE STUDIO — Dịch giả ngôn ngữ giấc mơ</div>
